@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 函数的定义 function 函数名() { 函数体 }
+        //函数命名尽量以动词开头 can/has/is/get/set/load
+        // 无参数的函数
+        function say() {
+            console.log('hello world');
+        }
+        function get_100Sum() {
+            let sum = 0
+            for (let i = 1; i <= 100; i++) {
+                sum += i
+            }
+            console.log(sum)
+        }
+        function getSum1() {
+            let sum = 0
+            let num = +prompt('获得1到num的和->num=')
+            for (let i = 1; i <= num; i++) {
+                sum += i
+            }
+            console.log(sum)
+        }
+        //带参数的函数
+        //可以给形参设置默认值
+        function getSum2(start = 0, end = 0) {
+            //逻辑中断来表示默认值
+            // start = start || 0
+            // end = end || 0
+
+            // 验证参数是否正确
+            if (start > end) {
+                [start, end] = [end, start]
+            }
+            let sum = 0
+            for (let i = start; i <= end; i++) {
+                sum += i
+            }
+            console.log(sum)
+        }
+        //可以直接传递数组
+        function getArrSum(arr = []) {
+            let sum = 0
+            for (let i = 0; i <= arr.length - 1; i++) {
+                sum += arr[i]
+                arr[i] += 1
+            }
+            console.log(sum)
+            // 以数组形式可以返回多个值 也可以是数组
+            return [sum, arr]
+        }
+
+        // 具名函数的调用 可以在函数定义之前调用
+        say()
+        get_100Sum()
+        getSum1()
+        getSum2()
+        getSum2(1, 100)
+        let arr = [1, 2, 3, 4, 5]
+        //用数组接受返回的数组
+        let newArr = getArrSum(arr)
+        document.write(newArr[0])
+        document.write(`<br>`)
+        document.write(newArr[1])
+
+        // 匿名函数的调用 必须先定义后调用
+        // 函数表达式
+        let Hi = function () {
+            console.log('hello world');
+        }
+        let getSum3 = function (start = 0, end = 0) {
+            let sum = 0
+            for (let i = start; i <= end; i++) {
+                sum += i
+            }
+            console.log(sum)
+        }
+        // 调用匿名函数
+        Hi()
+        getSum3(1, 100);
+
+        //立即执行函数 前后都要有分号和小括号
+        //写完立即执行函数后 可以直接调用函数
+        //第一种写法
+        (function () { })();
+        (function (start = 0, end = 0) {
+            getSum3(start, end)
+        })(1, 100);
+        //第二种写法
+        (function () { }());
+
+    </script>
+
+</body>
+
+</html>

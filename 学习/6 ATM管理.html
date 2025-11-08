@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    h2 {
+        text-align: center;
+    }
+</style>
+
+<body>
+
+</body>
+<script>
+    let num = prompt(`
+    请选择操作
+           1. 存钱
+           2. 取钱
+           3. 查看余额
+           4. 退出
+    `)
+    let sum = 0;
+    while (num !== '4') {
+        if (num === '1') {
+            let money = +prompt('请输入要存钱的金额:');
+            sum += money;
+            alert(`已存入 你当前的余额为:${sum}`);
+        }
+        else if (num === '2') {
+            let money = +prompt('请输入要取钱的金额:');
+            if (sum < money) {
+                alert('余额不足');
+            }
+            else {
+                sum -= money;
+                alert(`已取出 你当前的余额为:${sum}`);
+            }
+        }
+        else if (num === '3') {
+            alert(`你当前的余额为:${sum}`);
+        }
+        else {
+            alert('你输入的操作有误');
+        }
+        num = prompt(`
+    请选择操作
+           1. 存钱
+           2. 取钱
+           3. 查看余额
+           4. 退出
+    `)
+    }
+    document.write(`
+    <h2>你当前的余额为:${sum}</h2>
+    `)
+</script>
+
+</html>

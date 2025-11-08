@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    let arr = ['a', 2, 3, 4, 5]
+    console.log(arr)
+    // push() 方法将指定的一个或多个元素添加到数组的末尾,并返回新的数组长度.
+    let length = arr.push('b')
+    length = arr.push('c', 'd')
+    console.log(length)
+    console.log(arr)
+    // unshift() 方法将指定的一个或多个元素添加到数组的开头,并返回新的数组长度.
+    length = arr.unshift('x')
+    console.log(length)
+    console.log(arr)
+
+    // pop() 方法从数组中删除最后一个元素, 并返回该元素的值.
+    let last = arr.pop()
+    console.log(last)
+    console.log(arr)
+    // shift() 方法从数组中删除第一个元素, 并返回该元素的值.
+    let first = arr.shift()
+    console.log(first)
+    console.log(arr)
+    // splice() 方法从数组中删除指定数量的元素, 并返回被删除的元素.
+    let del = arr.splice(2, 1)
+    console.log(del)
+    console.log(arr)
+</script>
+
+</html>

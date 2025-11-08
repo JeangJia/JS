@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    div {
+        box-sizing: border-box;
+    }
+
+    .box {
+        width: 500px;
+        height: 350px;
+        margin: 100px auto 10px;
+        overflow: hidden;
+        border-left: 1px solid #000;
+        border-bottom: 1px solid #000;
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-end;
+    }
+
+    .item {
+        width: 30px;
+        background-color: pink;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .title-box {
+        width: 500px;
+        height: 30px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .title {
+        font-size: 12px;
+    }
+
+    .value {
+        margin-top: -25px;
+    }
+</style>
+
+<body>
+
+</body>
+<script>
+    let arr = []
+    let S = +prompt('一共有多少季度:')
+    for (let i = 1; i <= S; i++) {
+        let data = +prompt(`请输入第${i}季度的数据`)
+        arr.push(data)
+    }
+    let displayArr = [];
+    let heightArr = [];
+    for (let i = 0; i <= arr.length - 1; i++) {
+        console.log(`第${i + 1}季度的数据为:${arr[i]}`)
+
+        if (arr[i] > 300) {
+            displayArr.push('300+');
+            heightArr.push(300); // 超过300时高度保持300
+        } else {
+            displayArr.push(arr[i]);
+            heightArr.push(arr[i]);
+        }
+    }
+
+    // 创建带有顶部数值的柱形图
+    document.write(`<div class="box">`)
+    for (let i = 0; i <= arr.length - 1; i++) {
+        document.write(`<div class="item" style="height: ${heightArr[i]}px;"><div class="value">${displayArr[i]}</div></div>`)
+    }
+    document.write(`</div>`)
+    // 创建标题
+    document.write(`<div class="title-box">`)
+    for (let i = 0; i <= arr.length - 1; i++) {
+        document.write(`<div class="title">第${i + 1}季度</div>`)
+    }
+    document.write(`</div>`)
+
+    // document.write(`
+    //  <div class="box">
+    //     <div class="item" style="height: ${heightArr[0]}px;"><div class="value">${displayArr[0]}</div></div>
+    //     <div class="item" style="height: ${heightArr[1]}px;"><div class="value">${displayArr[1]}</div></div>
+    //     <div class="item" style="height: ${heightArr[2]}px;"><div class="value">${displayArr[2]}</div></div>
+    //     <div class="item" style="height: ${heightArr[3]}px;"><div class="value">${displayArr[3]}</div></div>
+    // </div>
+    // <div class="title-box">
+    //     <div class="title">第1季度</div>
+    //     <div class="title">第2季度</div>
+    //     <div class="title">第3季度</div>
+    //     <div class="title">第4季度</div>
+    // </div>
+    // `)
+
+</script>
+
+</html>
