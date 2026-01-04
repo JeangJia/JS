@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    // 对象的定义 object
+    // 字面量定义  
+    // let 对象名 = {
+    // 属性名: 属性值,
+    // 方法名: function() { 方法体 }
+    // } 
+    let obj = {
+        name: '张三',
+        age: 18,
+        sex: '男'
+    }
+    let obj1 = {
+        'goods-name': '商品1',
+        name: '张三',
+        num: 'num',
+        address: '中国',
+        sayHi: function () {
+            console.log('hello ' + this.name);
+        },
+    }
+    obj1.sayHi();
+    console.log(obj)
+    // 查
+    console.log(obj1.address)
+    //另一种写法
+    console.log(obj1['goods-name'])
+    // 改
+    obj1['goods-name'] = '商品2'
+    console.log(obj1)
+    // 增
+    obj1.phone = '13800000000'
+    console.log(obj1)
+    // 删
+    delete obj1.phone
+    console.log(obj1)
+
+    // 创造对象
+    let obj2 = new Object()
+    obj2.name = '张三'
+    obj2.age = 18
+    console.log(obj2)
+    // 创造对象函数
+    function createObj(name, age) {
+        this.name = name
+        this.age = age
+        // 不需要return
+    }
+    let obj3 = new createObj('张三', 18) // 实例化对象
+    console.log(obj3)
+
+    // Object 方法
+    // Object.keys() 方法返回一个数组,包含对象的所有属性名
+    let keys = Object.keys(obj3)
+    console.log(keys)
+    // Object.values() 方法返回一个数组,包含对象的所有属性值
+    let values = Object.values(obj3)
+    console.log(values)
+    // Object.entries() 方法返回一个数组,包含对象的所有属性名和属性值
+    let entries = Object.entries(obj3)
+    console.log(entries)
+</script>
+
+</html>

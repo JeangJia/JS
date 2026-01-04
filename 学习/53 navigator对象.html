@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //navigator 对象
+        // navigator 对象是浏览器提供的一个全局对象,用于获取浏览器的相关信息.
+        // 例如: navigator.userAgent 可以获取浏览器的用户代理字符串,
+        // 包含了浏览器的名称、版本号、操作系统等信息.
+        console.log(navigator.userAgent);
+        // 例如: navigator.onLine 可以获取浏览器是否在线的状态.
+        // 如果浏览器在线,则返回 true;否则返回 false.
+        console.log(navigator.onLine);
+        // 例如: navigator.language 可以获取浏览器的首选语言.
+        // 例如: navigator.language 为 "zh-CN" 表示浏览器的首选语言为中文(中国).
+        console.log(navigator.language);
+
+        //检测userAgent(浏览器信息)
+
+        // 自执行函数,检测设备并实现跳转
+        !(function () {
+            // 获取浏览器的 userAgent 信息(包含设备、系统等标识)
+            const userAgent = navigator.userAgent;
+            // 正则匹配 Android 设备
+            const android = userAgent.match(/(Android);?[\s\/]+([\d.]+)?/);
+            // 正则匹配 iPhone 设备
+            const iphone = userAgent.match(/(iPhone\sOS)\s([\d_]+)/);
+            // 若检测到是 Android 或 iPhone,跳转到移动站点
+            if (android || iphone) {
+                location.href = 'http://m.itcast.cn';
+            }
+        })();
+    </script>
+</body>
+
+</html>

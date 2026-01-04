@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+        <p>这是一个段落</p>
+    </ul>
+    <script>
+        // 事件委托 
+        // 利用事件冒泡机制,将事件处理函数绑定在父元素上,当子元素触发事件时,会冒泡到父元素上,从而触发事件处理函数
+        // 事件源.addEventListener('事件类型', 事件处理函数)
+        // 点击列表项时弹出提示框
+        let ul = document.querySelector('ul')
+        ul.addEventListener('click', function (e) {
+            //事件对象的target属性指向触发事件的元素
+            console.log(e.target);
+            console.log(e.target.tagName);//点击对象的标签名
+            if (e.target.tagName === 'LI') {
+                alert('点击了列表项' + e.target.innerHTML)
+            }
+        })
+    </script>
+
+</body>
+
+</html>

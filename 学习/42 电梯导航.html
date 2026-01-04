@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    html {
+        height: 3000px;
+    }
+
+    .nav {
+        position: fixed;
+        width: 80px;
+        height: 300px;
+        margin-left: 75%;
+        margin-top: 300px;
+        border-radius: 10px;
+    }
+
+    ul {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    a {
+        display: block;
+        height: 60px;
+        line-height: 60px;
+        width: 65px;
+        text-align: center;
+        color: white;
+        text-decoration: none;
+        background-color: rgb(108, 202, 131);
+    }
+
+    li:last-child a {
+        opacity: 0;
+        font-size: 24px;
+    }
+
+    a:hover {
+        color: rgb(108, 202, 131);
+        background-color: #fff;
+    }
+</style>
+
+<body>
+    <div class="nav">
+        <ul>
+            <li><a href="#box1">主页</a></li>
+            <li><a href="#box2">信息</a></li>
+            <li><a href="#box3">联系</a></li>
+            <li><a href="#box4">服务</a></li>
+            <li><a href="#box5">↑</a></li>
+        </ul>
+    </div>
+    <script>
+        document.documentElement.scrollTop = 0
+        const bot = document.querySelector('li:last-child a')
+        const setHeight = +200
+        window.addEventListener('scroll', function () {
+            const htmlHeight = document.documentElement.scrollTop
+            console.log(htmlHeight)
+            // if (htmlHeight >= setHeight) {
+            //     bot.style.opacity = 1
+            // } else {
+            //     bot.style.opacity = 0
+            // }
+            bot.style.opacity = htmlHeight >= setHeight ? 1 : 0
+        })
+        bot.addEventListener('click', function () {
+            document.documentElement.scrollTop = 0
+            // window.scrollTo(x, y) 方法也可以实现滚动到顶部
+            // window.scrollTo(0, 0)
+        })
+
+    </script>
+</body>
+
+</html>

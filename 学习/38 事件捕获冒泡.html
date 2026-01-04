@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .father {
+        width: 200px;
+        height: 200px;
+        background-color: pink;
+    }
+
+    .son {
+        width: 100px;
+        height: 100px;
+        background-color: #ffd6e0;
+    }
+</style>
+
+<body>
+    <div class="father">
+        <div class="son"></div>
+    </div>
+</body>
+<script>
+    let father = document.querySelector('.father')
+    let son = document.querySelector('.son')
+    //false 事件冒泡(默认)
+    //true 事件捕获
+    document.addEventListener('click', function () {
+        alert('点击了文档');
+    }, false)
+    father.addEventListener('click', function () {
+        alert('点击了父元素');
+    })
+    son.addEventListener('click', function (e) {
+        alert('点击了子元素');
+        // 事件对象 阻止事件冒泡
+        e.stopPropagation()
+    })
+</script>
+
+
+</html>

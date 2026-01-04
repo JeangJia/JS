@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .box {
+        width: 200px;
+        height: 200px;
+        background-color: pink;
+    }
+</style>
+
+<body>
+    <button>点击我</button>
+    <div class="box"></div>
+    <script>
+        // 事件监听
+        // 事件源.addEventListener('事件类型', 事件处理函数)
+        // click/mouseenter/mouseleave 鼠标点击/移入/移出
+        // mouseover/mouseout 鼠标移入/移出(有冒泡效果)
+        // focus/blur 获得/失去焦点
+        // keydown/keyup 键盘按下/松开
+        // input 输入框输入内容时触发
+        // change 选择框选择项改变时触发
+        // scroll 滚动条滚动时触发
+        // DOMContentLoaded 文档加载完成时触发
+        // resize 窗口大小改变时触发
+
+        //M端事件
+        // touchstart 触摸开始
+        // touchmove 触摸移动
+        // touchend 触摸结束
+        // gesturestart 手势开始
+        // gesturechange 手势改变
+        // gestureend 手势结束
+
+        // 点击按钮弹出提示框
+        let btn = document.querySelector('button')
+        btn.addEventListener('click', function () {
+            alert('点击了按钮')
+        })
+        // 鼠标移入/移出时改变背景颜色
+        let box = document.querySelector('.box')
+        box.addEventListener('mouseenter', function () {
+            box.style.backgroundColor = 'red'
+        })
+        box.addEventListener('mouseleave', function () {
+            box.style.backgroundColor = 'black'
+        })
+        // 获得焦点时边框为红色,失去焦点时边框为黑色
+        let input = document.querySelector('input')
+        input.addEventListener('focus', function () {
+            input.style.border = '1px solid red'
+        })
+        input.addEventListener('blur', function () {
+            input.style.border = '1px solid black'
+        })
+    </script>
+
+</body>
+
+</html>

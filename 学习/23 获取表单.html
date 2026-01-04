@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表单元素属性操作</title>
+</head>
+
+<body>
+    <!-- 复选框:核心属性checked -->
+    <input type="checkbox" id="agree">
+    <!-- 输入框:核心属性value/type -->
+    <input type="text" id="username" placeholder="请输入用户名"> <!-- 注意:用placeholder替代value做提示更合理 -->
+    <!-- 按钮:核心属性disabled -->
+    <button id="submit" disabled>提交</button>
+
+    <script>
+        // ========== 1. 输入框(input)核心操作 ==========
+        const uname = document.querySelector('#username')
+        /* 重点1:value属性(表单元素专属)
+        - ✅ 作用:获取/设置输入框的「当前实际值」(innerHTML对input完全无效!)
+        - ❌ 误区:不要用value做默认提示(改用placeholder,避免用户需要手动删除提示文字)
+        */
+        console.log(uname.value) // 初始值:空(因为placeholder不是value)
+        uname.value = '张三'     // 设置输入框显示值为「张三」
+        console.log(uname.value) // 输出:张三
+
+        /* 重点2:type属性
+        - ✅ 作用:获取/修改输入框类型(text/password/number/email等)
+        - ⚠️ 注意:部分类型修改有兼容性限制(如file类型无法修改)
+        */
+        console.log(uname.type)  // 初始值:text
+        uname.type = 'password'  // 改为密码框(输入内容会隐藏)
+        console.log(uname.type)  // 输出:password
+
+        // ========== 2. 复选框(checkbox)核心操作 ==========
+        const agree = document.querySelector('#agree')
+        /* 重点3:checked属性
+        - ✅ 作用:获取/设置复选框选中状态,仅接受布尔值(true=选中,false=未选中)
+        - ❌ 误区:不要用value判断选中状态(checkbox的value是固定值,和选中无关)
+        */
+        console.log(agree.checked) // 初始值:false(未选中)
+        agree.checked = true       // 设置为选中状态
+        console.log(agree.checked) // 输出:true
+
+        // ========== 3. 按钮(button)核心操作 ==========
+        const submit = document.querySelector('#submit')
+        /* 重点4:disabled属性
+        - ✅ 作用:获取/设置按钮禁用状态,仅接受布尔值(true=禁用,false=可用)
+        - ✅ 常见场景:表单验证不通过时禁用提交按钮,验证通过后启用
+        */
+        console.log(submit.disabled) // 初始值:true(禁用)
+        submit.disabled = false      // 解除禁用(按钮可点击)
+        console.log(submit.disabled) // 输出:false
+
+        // ========== 补充:易忽视的实用属性 ==========
+        // 1. placeholder:输入框提示文字(不占用value,更友好)
+        uname.placeholder = '请输入真实姓名'
+        // 2. readonly:输入框只读(不可编辑,但可选中复制,区别于disabled)
+        uname.readOnly = true // 注意:属性名是readOnly(驼峰),不是readonly
+        // 3. required:标记输入框为必填项(提交时浏览器自动验证)
+        uname.required = true
+        // 4. 获取表单元素的name属性(提交表单时的键名)
+        uname.name = 'username'
+        console.log(uname.name) // 输出:username
+
+    </script>
+</body>
+
+</html>

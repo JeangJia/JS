@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    div {
+        box-sizing: border-box;
+    }
+
+    .box {
+        width: 300px;
+        height: 200px;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .item img {
+        width: 300px;
+        height: 150px;
+        background-color: pink;
+        background: no-repeat center center;
+        background-size: cover;
+    }
+
+    .title {
+        width: 300px;
+        padding-left: 15px;
+        color: #fff;
+    }
+
+    ul {
+        display: flex;
+        height: 30px;
+        list-style: none;
+        padding: 0 15px;
+        margin: 0;
+    }
+
+    li {
+        margin-right: 15px;
+        margin-top: 5px;
+        color: argb(0, 0, 0, 0.5);
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: white;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+
+    .down {
+        position: relative;
+    }
+
+    .but {
+        position: absolute;
+        bottom: 12px;
+        right: 8px;
+    }
+
+    .but button {
+        width: 25px;
+        height: 20px;
+        border: 1px solid #fff;
+        background-color: transparent;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .active {
+        transform: scale(1.5);
+        background: white;
+    }
+</style>
+
+<body>
+    <div class="box">
+        <div class="item">
+            <img src="./images/1.jpg" alt="">
+        </div>
+        <div class="down">
+            <div class="title">
+                这是第1张图片
+            </div>
+            <ul>
+                <li class="active"></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+            <div class="but">
+                <button class="prev">&lt;</button>
+                <button class="next">&gt;</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    const sliderData = [
+        { img: './images/1.jpg', title: '这是第1张图片', color: 'white' },
+        { img: './images/2.jpg', title: '这是第2张图片', color: 'white' },
+        { img: './images/3.jpg', title: '这是第3张图片', color: 'white' },
+        { img: './images/4.jpg', title: '这是第4张图片', color: 'white' },
+        { img: './images/5.jpg', title: '这是第5张图片', color: 'white' },
+        { img: './images/6.jpg', title: '这是第6张图片', color: 'white' },
+    ]
+
+    function randomNum(min, max) {
+        return parseInt(Math.random() * (max - min + 1) + min);
+    }
+    function toggle() {
+        console.log('下标:' + Index)
+        //图片
+        img.src = sliderData[Index].img
+        //标题
+        title.innerHTML = sliderData[Index].title
+        //删除li的active类名 先删除再添加
+        const prevLi = document.querySelector('ul li.active')
+        prevLi.classList.remove('active')
+        //li
+        const liList = document.querySelector(`ul li:nth-child(${Index + 1})`)
+        liList.classList.add('active')
+    }
+    let Index = 0
+    const ms = 3000
+    const img = document.querySelector('.item img')
+    const title = document.querySelector('.title')
+    const prevBtn = document.querySelector('.prev')
+    const nextBtn = document.querySelector('.next')
+    //右按钮
+    nextBtn.addEventListener('click', function () {
+        Index++
+        if (Index >= sliderData.length) {
+            Index = 0
+        }
+        toggle()
+    })
+    //左按钮
+    prevBtn.addEventListener('click', function () {
+        Index--
+        if (Index < 0) {
+            Index = sliderData.length - 1
+        }
+        toggle()
+    })
+    //li点击事件
+    const liList = document.querySelectorAll('ul li')
+    liList.forEach(function (item, index) {
+        item.addEventListener('click', function () {
+            Index = index
+            toggle()
+        })
+    })
+    //自动播放
+    const autoPlay = setInterval(function () {
+        nextBtn.click()
+    }, ms)
+    //鼠标移入暂停自动播放
+    const box = document.querySelector('.box')
+    box.addEventListener('mouseenter', function () {
+        clearInterval(autoPlay)
+    })
+    //鼠标移出继续自动播放
+    box.addEventListener('mouseleave', function () {
+        autoPlay = setInterval(function () {
+            //点击事件 click() 模拟点击事件
+            nextBtn.click()
+        }, ms)
+    })
+
+</script>
+
+</html>

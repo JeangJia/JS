@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    div,
+    ul,
+    input {
+        box-sizing: border-box;
+    }
+
+    .search {
+        width: 300px;
+        margin: 0 auto;
+        margin-top: 50px;
+        overflow: hidden;
+    }
+
+    .search input {
+        width: 250px;
+        height: 30px;
+        padding: 0 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        border-collapse: collapse;
+    }
+
+    ul {
+        width: 250px;
+        border-collapse: collapse;
+        border: 1px solid #ccc;
+        display: none;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    a {
+        display: block;
+        /* width: 250px; */
+        padding-left: 10px;
+        text-decoration: none;
+        color: #000;
+    }
+
+    a:hover {
+        padding: 5px 10px;
+        background-color: black;
+        color: #fff;
+    }
+</style>
+
+<body>
+    <div class="search">
+        <input type="text" placeholder="请输入搜索内容" value="">
+        <div class="item">
+            <ul>
+                <li><a href="#">电脑</a></li>
+                <li><a href="#">手机</a></li>
+                <li><a href="#">平板</a></li>
+                <li><a href="#">智能音箱</a></li>
+                <li><a href="#">智能电视</a></li>
+                <li><a href="#">智能手表</a></li>
+                <li><a href="#">智能冰箱</a></li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        const input = document.querySelector('input')
+        const ul = document.querySelector('ul')
+        const as = document.querySelectorAll('a')
+        input.addEventListener('focus', function () {
+            ul.style.display = 'block'
+        })
+        for (let i = 0; i < as.length; i++) {
+            as[i].addEventListener('mouseover', function () {
+                ul.style.display = 'block'
+            })
+            as[i].addEventListener('click', function (e) {
+                input.value = this.innerHTML
+            })
+        }
+        // input.addEventListener('blur', function () {
+        //     ul.style.display = 'none'
+        // })
+    </script>
+</body>
+
+</html>

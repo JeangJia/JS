@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+
+    div {
+        width: 200px;
+        height: 200px;
+        background-color: pink;
+        margin: 100px;
+        border: 5px solid red;
+    }
+
+    p {
+        width: 100px;
+        height: 100px;
+        background-color: lightblue;
+        margin: 50px;
+    }
+</style>
+
+<body>
+    <div>
+        <p></p>
+    </div>
+</body>
+<script>
+    // scrollTop和scrollLeft
+    // 获取元素的滚动条位置(上/左)
+
+    // 1. clientWidth和clientHeight
+    // 获取元素的可视宽高(内容+内边距)不包含边框和滚动条
+    // 2. offsetWidth和offsetHeight
+    // 获取元素的宽高(内容+内边距+边框)不包含滚动条
+    // 3. offsetTop和offsetLeft
+    // 获取元素相对于定位父元素的内边距位置(上/左)
+    const div = document.querySelector('div')
+    const p = document.querySelector('p')
+    console.log(div.clientWidth)
+    console.log(div.clientHeight)
+    console.log('-------------------')
+    console.log(div.offsetWidth)
+    console.log(div.offsetHeight)
+    console.log(p.offsetTop)
+    console.log(p.offsetLeft)
+</script>
+
+</html>

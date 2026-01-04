@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    div {
+        color: red;
+    }
+
+    .box {
+        width: 200px;
+        height: 200px;
+        background-color: pink;
+    }
+
+    .hover:hover {
+        background-color: red;
+        color: black;
+    }
+</style>
+
+<body>
+    <div>
+        我是一个div
+    </div>
+</body>
+<script>
+    const div = document.querySelector('div')
+    //添加类名
+    //className属性
+    // 直接添加类名 会覆盖掉之前有的类名 
+    // 可以添加多个类名 用空格隔开
+    div.className = 'box hover'
+
+    //classList属性
+    //添加类名
+    // 可以添加多个类名 用空格隔开
+    div.classList.add('box', 'hover')
+    //删除类名
+    // 可以删除多个类名 用空格隔开
+    div.classList.remove('hover')
+    //切换类名
+    // 有就删除 没有就添加
+    div.classList.toggle('hover')
+    //判断是否有某个类名
+    // 返回值为true/false
+    console.log(div.classList.contains('box'));
+
+</script>
+
+</html>

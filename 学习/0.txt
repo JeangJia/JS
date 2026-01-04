@@ -1,0 +1,9 @@
+JavaScript(ECMAscript+DOM+BOM)
+简单数据类型的值 存储到内存的栈
+引用数据类型值的存储到内存 堆 地址存储到栈
+
+DOM (Document Object Model)
+.document.querySelector
+setInterval()
+.addEventListener()
+.removeEventListener()

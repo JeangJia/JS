@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生信息表</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            margin-top: 80px;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #333;
+        }
+
+        .info {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 0 20px;
+        }
+
+        input {
+            width: 100px;
+            height: 30px;
+            padding: 0 8px;
+            margin-left: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #1521c9;
+        }
+
+        select {
+            width: 100px;
+            height: 30px;
+            padding: 0 8px;
+            margin-left: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        select:focus {
+            border-color: #1521c9;
+        }
+
+        .submit {
+            margin-left: 10px;
+            width: 80px;
+            height: 30px;
+            border: none;
+            border-radius: 4px;
+            background-color: #1521c9;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .submit:hover {
+            background-color: #0f19a8;
+        }
+
+        table {
+            margin: 30px auto;
+            border-collapse: collapse;
+            width: 45%;
+            min-width: 600px;
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            height: 40px;
+            text-align: center;
+            padding: 0 10px;
+            border: 1px solid #eee;
+        }
+
+        th {
+            background-color: #8da8db;
+            color: #fff;
+            white-space: nowrap;
+            font-weight: normal;
+        }
+
+        table tbody tr:hover {
+            background-color: #f5f7ff;
+        }
+
+        a {
+            color: #d93f3f;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .info {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            table {
+                min-width: 100%;
+                width: 100%;
+            }
+
+            th,
+            td {
+                padding: 0 5px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>学生信息表</h1>
+    <form class="info" autocapitalize="off">
+        姓名: <input type="text" name="uname" class="uname" placeholder="请输入姓名">
+        年龄: <input type="number" name="age" class="age" min="18" max="100" placeholder="18-100">
+        性别:
+        <select name="gender" class="gender">
+            <option value="男">男</option>
+            <option value="女">女</option>
+        </select>
+        薪资: <input type="number" name="salary" class="salary" min="1000" placeholder="≥1000">
+        就业城市:
+        <!-- 关键修复:name属性从gender改为city -->
+        <select name="city" class="city">
+            <option value="" selected>请选择</option>
+            <option value="北京">北京</option>
+            <option value="上海">上海</option>
+            <option value="广州">广州</option>
+            <option value="深圳">深圳</option>
+        </select>
+        <button type="submit" class="submit">录入</button>
+    </form>
+    <h1>就业榜</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>序号</th>
+                <th>姓名</th>
+                <th>年龄</th>
+                <th>性别</th>
+                <th>薪资</th>
+                <th>就业城市</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="7" style="color:#999;">暂无学生信息</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        const infoForm = document.querySelector('.info')
+        const tbody = document.querySelector('tbody')
+        const studentList = []
+        // 表单提交事件
+        infoForm.addEventListener('submit', function (e) {
+            // 1. 阻止表单默认提交行为
+            e.preventDefault();
+
+            // 2. 获取表单数据
+            const uname = this.querySelector('.uname').value.trim()
+            const age = Number(this.querySelector('.age').value)
+            const gender = this.querySelector('.gender').value
+            const salary = Number(this.querySelector('.salary').value)
+            const city = this.querySelector('.city').value
+
+            // 3. 校验逻辑
+            if (!uname) {
+                alert('请输入姓名!');
+                this.querySelector('.uname').focus();
+                return;
+            }
+            if (isNaN(age) || age < 18 || age > 100) {
+                alert('请输入18-100之间的有效年龄!');
+                this.querySelector('.age').value = '';
+                this.querySelector('.age').focus();
+                return;
+            }
+            if (isNaN(salary) || salary < 1000) {
+                alert('请输入不低于1000的有效薪资!');
+                this.querySelector('.salary').value = '';
+                this.querySelector('.salary').focus();
+                return;
+            }
+            if (!city) {
+                alert('请选择就业城市!');
+                this.querySelector('.city').focus();
+                return;
+            }
+
+            // 4. 数据入库+重置表单+渲染
+            studentList.push({
+                uname: uname,
+                age: age,
+                gender: gender,
+                salary: salary,
+                city: city,
+            });
+            this.reset();
+            renderTable();
+        })
+
+        // 渲染表格
+        function renderTable() {
+            tbody.innerHTML = '';
+            if (studentList.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="color:#999;">暂无学生信息</td></tr>';
+                return;
+            }
+            studentList.map((item, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${item.uname}</td>
+                    <td>${item.age}</td>
+                    <td>${item.gender}</td>
+                    <td>${item.salary}</td>
+                    <td>${item.city}</td>
+                    <td><a href="javascript:;" data-index="${index}">删除</a></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // 删除功能
+        tbody.addEventListener('click', function (e) {
+            if (e.target.tagName === 'A') {
+                const index = e.target.dataset.index;
+                if (confirm(`确定删除【${studentList[index].uname}】的信息吗?`)) {
+                    studentList.splice(index, 1);
+                    renderTable();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

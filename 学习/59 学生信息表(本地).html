@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生就业统计表</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            margin: 80px 0 20px;
+            text-align: center;
+        }
+
+        form {
+            text-align: center;
+        }
+
+        input,
+        select {
+            width: 80px;
+            height: 25px;
+            margin: 8px;
+            padding-left: 5px;
+            outline: none;
+        }
+
+        button {
+            width: 55px;
+            height: 25px;
+            background: #58c8eb;
+            color: #fff;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .sum {
+            width: 800px;
+            height: 40px;
+            margin: 30px auto 10px;
+            padding-right: 8px;
+            line-height: 40px;
+            font-size: 18px;
+            background: #ccc;
+        }
+
+        .sum span {
+            margin: 0 5px;
+            color: #d8971f;
+        }
+
+        table {
+            width: 800px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            font-size: 18px;
+            table-layout: fixed;
+        }
+
+        th,
+        td {
+            height: 40px;
+            border: 1px solid #e9e9e9;
+            padding-left: 8px;
+        }
+
+        th {
+            text-align: left;
+            background: #ccc;
+        }
+
+        th:nth-child(1) {
+            width: 60px;
+        }
+
+        th:nth-child(7) {
+            width: 200px;
+        }
+
+        td a {
+            display: inline-block;
+            width: 55px;
+            height: 25px;
+            background: #d8971f;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            line-height: 25px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>学生就业统计表</h1>
+    <form>
+        <input type="text" class="uname" placeholder="姓名" required>
+        <input type="number" class="age" placeholder="年龄" required>
+        <input type="number" class="salary" placeholder="工资" required>
+        <select class="gender">
+            <option value="男">男</option>
+            <option value="女">女</option>
+        </select>
+        <select class="city">
+            <option value="北京">北京</option>
+            <option value="上海">上海</option>
+            <option value="广州">广州</option>
+            <option value="深圳">深圳</option>
+            <option value="武汉">武汉</option>
+        </select>
+        <button type="submit">+录入</button>
+    </form>
+    <div class="sum"><i style="float:right">共有数据<span id="total">0</span>条</i></div>
+    <table>
+        <thead>
+            <tr>
+                <th>序号</th>
+                <th>姓名</th>
+                <th>年龄</th>
+                <th>性别</th>
+                <th>工资</th>
+                <th>城市</th>
+                <th>录入时间</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+    </table>
+
+    <script>
+        // 1. 初始化数据
+        let list = JSON.parse(localStorage.getItem('studentData')) || [];
+        const tbody = document.querySelector('#tbody');
+        const total = document.querySelector('#total');
+
+        // 2. 页面加载先渲染
+        renderTable();
+
+        // 3. 录入功能
+        document.querySelector('form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            // 获取表单值
+            const uname = this.querySelector('.uname').value;
+            const age = this.querySelector('.age').value;
+            const salary = this.querySelector('.salary').value;
+            const gender = this.querySelector('.gender').value;
+            const city = this.querySelector('.city').value;
+
+            // 新增数据(id仅用于删除,序号用索引)
+            list.push({
+                id: Date.now(), // 用时间戳做唯一id,彻底避免重复
+                uname, age, salary, gender, city,
+                time: new Date().toLocaleString()
+            });
+
+            // 存储+渲染+清空
+            localStorage.setItem('studentData', JSON.stringify(list));
+            renderTable();
+            this.reset();
+        });
+
+        // 4. 渲染表格(核心:序号=索引+1)
+        function renderTable() {
+            tbody.innerHTML = '';
+            // 遍历数组,index是索引(0开始),+1就是连续序号
+            list.forEach((item, index) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${item.uname}</td>
+                        <td>${item.age}</td>
+                        <td>${item.gender}</td>
+                        <td>${item.salary}</td>
+                        <td>${item.city}</td>
+                        <td>${item.time}</td>
+                        <td><a href="javascript:;" data-id="${item.id}">删除</a></td>
+                    </tr>
+                `;
+            });
+            // 更新总数
+            total.textContent = list.length;
+        }
+
+        // 5. 删除功能(事件委托)
+        tbody.addEventListener('click', function (e) {
+            if (e.target.tagName === 'A') {
+                const delId = e.target.dataset.id;
+                // 第一步:先根据delId找到要删除的那条数据
+                const delItem = list.find(item => item.id == delId);
+                // 第二步:弹确认框(如果没找到数据,直接返回)
+                if (delItem && !confirm(`确定删除${delItem.uname}的信息吗?`)) return;
+                // 第三步:执行删除逻辑
+                list = list.filter(item => item.id != delId);
+                localStorage.setItem('studentData', JSON.stringify(list));
+                renderTable();
+            }
+        });
+    </script>
+</body>
+
+</html>

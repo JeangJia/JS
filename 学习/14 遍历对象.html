@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    let obj = {
+        name: '张三',
+        age: 18,
+        sex: '男'
+    }
+    // 遍历对象
+    for (let key in obj) {
+        // key 得到的事字符串类型 'name'/'age'/'sex'
+        // obj[key] 得到的是属性值 key==='name'/'age'/'sex'
+        console.log(key + ':' + obj[key]);
+    }
+</script>
+
+</html>

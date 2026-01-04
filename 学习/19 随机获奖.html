@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    h1,
+    h2,
+    h3 {
+        text-align: center;
+    }
+</style>
+
+<body>
+    <h1>一等奖:<span class="one">???</span></h1>
+    <h2>二等奖:<span class="two">???</span></h2>
+    <h3>三等奖:<span class="three">???</span></h3>
+</body>
+<script>
+    const arr = ['周杰伦', '陶喆', '王力宏', '林俊杰', '陈奕迅'];
+    // 随机获奖
+    function getRandom(N, M) {
+        return Math.floor(Math.random() * (M - N + 1)) + N;
+    }
+    // const index = document.querySelectorAll('span');
+    // console.log(index);
+    // index[0].innerText = arr[getRandom(0, arr.length - 1)];
+    // arr.splice(arr.indexOf(index[0].innerText), 1);
+    // index[1].innerText = arr[getRandom(0, arr.length - 1)];
+    // arr.splice(arr.indexOf(index[1].innerText), 1);
+    // index[2].innerText = arr[getRandom(0, arr.length - 1)];
+    // arr.splice(arr.indexOf(index[2].innerText), 1);
+    const r = getRandom(0, arr.length - 1);
+    document.querySelector('.one').innerHTML = arr[r];
+    arr.splice(r, 1);
+    console.log(arr);
+    const r2 = getRandom(0, arr.length - 1);
+    document.querySelector('.two').innerHTML = arr[r2];
+    arr.splice(r2, 1);
+    console.log(arr);
+    const r3 = getRandom(0, arr.length - 1);
+    document.querySelector('.three').innerHTML = arr[r3];
+    arr.splice(r3, 1);
+    console.log(arr);
+</script>
+
+</html>

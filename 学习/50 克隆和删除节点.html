@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+    </ul>
+    <script>
+        const ul = document.querySelector('ul');
+        //克隆节点
+        //cloneNode(false) 
+        //ture表示深拷贝,连子节点一起复制
+        //false表示浅拷贝,只复制当前节点 (默认)
+        //必须从父元素调用cloneNode方法
+        ul.appendChild(ul.children[0].cloneNode(true));
+
+        //删除节点
+        //removeChild()方法从DOM中删除子节点
+        //必须从父元素调用removeChild方法
+        //
+        ul.removeChild(ul.children[1]);
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <ul>
+        <li>列表项1</li>
+    </ul>
+    <script>
+        const ul = document.querySelector('ul');
+        //创建节点
+        const li = document.createElement('li');
+        const li1 = document.createElement('li');
+        //添加节点
+        ul.appendChild(li); //只能添加到最后面
+        li.innerHTML = '列表项2';
+        //insertBefore(插入的元素,放到哪个元素前面 ) 方法在指定的子节点前插入新的子节点
+        ul.insertBefore(li1, ul.children[0]);//添加到第一个位置
+        li1.innerHTML = '列表项0';
+
+
+    </script>
+
+</body>
+
+</html>

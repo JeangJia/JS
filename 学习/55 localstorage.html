@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>本地存储</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    // 本地存储 localStorage.setItem('键', '值')
+    // 本地存储只能存储字符串类型的数据
+    localStorage.setItem('uname', 'pink')
+    // 从本地存储中获取值 localStorage.getItem('键')
+    let name = localStorage.getItem('uname')
+    console.log(name)
+    // 从本地存储中删除值 localStorage.removeItem('键')
+    localStorage.removeItem('uname')
+    // 清空本地存储 localStorage.clear() 慎用
+    localStorage.clear()
+
+    // 会话存储sessionStorage.setItem('键', '值') 
+    // 会话存储和本地存储的使用方法相同
+    // 会话存储的数据在关闭浏览器后会被清除
+    // 会话存储只能存储字符串类型的数据
+    sessionStorage.setItem('uname', 'pink')
+    // 从会话存储中获取值 sessionStorage.getItem('键')
+    let name2 = sessionStorage.getItem('uname')
+    console.log(name2)
+</script>
+
+</html>

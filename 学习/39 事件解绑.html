@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button>点击我</button>
+</body>
+<script>
+    let btn = document.querySelector('button')
+    function clickFn() {
+        alert('点击了按钮');
+        // 点击按钮后解绑事件
+        // L2 事件源.removeEventListener('事件类型', 事件处理函数)
+        // 匿名函数不能解绑
+        btn.removeEventListener('click', clickFn)
+    }
+    btn.addEventListener('click', clickFn)
+
+</script>
+
+
+</html>

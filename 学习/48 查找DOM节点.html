@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <p></p>
+    </div>
+    <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+    </ul>
+
+    <script>
+        //查找父节点
+        const p = document.querySelector('p');
+        console.log(p.parentNode);//获得父节点
+        console.log(p.parentElement);//获得父元素节点
+        //查找子节点
+        console.log('-----------------')
+        const ul = document.querySelector('ul');
+        //chihldNodes 属性返回节点的所有子节点(包含文本节点)
+        //children 属性返回节点的所有子元素(不包含文本节点) 重点使用
+        //返回的是一个伪数组
+        console.log('-----------------')
+        console.log(ul.childNodes);//包含文本节点
+        console.log(ul.children);//重点使用
+        //查找兄节点
+        console.log('-----------------')
+        const li2 = document.querySelector('li:nth-child(2)');
+        console.log(li2.previousSibling);//文本节点
+        console.log(li2.previousElementSibling);//元素节点
+        //查找弟节点
+        console.log(li2.nextSibling);//文本节点
+        console.log(li2.nextElementSibling);//元素节点
+
+    </script>
+</body>
+
+</html>

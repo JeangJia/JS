@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript 对象解构 & 嵌套解构完全解析</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft Yahei', sans-serif;
+        }
+
+        body {
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 0 20px;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #3498db;
+            margin: 25px 0 15px;
+            padding-left: 10px;
+            border-left: 4px solid #3498db;
+        }
+
+        h3 {
+            color: #2980b9;
+            margin: 20px 0 10px;
+        }
+
+        .section {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            color: #e74c3c;
+        }
+
+        pre {
+            background: #f1f3f5;
+            padding: 10px 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 10px 0;
+            border-left: 4px solid #3498db;
+        }
+
+        pre code {
+            color: #333;
+            padding: 0;
+            background: none;
+        }
+
+        .note {
+            background: #fff8e1;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            border-left: 4px solid #ffc107;
+        }
+
+        .warning {
+            background: #ffebee;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            border-left: 4px solid #f44336;
+        }
+
+        .example-result {
+            background: #e8f5e9;
+            padding: 8px;
+            border-radius: 4px;
+            margin: 5px 0;
+            font-family: 'Consolas', monospace;
+        }
+
+        button {
+            padding: 6px 12px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px 0;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>JavaScript 对象解构 & 数组/对象嵌套解构</h1>
+
+    <div class="section">
+        <h2>一、对象解构核心概念</h2>
+        <p>对象解构是 ES6 语法糖,用于<strong>将对象的属性批量赋值给变量</strong>,核心是「按属性名匹配」(而非数组的「按位置匹配」)_ 变量名与对象属性名一致时,自动赋值;也可自定义变量名.</p>
+        <pre><code>// 基础语法
+let obj = { 属性1: 值1, 属性2: 值2 };
+let { 属性1, 属性2 } = obj; // 按属性名匹配
+let { 属性1: 自定义变量名, 属性2: 自定义变量名2 } = obj; // 自定义变量名</code></pre>
+        <button onclick="basicObjDemo()">运行基础对象解构案例</button>
+        <div class="example-result" id="basicObjResult"></div>
+    </div>
+
+    <div class="section">
+        <h2>二、对象解构核心用法(含细节)</h2>
+
+        <h3>1. 基础解构:按属性名匹配赋值</h3>
+        <p>变量名与对象属性名一致时,直接提取属性值;属性不存在则赋值为 <code>undefined</code>.</p>
+        <pre><code>let obj = { name: '张三', age: 18, sex: '男' };
+// 匹配同名属性
+let { name, age, sex } = obj; // name='张三', age=18, sex='男'
+
+// 属性不存在时
+let { name, height } = obj; // height=undefined</code></pre>
+
+        <h3>2. 自定义变量名(重命名)</h3>
+        <p>核心语法:<code>{ 原属性名: 新变量名 }</code>,解决「变量名冲突」或「属性名不直观」问题(你的代码核心场景).</p>
+        <pre><code>let obj = { name: '张三', age: 18 };
+// 重命名:name → n,age → a
+let { name: n, age: a } = obj; 
+console.log(n); // 张三(不能再用 name 变量,已重命名)
+console.log(a); // 18
+
+// 你的代码示例
+const { name: uname, age } = { name: 'pi', age: 6 };
+console.log(uname); // pi(name 被重命名为 uname,直接用 name 会报错)</code></pre>
+        <div class="note">
+            <strong>关键细节</strong>:重命名后,<code>原属性名</code> 不再作为变量存在,只能使用 <code>新变量名</code> 访问值.
+        </div>
+
+        <h3>3. 设置默认值</h3>
+        <p>当对象属性不存在 / 为 <code>undefined</code> 时,使用默认值(与数组解构逻辑一致,但按属性名匹配).</p>
+        <pre><code>let obj = { name: '张三', age: 18 };
+// 属性存在,使用属性值
+let { name: n2 = '李四', age: a2 = 20 } = obj; // n2='张三', a2=18
+
+// 属性不存在,使用默认值
+let { height: h = 180, weight: w = 70 } = obj; // h=180, w=70
+
+// 属性为 undefined,使用默认值
+let obj2 = { name: undefined, age: 18 };
+let { name: n3 = '王五' } = obj2; // n3='王五'</code></pre>
+        <div class="note">
+            <strong>细节</strong>:<code>null</code>/<code>0</code>/<code>''</code> 等「假值」不会触发默认值,只有 <code>undefined</code>
+            或属性不存在才触发.
+        </div>
+        <button onclick="defaultObjDemo()">运行默认值案例</button>
+        <div class="example-result" id="defaultObjResult"></div>
+
+        <h3>4. 解构已声明的变量</h3>
+        <p>解构赋值给已存在的变量时,必须用 <code>()</code> 包裹解构语句(否则 JS 会将 <code>{}</code> 解析为代码块).</p>
+        <pre><code>// 错误写法(语法错误)
+let name, age;
+{ name, age } = { name: '张三', age: 18 };
+
+// 正确写法(加括号)
+let name, age;
+({ name, age } = { name: '张三', age: 18 }); // name='张三', age=18</code></pre>
+        <div class="warning">
+            <strong>注意</strong>:括号 <code>()</code> 必须紧贴赋值语句,否则仍会报错.
+        </div>
+
+        <h3>5. 剩余参数(...)解构剩余属性</h3>
+        <p>用 <code>...变量名</code> 接收对象剩余的所有属性,打包为一个新对象(ES2018 新增).</p>
+        <pre><code>let obj = { name: '张三', age: 18, sex: '男', height: 175 };
+// 提取 name,剩余属性打包为 restObj
+let { name, ...restObj } = obj; 
+console.log(name); // 张三
+console.log(restObj); // { age: 18, sex: '男', height: 175 }</code></pre>
+        <div class="note">
+            <strong>细节</strong>:对象剩余参数 <code>...</code> 必须放在解构模式的最后一位,且只能有一个剩余参数.
+        </div>
+        <button onclick="restObjDemo()">运行剩余参数案例</button>
+        <div class="example-result" id="restObjResult"></div>
+
+        <h3>6. 解构嵌套对象(单层)</h3>
+        <p>对象属性值为对象时,解构模式需与嵌套结构一致(多层 <code>{}</code> 匹配多层对象).</p>
+        <pre><code>let obj = {
+    name: '张三',
+    info: { age: 18, sex: '男' }
+};
+// 匹配嵌套结构:提取 info 中的 age 和 sex
+let { info: { age, sex } } = obj; 
+console.log(age, sex); // 18 男
+
+// 同时提取外层和内层属性
+let { name, info: { age: a } } = obj;
+console.log(name, a); // 张三 18</code></pre>
+    </div>
+
+    <div class="section">
+        <h2>三、数组 & 对象嵌套解构(核心重点)</h2>
+        <p>实际开发中,数据常是「数组包对象」「对象包数组」「多层嵌套」,解构模式需<strong>严格匹配数据结构</strong>(数组用 <code>[]</code>,对象用 <code>{}</code>).</p>
+
+        <h3>场景1:对象中嵌套数组</h3>
+        <p>数据结构:对象属性值为数组 → 解构时用 <code>{ 属性名: [变量1, 变量2] }</code>.</p>
+        <pre><code>// 数据:用户信息(爱好是数组)
+let user = {
+    name: '李四',
+    age: 20,
+    hobbies: ['篮球', '游戏', '读书']
+};
+
+// 解构:提取 name + hobbies 中的前两个爱好
+let { name, hobbies: [h1, h2] } = user;
+console.log(name); // 李四
+console.log(h1, h2); // 篮球 游戏
+
+// 进阶:提取 name + hobbies 中第二个爱好 + 剩余爱好
+let { hobbies: [, h3, ...restHobbies] } = user;
+console.log(h3); // 游戏
+console.log(restHobbies); // ['读书']</code></pre>
+        <button onclick="objWrapArrDemo()">运行对象包数组案例</button>
+        <div class="example-result" id="objWrapArrResult"></div>
+
+        <h3>场景2:数组中嵌套对象</h3>
+        <p>数据结构:数组元素为对象 → 解构时用 <code>[{ 属性1, 属性2 }, ...]</code>.</p>
+        <pre><code>// 数据:商品列表(数组元素是商品对象)
+let goods = [
+    { id: 1, name: '手机', price: 2999 },
+    { id: 2, name: '电脑', price: 5999 },
+    { id: 3, name: '平板', price: 1999 }
+];
+
+// 解构:提取第一个商品的 name + 第二个商品的 price
+let [{ name: g1Name }, { price: g2Price }] = goods;
+console.log(g1Name); // 手机
+console.log(g2Price); // 5999
+
+// 进阶:提取第三个商品的 id + 重命名 price
+let [, , { id: g3Id, price: g3Price }] = goods;
+console.log(g3Id, g3Price); // 3 1999</code></pre>
+        <button onclick="arrWrapObjDemo()">运行数组包对象案例</button>
+        <div class="example-result" id="arrWrapObjResult"></div>
+
+        <h3>场景3:多层嵌套(数组+对象混合)</h3>
+        <p>数据结构:多层嵌套(如对象→数组→对象)→ 解构模式逐层匹配.</p>
+        <pre><code>// 复杂数据:订单信息
+let order = {
+    orderId: 'OD20251128',
+    user: {
+        name: '王五',
+        address: [
+            { province: '广东省', city: '深圳市' },
+            { province: '浙江省', city: '杭州市' }
+        ]
+    },
+    goods: [{ name: '耳机', price: 199 }]
+};
+
+// 解构:提取 orderId + 第一个地址的 city + 商品的 name
+let {
+    orderId,
+    user: {
+        address: [{ city: addr1City }] // 数组第一个元素的 city
+    },
+    goods: [{ name: goodsName }] // 数组第一个元素的 name
+} = order;
+
+console.log(orderId); // OD20251128
+console.log(addr1City); // 深圳市
+console.log(goodsName); // 耳机</code></pre>
+        <button onclick="multiNestedDemo()">运行多层嵌套案例</button>
+        <div class="example-result" id="multiNestedResult"></div>
+    </div>
+
+    <div class="section">
+        <h2>四、对象/嵌套解构常见坑与注意事项</h2>
+        <ul>
+            <li>
+                <strong>对象解构是「按名匹配」,与顺序无关</strong>:<br>
+                <code>let { age, name } = { name: '张三', age: 18 }</code> → 结果与 <code>{ name, age }</code> 一致.
+            </li>
+            <li>
+                <strong>解构 null/undefined 会报错</strong>:<br>
+                <code>let { name } = null;</code> / <code>let { age } = undefined;</code> → TypeError.
+            </li>
+            <li>
+                <strong>嵌套解构时,外层属性必须存在</strong>:<br>
+                错误:<code>let { info: { age } } = { name: '张三' }</code> → info 不存在,报错「Cannot destructure property 'age'
+                of 'undefined'」;<br>
+                解决:给外层属性加默认值 → <code>let { info: { age } = {} } = { name: '张三' }</code>(age=undefined,不报错).
+            </li>
+            <li>
+                <strong>剩余参数不能用于数组/对象解构的非最后位置</strong>:<br>
+                错误:<code>let { ...rest, name } = obj</code> → SyntaxError.
+            </li>
+            <li>
+                <strong>解构数字/字符串等原始值,会先转为对象</strong>:<br>
+                <code>let { length } = 'hello';</code> → length=5(字符串的 length 属性);<br>
+                <code>let { toString } = 123;</code> → toString=Number.prototype.toString.
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>五、实战场景:解构接口返回的复杂数据</h2>
+        <pre><code>// 模拟接口返回的复杂数据
+let res = {
+    code: 200,
+    data: {
+        list: [
+            { id: 1, title: '文章1', author: { name: '作者1', age: 30 } },
+            { id: 2, title: '文章2', author: { name: '作者2', age: 25 } }
+        ],
+        total: 2
+    },
+    msg: 'success'
+};
+
+// 解构提取:total + 第一篇文章的 title + 第二篇文章作者的 name
+let {
+    data: {
+        total,
+        list: [
+            { title: firstTitle }, // 第一篇文章的 title
+            { author: { name: secondAuthorName } } // 第二篇文章作者的 name
+        ]
+    }
+} = res;
+
+console.log(total); // 2
+console.log(firstTitle); // 文章1
+console.log(secondAuthorName); // 作者2</code></pre>
+        <button onclick="apiDataDemo()">运行接口数据解构案例</button>
+        <div class="example-result" id="apiDataResult"></div>
+    </div>
+
+    <div class="section">
+        <h2>六、核心总结</h2>
+        <table style="width:100%; border-collapse: collapse; margin: 10px 0;">
+            <tr style="background: #e9ecef;">
+                <th style="border: 1px solid #ddd; padding: 8px;">解构类型</th>
+                <th style="border: 1px solid #ddd; padding: 8px;">匹配规则</th>
+                <th style="border: 1px solid #ddd; padding: 8px;">核心语法</th>
+                <th style="border: 1px solid #ddd; padding: 8px;">关键细节</th>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 8px;">对象解构</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">按属性名匹配</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">{ a, b: c } = obj</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">重命名后原属性名不可用</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 8px;">数组解构</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">按位置匹配</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">[a, , b] = arr</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">空逗号跳过元素</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 8px;">嵌套解构</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">逐层匹配结构</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">{ a: [b, { c }] } = obj</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">外层属性需存在(或加默认值)</td>
+            </tr>
+        </table>
+        <p>核心原则:<br>
+            1. 解构模式的「括号类型」([]/{})必须与数据结构一致;<br>
+            2. 对象解构「按名」,数组解构「按位」;<br>
+            3. 嵌套解构时,逐层拆解,避免访问不存在的层级.</p>
+    </div>
+
+    <script>
+        // 1. 基础对象解构案例
+        function basicObjDemo() {
+            let obj = { name: '张三', age: 18, sex: '男' };
+            let { name, age, sex } = obj;
+            let { name: n, age: a } = obj;
+            const { name: uname, age: age2 } = { name: 'pi', age: 6 };
+
+            const result = `
+基础匹配:name=${name}, age=${age}, sex=${sex}
+重命名:n=${n}, a=${a}
+自定义示例:uname=${uname}, age=${age2}
+            `.trim();
+            document.getElementById('basicObjResult').textContent = result;
+            console.log(result);
+        }
+
+        // 2. 对象解构默认值案例
+        function defaultObjDemo() {
+            let obj = { name: '张三', age: 18 };
+            let { name: n2 = '李四', age: a2 = 20 } = obj;
+            let { height: h = 180, weight: w = 70 } = obj;
+            let obj2 = { name: undefined, age: 18 };
+            let { name: n3 = '王五' } = obj2;
+            let { name: n4 = '赵六' } = { name: null }; // null 不触发默认值
+
+            const result = `
+属性存在:n2=${n2}, a2=${a2}
+属性不存在:h=${h}, w=${w}
+属性为undefined:n3=${n3}
+属性为null:n4=${n4}
+            `.trim();
+            document.getElementById('defaultObjResult').textContent = result;
+            console.log(result);
+        }
+
+        // 3. 对象剩余参数案例
+        function restObjDemo() {
+            let obj = { name: '张三', age: 18, sex: '男', height: 175 };
+            let { name, ...restObj } = obj;
+
+            const result = `
+提取name:name=${name}
+剩余属性:${JSON.stringify(restObj)}
+            `.trim();
+            document.getElementById('restObjResult').textContent = result;
+            console.log(result);
+        }
+
+        // 4. 对象包数组案例
+        function objWrapArrDemo() {
+            let user = {
+                name: '李四',
+                age: 20,
+                hobbies: ['篮球', '游戏', '读书']
+            };
+            let { name, hobbies: [h1, h2] } = user;
+            let { hobbies: [, h3, ...restHobbies] } = user;
+
+            const result = `
+name=${name}, h1=${h1}, h2=${h2}
+h3=${h3}, 剩余爱好=${JSON.stringify(restHobbies)}
+            `.trim();
+            document.getElementById('objWrapArrResult').textContent = result;
+            console.log(result);
+        }
+
+        // 5. 数组包对象案例
+        function arrWrapObjDemo() {
+            let goods = [
+                { id: 1, name: '手机', price: 2999 },
+                { id: 2, name: '电脑', price: 5999 },
+                { id: 3, name: '平板', price: 1999 }
+            ];
+            let [{ name: g1Name }, { price: g2Price }] = goods;
+            let [, , { id: g3Id, price: g3Price }] = goods;
+
+            const result = `
+第一个商品名:g1Name=${g1Name}
+第二个商品价格:g2Price=${g2Price}
+第三个商品:g3Id=${g3Id}, g3Price=${g3Price}
+            `.trim();
+            document.getElementById('arrWrapObjResult').textContent = result;
+            console.log(result);
+        }
+
+        // 6. 多层嵌套案例
+        function multiNestedDemo() {
+            let order = {
+                orderId: 'OD20251128',
+                user: {
+                    name: '王五',
+                    address: [
+                        { province: '广东省', city: '深圳市' },
+                        { province: '浙江省', city: '杭州市' }
+                    ]
+                },
+                goods: [{ name: '耳机', price: 199 }]
+            };
+            let {
+                orderId,
+                user: {
+                    address: [{ city: addr1City }]
+                },
+                goods: [{ name: goodsName }]
+            } = order;
+
+            const result = `
+订单ID:orderId=${orderId}
+第一个地址城市:addr1City=${addr1City}
+商品名:goodsName=${goodsName}
+            `.trim();
+            document.getElementById('multiNestedResult').textContent = result;
+            console.log(result);
+        }
+
+        // 7. 接口数据解构案例
+        function apiDataDemo() {
+            let res = {
+                code: 200,
+                data: {
+                    list: [
+                        { id: 1, title: '文章1', author: { name: '作者1', age: 30 } },
+                        { id: 2, title: '文章2', author: { name: '作者2', age: 25 } }
+                    ],
+                    total: 2
+                },
+                msg: 'success'
+            };
+            let {
+                data: {
+                    total,
+                    list: [
+                        { title: firstTitle },
+                        { author: { name: secondAuthorName } }
+                    ]
+                }
+            } = res;
+
+            const result = `
+总数:total=${total}
+第一篇文章标题:firstTitle=${firstTitle}
+第二篇文章作者名:secondAuthorName=${secondAuthorName}
+            `.trim();
+            document.getElementById('apiDataResult').textContent = result;
+            console.log(result);
+        }
+    </script>
+</body>
+
+</html>

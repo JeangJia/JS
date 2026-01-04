@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    const obj = {
+        uname: 'pink',
+        age: 18,
+        gender: '男'
+    }
+    // 存储复杂数据类型
+    // 本地存储只能存储字符串类型的数据
+    // 所以我们需要将复杂数据类型转换为字符串类型
+    // 转换为字符串类型有两种方法
+    // 1. 使用JSON.stringify()方法将复杂数据类型转换为字符串类型
+    // 2. 使用toString()方法将复杂数据类型转换为字符串类型
+    // 存储时使用JSON.stringify()方法将复杂数据类型转换为字符串类型
+    localStorage.setItem('obj', JSON.stringify(obj))
+    // 获取时使用JSON.parse()方法将字符串类型转换为复杂数据类型
+    const obj2 = JSON.parse(localStorage.getItem('obj'))
+    console.log(obj2)
+
+</script>
+
+</html>

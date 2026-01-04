@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美化向下延伸效果</title>
+    <style>
+        .box {
+            position: relative;
+            margin: 0 auto;
+            margin-top: 100px;
+            width: 450px;
+            /* 去掉固定height,让高度随内容动态变化 */
+            /* background-color: pink; */
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 10px;
+            /* 增加内边距,避免内容贴边 */
+            border-radius: 12px;
+            /* 容器圆角,增强柔和感 */
+            transition: all 0.3s ease;
+            /* 整体过渡更顺滑 */
+        }
+
+        .box img {
+            height: 60px;
+            /* 略缩小头像,避免视觉拥挤 */
+            border-radius: 50%;
+            border: 2px solid #fff;
+            /* 头像加白边,增强立体感 */
+        }
+
+        .box textarea {
+            width: 280px;
+            height: 60px;
+            border-radius: 10px;
+            padding: 12px;
+            box-sizing: border-box;
+            outline: none;
+            resize: none;
+            border: 2px solid transparent;
+            /* 初始透明边框,避免聚焦时跳动 */
+            font-size: 15px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            /* 缓动函数让动画更自然 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            /* 轻微内阴影,增强质感 */
+        }
+
+        /* 聚焦时的核心向下延伸效果 */
+        .box textarea:focus {
+            height: 80px;
+            /* 向下延伸的高度 */
+            border-color: #2099df;
+            /* 边框变色,呼应主题 */
+            /* 聚焦时底部增加阴影,强化"向下延伸"的视觉引导 */
+            box-shadow: 0 4px 8px rgba(32, 153, 223, 0.15);
+        }
+
+        .box button {
+            width: 80px;
+            height: 60px;
+            background-color: #2099df;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            /* 按钮添加轻微阴影,聚焦时随延伸同步放大 */
+            box-shadow: 0 2px 4px rgba(32, 153, 223, 0.2);
+        }
+
+        .box button:hover {
+            background-color: #1a80c7;
+            transform: translateY(-1px);
+            /* hover时轻微上浮,增强交互感 */
+        }
+
+        /* 聚焦时按钮同步向下延伸(与输入框协调) */
+        .box textarea:focus~button {
+            height: 80px;
+        }
+
+        /* 字数统计区域:作为向下延伸的一部分,样式优化 */
+        .count {
+            position: absolute;
+            bottom: -25px;
+            /* 距离底部稍远,避免拥挤 */
+            right: 90px;
+            opacity: 0;
+            transform: translateY(-10px);
+            /* 初始向上偏移,形成"滑入"效果 */
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 14px;
+            color: #666;
+            padding: 2px 8px;
+            background-color: rgba(255, 255, 255, 0.9);
+            /* 半透明白底,增强可读性 */
+            border-radius: 12px;
+            /* 圆角更柔和 */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            /* 轻微阴影,悬浮感 */
+        }
+
+        /* 聚焦时字数统计随延伸滑入 */
+        .box textarea:focus~.count {
+            opacity: 1;
+            transform: translateY(0);
+            /* 从偏移位置滑到正常位置 */
+        }
+
+        .count.warning {
+            color: #ff9800;
+        }
+
+        .count.error {
+            color: #f44336;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <img src="https://tse3-mm.cn.bing.net/th/id/OIP-C.l9RuopakBTXXVUJOjqQU-gAAAA?w=198&h=225&c=7&r=0&o=7&cb=ucfimg2&dpr=1.1&pid=1.7&rm=3&ucfimg=1"
+            alt="用户头像">
+        <textarea placeholder="请输入评论内容" maxlength="200"></textarea>
+        <button>发布</button>
+        <div class="count">0/200</div>
+    </div>
+
+    <script>
+        const textarea = document.querySelector('textarea');
+        const count = document.querySelector('.count');
+        const maxLength = 200;
+
+        //聚焦
+        textarea.addEventListener('focus', function () {
+            if (!this.value.trim()) {
+                // 恢复按钮高度和字数统计
+                document.querySelector('button').style.height = '80px';
+                count.style.opacity = 1;
+                count.style.transform = 'translateY(-10px)';
+            }
+        });
+        // 实时更新字数
+        textarea.addEventListener('input', function () {
+            const length = this.value.length;
+            count.textContent = `${length}/${maxLength}`;
+
+            // 字数颜色提示
+            count.classList.toggle('warning', length > maxLength * 0.8 && length <= maxLength);
+            count.classList.toggle('error', length > maxLength);
+        });
+
+        // 失焦处理
+        textarea.addEventListener('blur', function () {
+            if (!this.value.trim()) {
+                // 恢复按钮高度和字数统计
+                document.querySelector('button').style.height = '60px';
+                count.style.opacity = 0;
+                count.style.transform = 'translateY(-10px)';
+            }
+        });
+    </script>
+</body>
+
+</html>

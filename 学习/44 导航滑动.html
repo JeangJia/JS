@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .nav_bg {
+        position: fixed;
+        /* position: absolute; */
+        top: -80px;
+        /* top: 80px; */
+        width: 100%;
+        height: 80px;
+        background-color: skyblue;
+        transition: all 0.3s;
+    }
+
+    .nav {
+        margin: 0 auto;
+        width: 1200px;
+        height: 80px;
+    }
+
+    ul {
+        display: flex;
+        height: 80px;
+        justify-content: center;
+        position: relative;
+        left: 0;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    a {
+        text-decoration: none;
+        color: white;
+        font-size: 18px;
+        display: block;
+        height: 80px;
+        line-height: 80px;
+        padding: 0 20px;
+    }
+
+    a:hover {
+        color: rgb(218, 87, 64);
+    }
+
+    .active {
+        color: rgb(218, 87, 64);
+    }
+
+    .line {
+        width: 35px;
+        height: 2px;
+        border-radius: 2px;
+        background-color: rgb(218, 87, 64);
+        margin-top: -18px;
+        box-sizing: border-box;
+        transition: all 0.3s;
+        position: absolute;
+        bottom: 18px;
+        left: 0;
+    }
+
+    .banner {
+        width: 1200px;
+        height: 3000px;
+        margin: 0 auto;
+        background-color: pink;
+        box-sizing: border-box;
+        padding-top: 500px;
+    }
+
+    .item {
+        width: 200px;
+        height: 200px;
+        background-color: purple;
+    }
+</style>
+
+<body>
+    <div class="nav_bg">
+        <div class="nav">
+            <ul>
+                <li><a href="#" class="active">首页</a></li>
+                <li><a href="#">关于</a></li>
+                <li><a href="#">产品</a></li>
+                <li><a href="#">联系</a></li>
+                <li><a href="#">服务</a></li>
+                <div class="line"></div>
+            </ul>
+        </div>
+    </div>
+    <div class="banner">
+        <div class="item"></div>
+    </div>
+    <script>
+        // 导航栏滚动效果
+        const navBg = document.querySelector('.nav_bg')
+        const html = document.documentElement
+        const item = document.querySelector('.item')
+        window.addEventListener('scroll', function () {
+            let scrollTop = html.scrollTop
+            let itemTop = item.offsetTop
+            if (scrollTop >= itemTop) {
+                navBg.style.marginTop = '80px'
+                // navBg.style.position = 'fixed'
+            } else {
+                navBg.style.marginTop = '0px'
+                // navBg.style.position = 'absolute'
+            }
+        })
+        // 导航栏点击切换效果
+        const as = document.querySelectorAll('li a')
+        const line = document.querySelector('.line')
+        line.style.left = as[0].offsetLeft + as[0].offsetWidth / 4 + 'px'
+        for (let i = 0; i < as.length; i++) {
+            as[i].addEventListener('mouseenter', function (e) {
+                //先移除所有 a 标签的 active 类名
+                document.querySelector('.active').classList.remove('active')
+                this.classList.add('active')
+                // 导航栏滑动效果
+                line.style.left = as[i].offsetLeft + as[i].offsetWidth / 4 + 'px'
+            })
+        }
+    </script>
+</body>
+
+</html>

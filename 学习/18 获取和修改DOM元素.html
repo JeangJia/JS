@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .box {
+        width: 200px;
+        height: 200px;
+        background-color: pink;
+    }
+</style>
+
+<body>
+    <div class="box">
+        我是一个div
+    </div>
+    <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+    </ul>
+
+</body>
+<script>
+    // document.querySelector('标签/--css选择器');
+    //选择匹配的第一个元素 返回一个元素对象
+    // 获取class为box的元素
+    const box = document.querySelector('.box');
+    console.log(box);
+    box.style.backgroundColor = 'red';
+    // 获取选中的所有元素
+    // 返回一个 类数组对象
+    const li = document.querySelectorAll('ul li');
+    console.log(li);
+    // 遍历类数组对象
+    for (let i = 0; i < li.length; i++) {
+        console.log(li[i]);
+    }
+    // 遍历类数组对象 给每个li添加文字颜色
+    for (let i = 0; i < li.length; i++) {
+        // li[i].style.backgroundColor = 'blue';
+        li[i].style.color = 'blue';
+    }
+    console.log('-------------------------');
+    //innerText / innerHTML 
+    //两者都可以获取元素内部的文本内容
+    //区别在于innerHTML可以解析标签
+    console.log(box.innerText);
+    console.log(box.innerHTML);
+    box.innerHTML = '<h1>我是一个h1</h1>';
+    //修改style属性
+    box.style.width = '300px';//要加单位 字符串要加引号
+    box.style.height = '300px';
+    //多组单词用小驼峰命名
+    box.style.backgroundColor = 'green';
+    box.style.borderTop = '10px solid red';
+</script>
+
+</html>

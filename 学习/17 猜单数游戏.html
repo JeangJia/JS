@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    let getRandom = parseInt(Math.random() * 9) + 1
+    console.log(getRandom)
+    let num = +prompt('请猜[1,10)之间的整数')
+    while (num <= 0 || num >= 10 || isNaN(num)) {
+        num = +prompt('请正确输入[1,10)之间的整数')
+    }
+    let sum = 1
+    while (getRandom !== num) {
+        if (getRandom < num) {
+            alert('猜大了!')
+            num = +prompt('请重新输入[1,10)之间的整数')
+            sum++
+        }
+        else if (getRandom > num) {
+            alert('猜小了!')
+            num = +prompt('请重新输入[1,10)之间的整数')
+            sum++
+        }
+    }
+    alert(`猜中了!!! 你猜了${sum}次`)
+
+</script>
+
+</html>

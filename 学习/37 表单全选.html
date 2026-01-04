@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    table {
+        margin: 0 auto;
+    }
+
+    table,
+    th,
+    td {
+        padding: 20px 80px 20px 80px;
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+    }
+
+    tr:first-child {
+        background-color: #1798ee;
+        color: #fff;
+        font-size: 20px;
+    }
+</style>
+
+<body>
+    <table>
+        <tr>
+            <th><input type="checkbox" id="checkAll">全选</th>
+            <th>商品</th>
+            <th>商家</th>
+            <th>价格</th>
+        </tr>
+        <tr>
+            <td><input type="checkbox" class="ck"></td>
+            <td>商品1</td>
+            <td>商家1</td>
+            <td>100</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" class="ck"></td>
+            <td>商品2</td>
+            <td>商家2</td>
+            <td>200</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" class="ck"></td>
+            <td>商品3</td>
+            <td>商家3</td>
+            <td>300</td>
+        </tr>
+    </table>
+</body>
+<script>
+    const chs = 3;
+    const checkAll = document.querySelector('#checkAll')
+    const cks = document.querySelectorAll('.ck')
+    checkAll.addEventListener('click', function () {
+        for (let i = 0; i < cks.length; i++) {
+            cks[i].checked = this.checked
+        }
+    })
+    for (let i = 0; i < cks.length; i++) {
+        cks[i].addEventListener('click', function () {
+            // let checkedNum = document.querySelectorAll('.ck:checked').length
+            // // console.log(checkedNum);
+            // if (checkedNum === cks.length) {
+            //     // checkAll.checked = true
+            //     checkAll.click()
+            // } else {
+            //     checkAll.checked = false
+            // }
+            checkAll.checked = document.querySelectorAll('.ck:checked').length === cks.length
+        })
+    }
+
+</script>
+
+</html>

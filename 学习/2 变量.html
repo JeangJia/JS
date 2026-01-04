@@ -11,10 +11,11 @@
     <script>
         //变量的定义
         //变量名只能包含字母、数字、下划线和美元符号不能以数字开头
-        var a = 10;
+        let a = 10;
         console.log(a);
-        let b = 20;
-        console.log(b);
+        let b = 20.655;
+        // toFixed()方法可以将数字转换为字符串并指定保留的小数位数
+        console.log(b.toFixed(2));//四舍五入
         document.write(a);
         document.write(b);
         let c = a;

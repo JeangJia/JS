@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button>返回上一页</button>
+    <button>返回下一页</button>
+</body>
+<script>
+    const back = document.querySelector('button:nth-child(1)')
+    const forward = back.nextElementSibling
+    // 返回上一页 history.back()
+    back.addEventListener('click', function () {
+        // history.back()
+        history.go(-1)
+    })
+    // 返回下一页 history.forward()
+    forward.addEventListener('click', function () {
+        // history.forward()
+        history.go(1)
+    })
+</script>
+
+</html>

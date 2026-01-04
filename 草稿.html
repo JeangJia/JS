@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    div {
+        width: 900px;
+        margin: 0 auto;
+        background-color: pink;
+        padding: 10px;
+        display: flex;
+        /* justify-self: center; */
+        flex-wrap: wrap;
+        /* gap: 20px; */
+    }
+
+    p {
+        background-color: black;
+        height: 80px;
+        width: 50px;
+        margin: 0 5px;
+        flex: 1;
+        color: white;
+    }
+
+    p:nth-child(1) {
+        flex: 4;
+    }
+
+    p:nth-child(2) {
+        flex: 3;
+    }
+</style>
+
+<body>
+    <div>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+    </div>
+
+</body>
+
+</html>

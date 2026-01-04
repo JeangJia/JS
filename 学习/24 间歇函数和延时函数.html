@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>间歇函数</title>
+</head>
+
+<body>
+	<script>
+		function fu() {
+			document.write('Hello')
+		}
+
+		// setInterval(函数, 间歇时间(ms))  定时器
+		setInterval(function () {
+			// document.write('Hello')
+			console.log('Hello')
+		}, (1000))
+
+		// setInterval(fu, 1000)  fu 不要加() 加() 会立即调用函数
+		//定时器的返回值是一个数字id号
+		let id = setInterval(fu, 1000)//也会立即调用函数
+		console.log(id)
+		//clearInterval(定时器id号) 可以清除定时器
+		clearInterval(id)
+
+		// setTimeout(函数, 延时时间(ms))  延时器 除了只调用一次函数外,其他和定时器相同
+		setTimeout(function () {
+			document.write('Hello')
+		}, (1000))
+	</script>
+</body>
+
+</html>

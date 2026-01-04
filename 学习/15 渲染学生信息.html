@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    h3 {
+        margin-top: 80px;
+        text-align: center;
+        font-size: 24px;
+    }
+
+    table,
+    th,
+    td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    table {
+        margin: 0 auto;
+        width: 30%;
+    }
+
+    td,
+    th {
+        padding: 8px 0;
+        text-align: center;
+    }
+
+    tr:first-child {
+        background-color: #999;
+    }
+
+    /* 鼠标悬停在非第一行时,改变背景颜色 */
+    tr:not(:first-child):hover {
+        background-color: #cecece;
+    }
+</style>
+
+<body>
+    <!-- <table>
+        <tr>
+            <td>1</td>
+            <td>张三</td>
+            <td>18</td>
+            <td>男</td>
+            <td>北京</td>
+        </tr>
+    </table> -->
+</body>
+<script>
+    document.write(`<table>`)
+    document.write(`
+        <h3>学生信息</h3>
+        <tr>
+            <th>序号</th>
+            <th>姓名</th>
+            <th>年龄</th>
+            <th>性别</th>
+            <th>家乡</th>
+        </tr>
+        `)
+    let num = +prompt('请输入学生人数')
+    for (let i = 0; i < num; i++) {
+        document.write(`
+        <tr>
+            <td>${i + 1}</td>
+            <td>${prompt(`请输入第${i + 1}个学生的姓名`)} </td>
+            <td>${+prompt(`请输入第${i + 1}个学生的年龄`)} </td>
+            <td>${prompt(`请输入第${i + 1}个学生的性别`)} </td>
+            <td>${prompt(`请输入第${i + 1}个学生的家乡`)} </td>
+        </tr>
+        `)
+    }
+    document.write(`</table>`)
+</script>
+
+</html>

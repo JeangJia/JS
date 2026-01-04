@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正则核心语法:边界符/量词/字符集 + replace方法</title>
+</head>
+
+<body>
+    <script>
+        // ===================== 一、边界符 ^$(精准定位) =====================
+        // 核心规则:
+        // ^  → 匹配字符串「开头」  $ → 匹配字符串「结尾」 
+        // ^$ → 同时使用 = 匹配「完整字符串」(精准匹配,长度也需一致)
+        console.log(/^哈/.test('哈'));    // true  仅匹配以"哈"开头
+        console.log(/哈$/.test('哈'));    // true  仅匹配以"哈"结尾
+        console.log(/^哈$/.test('哈哈')); // false 整串必须完全等于"哈"才匹配
+        console.log('--- 多字符场景 ---');
+        console.log(/^学/.test('学好前端'));      // true  以"学"开头
+        console.log(/端$/.test('学好前端'));      // true  以"端"结尾
+        console.log(/^学好前端$/.test('学好前端'));// true  整串完全匹配
+
+        // ===================== 二、量词(控制匹配数量) =====================
+        // 规则:量词紧跟匹配规则后;. 代表任意单个字符(除换行)
+        // 常用量词:*(0+)、+(1+)、?(0/1)、{n}(固定n)、{n,}(n+)、{n,m}(n-m)
+        const testStr = '学好前端';
+        console.log('--- 量词示例 ---');
+        console.log(/^学.*端$/.test(testStr));    // true *:中间0个及以上字符
+        console.log(/^学.+端$/.test(testStr));    // true +:中间至少1个字符
+        console.log(/^学.?端$/.test(testStr));    // false ?:中间仅能0/1个字符(实际2个)
+        console.log(/^学.{2}端$/.test(testStr));  // true {2}:中间固定2个字符
+        console.log(/^学.{2,}端$/.test(testStr)); // true {2,}:中间至少2个字符
+        console.log(/^学.{2,4}端$/.test(testStr));// true {2,4}:中间2-4个字符(逗号无空格)
+
+        // ===================== 三、字符集合 [](指定匹配范围) =====================
+        // 核心规则:
+        // 1. [] 匹配「其中任意1个字符」
+        // 2. []内^=非(排除);[]外^=开头
+        // 3. 范围写法:[a-z](小写字母)、[0-9](数字)、[a-zA-Z0-9](字母/数字)
+        console.log('--- 字符集合示例 ---');
+        // 基础集合
+        const charReg = /^[abc]$/; // 整串只能是a/b/c中的一个
+        console.log(charReg.test('a')); // true
+        console.log(charReg.test('d')); // false
+        // 范围匹配
+        console.log(/^[a-z]$/.test('a'));    // true [a-z]:任意小写字母(区分大小写)
+        console.log(/^[a-z]{2}$/.test('ab'));// true {2}:匹配2个连续小写字母
+
+        // 实战:QQ号校验(5-11位数字,不以0开头)
+        const qqReg = /^[1-9][0-9]{4,10}$/;
+        // 拆解:[1-9](首位1-9) + [0-9]{4,10}(后续4-10位数字) → 总计5-11位
+        console.log(qqReg.test('13800000000')); // true 符合规则
+        console.log(qqReg.test('01234'));       // false 首位为0,不符合
+
+        // ===================== 四、预定义字符集(简化写法) =====================
+        // 常用预定义集(简化正则书写,实战高频)
+        console.log('--- 预定义字符集示例 ---');
+        const numReg = /^\d{6}$/;        // \d = [0-9](任意数字)→ 匹配6位数字
+        console.log(numReg.test('123456')); // true
+        console.log(numReg.test('12345a')); // false
+
+        const wordReg = /^\w{5}$/;       // \w = [0-9a-zA-Z_](字母/数字/下划线)
+        console.log(wordReg.test('a1_89')); // true
+        console.log(wordReg.test('a1_8*')); // false(包含非\w字符)
+
+        const spaceReg = /^\s$/;         // \s = 空格(换行/制表符等空白符)
+        console.log(spaceReg.test(' '));  // true
+        console.log(spaceReg.test('a'));  // false
+
+        // 反向预定义集(加大写)
+        console.log(/^\D$/.test('a'));   // \D = 非数字 → true
+        console.log(/^\W$/.test('*'));   // \W = 非字母/数字/下划线 → true
+        console.log(/^\S$/.test('a'));   // \S = 非空格 → true
+
+        // 实战:日期格式校验(yyyy-mm-dd)
+        const dateReg = /^\d{4}-\d{1,2}-\d{1,2}$/;
+        console.log(dateReg.test('2023-08-15')); // true 格式合法
+        console.log(dateReg.test('2023-08-32')); // false 日期值不合法(32号不存在)
+
+        // ===================== 五、正则结合replace方法(字符串替换) =====================
+        // 核心规则:
+        // 修饰符: i(忽略大小写)、g(全局匹配) → 写在正则最后
+        // 1. 语法: 字符串.replace(正则/字符串, 替换后的内容)
+        // 2. 不加g修饰符 → 仅替换第一个匹配项; 加g → 全局替换所有匹配项
+        // 3. 可结合修饰符(i/g)实现灵活替换
+        console.log('--- replace替换示例 ---');
+
+        // 示例1: 基础替换(目标: 将"Java"替换为"JavaScript")
+        const originStr = 'Java是一门编程语言 学完Java工资高';
+        // ① 仅替换第一个Java (不加g)
+        const replaceOne = originStr.replace(/Java/, 'JavaScript');
+        console.log('仅替换第一个:', replaceOne);
+        // 输出: JavaScript是一门编程语言 学完Java工资高
+
+        // ② 全局替换所有Java (加g)
+        const replaceAll = originStr.replace(/Java/g, 'JavaScript');
+        console.log('全局替换:', replaceAll);
+        // 输出: JavaScript是一门编程语言 学完JavaScript工资高
+
+        // 示例2: 忽略大小写替换
+        const mixStr = 'Java是一门编程语言 java也很流行 JAVA应用广';
+        const ignoreCaseReplace = mixStr.replace(/java/gi, 'JavaScript');
+        console.log('忽略大小写+全局替换:', ignoreCaseReplace);
+        // 输出: JavaScript是一门编程语言 JavaScript也很流行 JavaScript应用广
+
+        // 示例3: 结合量词替换(批量清理空格)
+        const spaceStr = '  前端 开发 薪资 高  ';
+        const clearSpace = spaceStr.replace(/\s+/g, ''); // 匹配1+个空格并替换为空
+        console.log('清理所有空格:', clearSpace); // 输出: 前端开发薪资高
+
+        // 示例4: 保留指定格式的替换(手机号脱敏: 13812345678 → 138****5678)
+        const phoneStr = '13812345678';
+        const hidePhone = phoneStr.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
+        console.log('手机号脱敏:', hidePhone); // 输出: 138****5678
+    </script>
+</body>
+
+</html>

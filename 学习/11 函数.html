@@ -1,105 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>JavaScript 函数核心笔记</title>
 </head>
 
 <body>
     <script>
-        // 函数的定义 function 函数名() { 函数体 }
-        //函数命名尽量以动词开头 can/has/is/get/set/load
-        // 无参数的函数
+        // ===================== 1. 具名函数(核心) =====================
+        // 特点:可先调用后定义,命名建议动词开头(get/set/has等)
+        // 1.1 无参数具名函数
         function say() {
             console.log('hello world');
         }
-        function get_100Sum() {
-            let sum = 0
-            for (let i = 1; i <= 100; i++) {
-                sum += i
-            }
-            console.log(sum)
-        }
-        function getSum1() {
-            let sum = 0
-            let num = +prompt('获得1到num的和->num=')
-            for (let i = 1; i <= num; i++) {
-                sum += i
-            }
-            console.log(sum)
-        }
-        //带参数的函数
-        //可以给形参设置默认值
-        function getSum2(start = 0, end = 0) {
-            //逻辑中断来表示默认值
-            // start = start || 0
-            // end = end || 0
+        say(); // 调用
 
-            // 验证参数是否正确
-            if (start > end) {
-                [start, end] = [end, start]
-            }
-            let sum = 0
-            for (let i = start; i <= end; i++) {
-                sum += i
-            }
-            console.log(sum)
+        // 1.2 带参数+默认值+参数校验
+        function getSum(start = 0, end = 0) {
+            // 交换参数确保 start <= end
+            if (start > end) [start, end] = [end, start];
+            // 计算累加和
+            let sum = 0;
+            for (let i = start; i <= end; i++) sum += i;
+            return sum; // 返回结果(替代直接打印,更通用)
         }
-        //可以直接传递数组
+        console.log('1到100的和:', getSum(1, 100)); // 1+...+100=5050
+        console.log('默认参数求和:', getSum()); // 使用默认值0
+
+        // 1.3 接收数组参数 + 多值返回
         function getArrSum(arr = []) {
-            let sum = 0
-            for (let i = 0; i <= arr.length - 1; i++) {
-                sum += arr[i]
-                arr[i] += 1
+            let sum = 0;
+            // 遍历数组求和,同时修改原数组元素
+            for (let i = 0; i < arr.length; i++) {
+                sum += arr[i];
+                arr[i] += 1;
             }
-            console.log(sum)
-            // 以数组形式可以返回多个值 也可以是数组
-            return [sum, arr]
+            return [sum, arr]; // 数组形式返回多个值
         }
+        const arr = [1, 2, 3, 4, 5];
+        const [sumResult, newArr] = getArrSum(arr); // 解构接收返回值
+        console.log('数组求和结果:', sumResult); // 15
+        console.log('修改后的数组:', newArr); // [2,3,4,5,6]
 
-        // 具名函数的调用 可以在函数定义之前调用
-        say()
-        get_100Sum()
-        getSum1()
-        getSum2()
-        getSum2(1, 100)
-        let arr = [1, 2, 3, 4, 5]
-        //用数组接受返回的数组
-        let newArr = getArrSum(arr)
-        document.write(newArr[0])
-        document.write(`<br>`)
-        document.write(newArr[1])
+        // ===================== 2. 匿名函数(函数表达式) =====================
+        // 特点:必须先定义后调用,赋值给变量使用
+        const hi = function () {
+            console.log('hello 匿名函数');
+        };
+        hi(); // 调用
 
-        // 匿名函数的调用 必须先定义后调用
-        // 函数表达式
-        let Hi = function () {
-            console.log('hello world');
-        }
-        let getSum3 = function (start = 0, end = 0) {
-            let sum = 0
-            for (let i = start; i <= end; i++) {
-                sum += i
-            }
-            console.log(sum)
-        }
-        // 调用匿名函数
-        Hi()
-        getSum3(1, 100);
+        // 带参数的匿名函数
+        const getSum2 = function (start = 0, end = 0) {
+            let sum = 0;
+            for (let i = start; i <= end; i++) sum += i;
+            return sum;
+        };
+        console.log('匿名函数求和:', getSum2(1, 10)); // 55
 
-        //立即执行函数 前后都要有分号和小括号
-        //写完立即执行函数后 可以直接调用函数
-        //第一种写法
-        (function () { })();
-        (function (start = 0, end = 0) {
-            getSum3(start, end)
-        })(1, 100);
-        //第二种写法
-        (function () { }());
+        // ===================== 3. 立即执行函数(IIFE) =====================
+        // 特点:定义后立即执行,独立作用域,避免变量污染
+        // 写法1(推荐):(函数体)(参数)
+        (function (start, end) {
+            console.log('立即执行函数求和:', getSum2(start, end));
+        })(1, 5); // 1+...+5=15
 
+        // 写法2:(函数体(参数))
+        (function () {
+            console.log('立即执行函数无参版');
+        }());
+
+        // 写法3:一元运算符开头(简化写法)
+        !function () {
+            console.log('立即执行函数简化版');
+        }();
+
+        // ===================== 4. ES6 箭头函数(核心简化写法) =====================
+        // 核心特点:无自身this、不能作为构造函数、语法极简
+        // 4.1 无参数
+        const say2 = () => console.log('箭头函数:hello');
+        say2();
+
+        // 4.2 多参数
+        const add = (a, b) => a + b; // 单行省略{}和return
+        console.log('箭头函数加法:', add(2, 3)); // 5
+
+        // 4.3 单参数(省略括号)
+        const print = a => console.log('单参数箭头函数:', a);
+        print('hello');
+
+        // 4.4 返回对象(需加()包裹,避免解析错误)
+        const createUser = uname => ({ name: uname, age: 18 });
+        console.log('箭头函数返回对象:', createUser('张三')); // {name: '张三', age: 18}
     </script>
-
 </body>
 
 </html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div></div>
+    <script>
+        const div = document.querySelector('div')
+        // 时间戳
+        // 时间戳是指1970年1月1日00:00:00到当前时间的毫秒数
+        // 时间戳的作用是方便计算时间差
+        // 获取时间戳
+        const date = new Date()
+        //1 getTime() 获取时间戳
+        console.log(date.getTime());
+        //2 +new Date() 获取时间戳
+        console.log(+new Date());
+        //3 Date.now() 获取时间戳 
+        console.log(Date.now());//不需要实例化对象 但是只能获取当前时间的时间戳 
+
+        console.log('------------------');
+        // 根据时间字符串获取对应的时间戳
+        console.log(+new Date('2025-11-17 21:18:00'));
+
+
+
+    </script>
+
+
+</body>
+
+</html>

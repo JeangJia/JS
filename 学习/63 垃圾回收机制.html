@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS 垃圾回收机制详解</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            padding: 20px;
+            line-height: 1.8;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #444;
+            margin: 25px 0 15px;
+            font-size: 1.4rem;
+        }
+
+        h3 {
+            color: #555;
+            margin: 20px 0 10px;
+            font-size: 1.2rem;
+        }
+
+        p {
+            color: #666;
+            margin: 10px 0;
+        }
+
+        pre {
+            background: #f8f8f8;
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 4px solid #007acc;
+            overflow-x: auto;
+            margin: 10px 0;
+            font-size: 0.95rem;
+        }
+
+        code {
+            color: #d63384;
+            font-family: Consolas, monospace;
+        }
+
+        .note {
+            background: #fff3cd;
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+            border-left: 4px solid #ffc107;
+        }
+
+        .example-btn {
+            padding: 8px 16px;
+            background: #007acc;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+
+        .example-btn:hover {
+            background: #005fa3;
+        }
+
+        #log {
+            margin-top: 15px;
+            padding: 10px;
+            background: #f8f8f8;
+            border-radius: 4px;
+            min-height: 50px;
+            font-family: Consolas, monospace;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>JS 垃圾回收机制(Garbage Collection)</h1>
+
+        <h2>一、核心概念:什么是"垃圾"?</h2>
+        <p>JS 中"垃圾"指 <strong>程序后续无法访问到的内存数据</strong>(如未被任何变量引用的对象、超出作用域的局部变量).</p>
+        <p>垃圾回收机制的核心:<strong>自动识别并回收"垃圾",释放内存,避免内存泄漏</strong>.</p>
+
+        <h2>二、核心算法:引用计数(已淘汰)</h2>
+        <h3>1. 原理</h3>
+        <p>给每个对象记录"被引用的次数",次数为 0 时自动回收.</p>
+        <h3>2. 示例代码</h3>
+        <pre><code>// 引用计数示例
+let obj = { name: "张三" }; // 引用计数 = 1
+let obj2 = obj;            // 引用计数 = 2
+obj = null;                // 引用计数 = 1
+obj2 = null;               // 引用计数 = 0 → 引擎回收该对象
+</code></pre>
+        <h3>3. 致命缺陷:循环引用</h3>
+        <p>两个对象互相引用,引用计数永远不为 0,导致内存泄漏.</p>
+        <button class="example-btn" onclick="testReferenceCount()">运行循环引用示例</button>
+        <pre><code>// 循环引用导致内存泄漏(引用计数算法)
+function testReferenceCountFn() {
+    let a = {};
+    let b = {};
+    a.b = b; // a 引用 b
+    b.a = a; // b 引用 a → 循环引用
+}
+testReferenceCountFn(); // 函数执行后,a/b 无法被回收(引用计数算法下)
+</code></pre>
+
+        <h2>三、核心算法:标记-清除(主流引擎采用)</h2>
+        <div class="note">
+            主流引擎(Chrome V8、Firefox SpiderMonkey)均采用此算法,解决了循环引用问题.
+        </div>
+        <h3>1. 原理</h3>
+        <p>① 标记阶段:从"根对象"(window/global、执行栈变量)出发,标记所有可访问的"活跃对象";</p>
+        <p>② 清除阶段:回收未被标记的对象(垃圾),释放内存.</p>
+        <h3>2. 解决循环引用示例</h3>
+        <button class="example-btn" onclick="testMarkSweep()">运行标记-清除示例</button>
+        <pre><code>// 标记-清除算法可回收循环引用对象
+function testMarkSweepFn() {
+    let a = {};
+    let b = {};
+    a.b = b;
+    b.a = a;
+}
+testMarkSweepFn(); // 函数执行后,a/b 无法被根对象访问 → 标记阶段未被标记 → 清除阶段回收
+</code></pre>
+
+        <h2>四、常见内存泄漏场景(垃圾回收失效)</h2>
+        <h3>1. 意外的全局变量</h3>
+        <pre><code>function fn() {
+    uname = "张三"; // 未声明 → 挂载到window → 全局变量不会被回收
+}
+fn();
+</code></pre>
+        <h3>2. 被遗忘的定时器/事件监听</h3>
+        <button class="example-btn" onclick="testTimerLeak()">创建定时器内存泄漏</button>
+        <button class="example-btn" onclick="clearTimer()">清除定时器(修复泄漏)</button>
+        <pre><code>// 定时器引用DOM → DOM无法被回收
+let timerId;
+let fakeBtn = { textContent: "测试按钮" }; // 模拟DOM对象
+
+function testTimerLeak() {
+    timerId = setInterval(() => {
+        log.innerHTML += "定时器运行中...<br>";
+        console.log(fakeBtn.textContent);
+    }, 1000);
+}
+
+function clearTimer() {
+    clearInterval(timerId);
+    log.innerHTML += "定时器已清除 → fakeBtn可被回收<br>";
+}
+</code></pre>
+
+        <h3>3. 闭包导致的内存泄漏</h3>
+        <pre><code>function outer() {
+    let bigData = new Array(1000000).fill(0); // 大内存数据
+    return function inner() {
+        console.log(bigData.length); // 闭包引用 → bigData无法被回收
+    };
+}
+const fn = outer(); // 只要fn存在,bigData就不会被回收
+// 修复:fn = null; // 解除引用 → bigData可被回收
+</code></pre>
+
+        <h2>五、算法对比总结</h2>
+        <pre><code>| 算法类型   | 原理                 | 优点         | 缺点             | 主流引擎是否采用 |
+|------------|----------------------|--------------|------------------|------------------|
+| 引用计数   | 记录对象引用次数     | 实现简单     | 无法解决循环引用 | ❌ 已淘汰        |
+| 标记-清除   | 标记活跃对象,清除未标记 | 解决循环引用 | 产生内存碎片     | ✅ 主流采用      |</code></pre>
+
+        <div class="note">
+            核心总结:JS 垃圾回收是自动的,但开发者需避免内存泄漏(及时清除定时器、避免意外全局变量、合理管理闭包).
+        </div>
+
+        <!-- 日志输出区域 -->
+        <h3>运行日志:</h3>
+        <div id="log"></div>
+    </div>
+
+    <script>
+        // 获取日志输出元素
+        const log = document.getElementById('log');
+
+        // 1. 测试引用计数(循环引用)
+        function testReferenceCount() {
+            log.innerHTML = "运行循环引用示例:<br>";
+            log.innerHTML += "引用计数算法下,循环引用的a/b无法被回收 → 内存泄漏<br>";
+            log.innerHTML += "标记-清除算法下,a/b会被正常回收<br>";
+        }
+
+        // 2. 测试标记-清除
+        function testMarkSweep() {
+            log.innerHTML = "运行标记-清除示例:<br>";
+            log.innerHTML += "循环引用的a/b无法被根对象访问 → 标记阶段未被标记 → 清除阶段回收<br>";
+        }
+
+        // 3. 定时器内存泄漏相关
+        let timerId;
+        const fakeBtn = { textContent: "测试按钮" };
+
+        function testTimerLeak() {
+            log.innerHTML = "创建定时器,引用fakeBtn → fakeBtn无法被回收<br>";
+            timerId = setInterval(() => {
+                log.innerHTML += "定时器运行中...<br>";
+                console.log(fakeBtn.textContent);
+            }, 1000);
+        }
+
+        function clearTimer() {
+            clearInterval(timerId);
+            log.innerHTML += "定时器已清除 → fakeBtn可被垃圾回收<br>";
+        }
+    </script>
+</body>
+
+</html>

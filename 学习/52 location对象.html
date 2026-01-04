@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<div>
+    <a href="https://qq.com"><span>5</span>秒后跳转</a>
+    <button>刷新</button>
+</div>
+
+<body>
+    <script>
+        console.log(location.href);
+        //window.location 对象 用于获取或设置当前页面的 URL
+        // 可以通过 location.href 来获取当前页面的 URL
+        // 也可以通过 location.href 来设置当前页面的 URL
+        console.log(location);
+        const a = document.querySelector("a");
+        const span = document.querySelector("span");
+        let countdown = 5
+        span.innerHTML = countdown;
+        setInterval(function () {
+            countdown--;
+            if (countdown <= 0) {
+                location.href = "https://www.baidu.com";
+            }
+            span.innerHTML = countdown;
+        }, 1000)
+
+        console.log(location.search);
+        //location.search 用于获取 URL 中的查询字符串部分 ?后面的内容
+        // 例如: location.href = "https://www.baidu.com?name=张三&age=18";
+        // 则 location.search 为 "?name=张三&age=18"
+        console.log(location.hash);
+        //location.hash 用于获取 URL 中的哈希片段部分 #后面的内容
+        // 例如: location.href = "https://www.baidu.com#section1";
+        // 则 location.hash 为 "#section1"
+        const btn = document.querySelector("button");
+        btn.addEventListener("click", function () {
+            location.reload();
+        })
+        //location.reload()方法 用于重新加载当前页面 
+        //true 表示从服务器重新加载页面,忽略缓存
+        //false 表示从缓存中加载页面,不忽略缓存
+        // 例如: location.reload(true);
+        // 就会从服务器重新加载当前页面,忽略缓存
+        // 例如: location.reload(false);
+        // 就会从缓存中加载当前页面,不忽略缓存
+        // 例如: location.reload();
+        // 就会重新加载当前页面
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    div {
+        box-sizing: border-box;
+    }
+
+    .box {
+        width: 300px;
+        height: 200px;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .item img {
+        width: 300px;
+        height: 150px;
+        background-color: pink;
+        background: no-repeat center center;
+        background-size: cover;
+    }
+
+    .title {
+        width: 300px;
+        padding-left: 15px;
+        color: #fff;
+    }
+
+    ul {
+        display: flex;
+        height: 30px;
+        list-style: none;
+        padding: 0 15px;
+        margin: 0;
+    }
+
+    li {
+        margin-right: 15px;
+        margin-top: 5px;
+        color: white;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: white;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+
+    .active {
+        transform: scale(1.5);
+        background: pink;
+    }
+</style>
+
+<body>
+    <div class="box">
+        <div class="item">
+            <img src="./images/1.jpg" alt="">
+        </div>
+        <div>
+            <div class="title">???</div>
+            <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+    </div>
+</body>
+<script>
+    const sliderData = [
+        { img: './images/1.jpg', title: '这是第1张图片', color: 'white' },
+        { img: './images/2.jpg', title: '这是第2张图片', color: 'white' },
+        { img: './images/3.jpg', title: '这是第3张图片', color: 'white' },
+        { img: './images/4.jpg', title: '这是第4张图片', color: 'white' },
+        { img: './images/5.jpg', title: '这是第5张图片', color: 'white' },
+        { img: './images/6.jpg', title: '这是第6张图片', color: 'white' },
+    ]
+
+    function randomNum(min, max) {
+        return parseInt(Math.random() * (max - min + 1) + min);
+    }
+    //图片
+    const randomIndex = randomNum(0, sliderData.length - 1)
+    const img = document.querySelector('.item img')
+    img.src = sliderData[randomIndex].img
+    //标题
+    const title = document.querySelector('.title')
+    title.innerHTML = sliderData[randomIndex].title
+    //li
+    const liList = document.querySelector(`ul li:nth-child(${randomIndex + 1})`)
+    liList.classList.add('active')
+
+</script>
+
+</html>

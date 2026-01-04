@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript 常用数组方法完全解析</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft Yahei', sans-serif;
+        }
+
+        body {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #3498db;
+            margin: 25px 0 15px;
+            padding-left: 10px;
+            border-left: 4px solid #3498db;
+        }
+
+        h3 {
+            color: #2980b9;
+            margin: 20px 0 10px;
+        }
+
+        .section {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            color: #e74c3c;
+        }
+
+        pre {
+            background: #f1f3f5;
+            padding: 10px 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 10px 0;
+            border-left: 4px solid #3498db;
+        }
+
+        pre code {
+            color: #333;
+            padding: 0;
+            background: none;
+        }
+
+        .note {
+            background: #fff8e1;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            border-left: 4px solid #ffc107;
+        }
+
+        .warning {
+            background: #ffebee;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            border-left: 4px solid #f44336;
+        }
+
+        .example-result {
+            background: #e8f5e9;
+            padding: 8px;
+            border-radius: 4px;
+            margin: 5px 0;
+            font-family: 'Consolas', monospace;
+            white-space: pre-wrap;
+        }
+
+        button {
+            padding: 6px 12px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px 0;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        table th,
+        table td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        table th {
+            background: #e9ecef;
+        }
+
+        .method-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .method-group button {
+            flex: 1;
+            min-width: 120px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>JavaScript 常用数组方法完全解析</h1>
+
+    <div class="section">
+        <h2>一、常用数组方法总览(按用途分类)</h2>
+        <table>
+            <tr>
+                <th>用途分类</th>
+                <th>方法名</th>
+                <th>返回值</th>
+                <th>是否修改原数组</th>
+                <th>核心作用</th>
+            </tr>
+            <tr>
+                <td rowspan="2">遍历/转换</td>
+                <td>forEach</td>
+                <td>undefined</td>
+                <td>否(可手动改元素)</td>
+                <td>遍历数组执行操作</td>
+            </tr>
+            <tr>
+                <td>map</td>
+                <td>新数组</td>
+                <td>否</td>
+                <td>遍历转换生成新数组</td>
+            </tr>
+            <tr>
+                <td>拼接/转换</td>
+                <td>join</td>
+                <td>字符串</td>
+                <td>否</td>
+                <td>数组元素拼接为字符串</td>
+            </tr>
+            <tr>
+                <td rowspan="2">筛选/查找</td>
+                <td>filter</td>
+                <td>新数组(符合条件元素)</td>
+                <td>否</td>
+                <td>筛选符合条件的元素</td>
+            </tr>
+            <tr>
+                <td>find/findIndex</td>
+                <td>第一个匹配元素/索引</td>
+                <td>否</td>
+                <td>查找第一个符合条件的元素/索引</td>
+            </tr>
+            <tr>
+                <td rowspan="2">判断验证</td>
+                <td>every</td>
+                <td>布尔值</td>
+                <td>否</td>
+                <td>所有元素是否满足条件</td>
+            </tr>
+            <tr>
+                <td>some</td>
+                <td>布尔值</td>
+                <td>否</td>
+                <td>是否有元素满足条件</td>
+            </tr>
+            <tr>
+                <td rowspan="3">增删改(原数组)</td>
+                <td>push/pop</td>
+                <td>新长度/删除的元素</td>
+                <td>是</td>
+                <td>尾部增/删元素</td>
+            </tr>
+            <tr>
+                <td>unshift/shift</td>
+                <td>新长度/删除的元素</td>
+                <td>是</td>
+                <td>头部增/删元素</td>
+            </tr>
+            <tr>
+                <td>splice</td>
+                <td>删除的元素数组</td>
+                <td>是</td>
+                <td>任意位置增/删/改元素</td>
+            </tr>
+            <tr>
+                <td rowspan="2">拼接/截取</td>
+                <td>concat</td>
+                <td>新数组</td>
+                <td>否</td>
+                <td>拼接多个数组</td>
+            </tr>
+            <tr>
+                <td>slice</td>
+                <td>新数组(截取部分)</td>
+                <td>否</td>
+                <td>截取数组部分元素</td>
+            </tr>
+            <tr>
+                <td>排序/反转</td>
+                <td>sort/reverse</td>
+                <td>原数组(已排序/反转)</td>
+                <td>是</td>
+                <td>数组排序/反转顺序</td>
+            </tr>
+            <tr>
+                <td>聚合计算</td>
+                <td>reduce/reduceRight</td>
+                <td>聚合结果(任意类型)</td>
+                <td>否</td>
+                <td>遍历数组聚合为单个值</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 基础遍历/转换方法(已学) -->
+    <div class="section">
+        <h2>二、基础遍历/转换方法(forEach/map/join)</h2>
+        <div class="method-group">
+            <button onclick="baseDemo('forEach')">运行forEach</button>
+            <button onclick="baseDemo('map')">运行map</button>
+            <button onclick="baseDemo('join')">运行join</button>
+        </div>
+        <div class="example-result" id="baseResult"></div>
+    </div>
+
+    <!-- 筛选/查找方法 -->
+    <div class="section">
+        <h2>三、筛选/查找方法(filter/find/findIndex/indexOf/includes)</h2>
+        <h3>1. filter:筛选符合条件的元素,返回新数组</h3>
+        <pre><code>const arr = [1,2,3,4,5,6];
+// 筛选偶数
+const evenArr = arr.filter(item => item % 2 === 0); 
+console.log(evenArr); // [2,4,6]</code></pre>
+
+        <h3>2. find:查找第一个符合条件的元素,无则返回undefined</h3>
+        <pre><code>const users = [{id:1,name:'张三'},{id:2,name:'李四'}];
+// 查找id=2的用户
+const user = users.find(item => item.id === 2); 
+console.log(user); // {id:2,name:'李四'}</code></pre>
+
+        <h3>3. findIndex:查找第一个符合条件的元素索引,无则返回-1</h3>
+        <pre><code>const arr = [10,20,30];
+const index = arr.findIndex(item => item === 20); 
+console.log(index); // 1</code></pre>
+
+        <h3>4. indexOf/lastIndexOf:查找元素索引(值匹配)</h3>
+        <pre><code>const arr = [1,2,3,2,1];
+console.log(arr.indexOf(2)); // 1(首次出现位置)
+console.log(arr.lastIndexOf(2)); // 3(最后出现位置)</code></pre>
+
+        <h3>5. includes:判断数组是否包含指定元素,返回布尔值</h3>
+        <pre><code>const arr = [1,2,3];
+console.log(arr.includes(2)); // true
+console.log(arr.includes(4)); // false</code></pre>
+
+        <div class="note">
+            <strong>细节</strong>:find/findIndex 支持「条件匹配」(函数),indexOf/includes 仅支持「值匹配」;includes 可判断 NaN(indexOf 不行).
+        </div>
+        <button onclick="filterFindDemo()">运行筛选/查找案例</button>
+        <div class="example-result" id="filterFindResult"></div>
+    </div>
+
+    <!-- 判断验证方法 -->
+    <div class="section">
+        <h2>四、判断验证方法(every/some)</h2>
+        <h3>1. every:所有元素满足条件返回true,否则false(全满足)</h3>
+        <pre><code>const arr = [2,4,6,8];
+// 是否全为偶数
+const isAllEven = arr.every(item => item % 2 === 0); 
+console.log(isAllEven); // true</code></pre>
+
+        <h3>2. some:至少一个元素满足条件返回true,否则false(有满足)</h3>
+        <pre><code>const arr = [1,3,5,6];
+// 是否有偶数
+const hasEven = arr.some(item => item % 2 === 0); 
+console.log(hasEven); // true</code></pre>
+
+        <div class="note">
+            <strong>细节</strong>:every/some 都是「短路操作」_ every 遇到第一个不满足的元素立即返回;some 遇到第一个满足的元素立即返回.
+        </div>
+        <button onclick="everySomeDemo()">运行判断验证案例</button>
+        <div class="example-result" id="everySomeResult"></div>
+    </div>
+
+    <!-- 原数组修改方法(增删改) -->
+    <div class="section">
+        <h2>五、修改原数组的方法(push/pop/unshift/shift/splice/sort/reverse)</h2>
+        <h3>1. 尾部操作:push(增)/ pop(删)</h3>
+        <pre><code>const arr = [1,2,3];
+arr.push(4); // 尾部加元素,返回新长度 4 → arr: [1,2,3,4]
+arr.pop(); // 尾部删元素,返回删除的 4 → arr: [1,2,3]</code></pre>
+
+        <h3>2. 头部操作:unshift(增)/ shift(删)</h3>
+        <pre><code>const arr = [1,2,3];
+arr.unshift(0); // 头部加元素,返回新长度 4 → arr: [0,1,2,3]
+arr.shift(); // 头部删元素,返回删除的 0 → arr: [1,2,3]</code></pre>
+
+        <h3>3. 任意位置:splice(增/删/改)</h3>
+        <pre><code>const arr = [1,2,3,4,5];
+// splice(起始索引, 删除数量, 新增元素1, 新增元素2...)
+arr.splice(2, 1); // 删除索引2的元素 → arr: [1,2,4,5]
+arr.splice(2, 0, 3); // 索引2处新增元素3 → arr: [1,2,3,4,5]
+arr.splice(2, 1, 9); // 替换索引2的元素 → arr: [1,2,9,4,5]</code></pre>
+
+        <h3>4. 排序/反转:sort/reverse</h3>
+        <pre><code>const arr = [3,1,2];
+arr.sort(); // 默认按字符串排序 → [1,2,3]
+arr.sort((a,b) => a - b); // 数字升序排序
+arr.sort((a,b) => b - a); // 数字降序排序
+arr.reverse(); // 反转数组 → [3,2,1]</code></pre>
+
+        <div class="warning">
+            <strong>注意</strong>:sort 默认是「字符串排序」,数字排序必须传比较函数;以上方法都会直接修改原数组!
+        </div>
+        <button onclick="modifyArrDemo()">运行原数组修改案例</button>
+        <div class="example-result" id="modifyArrResult"></div>
+    </div>
+
+    <!-- 不修改原数组的拼接/截取 -->
+    <div class="section">
+        <h2>六、不修改原数组的拼接/截取(concat/slice)</h2>
+        <h3>1. concat:拼接多个数组/值,返回新数组</h3>
+        <pre><code>const arr1 = [1,2];
+const arr2 = [3,4];
+const newArr = arr1.concat(arr2, 5); // 拼接arr1+arr2+5 → [1,2,3,4,5]</code></pre>
+
+        <h3>2. slice:截取数组部分元素,返回新数组</h3>
+        <pre><code>const arr = [1,2,3,4,5];
+// slice(起始索引, 结束索引):包含起始,不包含结束
+const part1 = arr.slice(1, 3); // [2,3]
+const part2 = arr.slice(2); // 从索引2到末尾 → [3,4,5]
+const part3 = arr.slice(-2); // 最后2个元素 → [4,5]</code></pre>
+
+        <div class="note">
+            <strong>细节</strong>:slice 不修改原数组;结束索引省略则截取到末尾;负数索引表示从尾部倒数.
+        </div>
+        <button onclick="concatSliceDemo()">运行拼接/截取案例</button>
+        <div class="example-result" id="concatSliceResult"></div>
+    </div>
+
+    <!-- 聚合计算方法 -->
+    <div class="section">
+        <h2>七、聚合计算方法(reduce/reduceRight)</h2>
+        <h3>1. reduce:从左到右遍历,聚合为单个值(万能方法)</h3>
+        <pre><code>const arr = [1,2,3,4];
+// 语法:reduce((累计值, 当前值, 索引, 原数组) => {}, 初始值)
+
+// 求和(带初始值)
+const sum = arr.reduce((total, item) => total + item, 0); // 10
+
+// 求最大值
+const max = arr.reduce((prev, item) => prev > item ? prev : item, arr[0]); // 4
+
+// 数组转对象
+const users = [{id:1,name:'张三'},{id:2,name:'李四'}];
+const userObj = users.reduce((obj, item) => {
+    obj[item.id] = item.name;
+    return obj;
+}, {}); // {1:'张三', 2:'李四'}</code></pre>
+
+        <h3>2. reduceRight:从右到左遍历(用法同reduce)</h3>
+        <pre><code>const arr = [1,2,3];
+const str = arr.reduceRight((total, item) => total + item, ''); // "321"</code></pre>
+
+        <div class="note">
+            <strong>细节</strong>:初始值可选,但建议必传(无初始值时,累计值初始为第一个元素,遍历从第二个开始).
+        </div>
+        <button onclick="reduceDemo()">运行reduce案例</button>
+        <div class="example-result" id="reduceResult"></div>
+    </div>
+
+    <!-- 实战场景综合案例 -->
+    <div class="section">
+        <h2>八、实战综合案例</h2>
+        <pre><code>// 需求:处理用户数据
+const users = [
+    { id: 1, name: '张三', age: 18, score: 85, status: true },
+    { id: 2, name: '李四', age: 20, score: 92, status: true },
+    { id: 3, name: '王五', age: 19, score: 78, status: false },
+    { id: 4, name: '赵六', age: 21, score: 95, status: true }
+];
+
+// 1. 筛选状态为true且分数≥80的用户
+const validUsers = users.filter(u => u.status && u.score >= 80);
+
+// 2. 提取这些用户的姓名和分数,生成新数组
+const userInfo = validUsers.map(u => ({ name: u.name, score: u.score }));
+
+// 3. 计算这些用户的平均分
+const avgScore = userInfo.reduce((total, u) => total + u.score, 0) / userInfo.length;
+
+// 4. 判断是否有用户分数≥90
+const hasHighScore = userInfo.some(u => u.score >= 90);
+
+console.log(validUsers, userInfo, avgScore, hasHighScore);</code></pre>
+        <button onclick="combatAllDemo()">运行综合实战案例</button>
+        <div class="example-result" id="combatAllResult"></div>
+    </div>
+
+    <!-- 方法使用原则 -->
+    <div class="section">
+        <h2>九、数组方法使用原则</h2>
+        <ul>
+            <li>✅ <strong>优先使用不修改原数组的方法</strong>(map/filter/slice/concat),避免副作用;</li>
+            <li>✅ <strong>遍历执行操作用forEach</strong>,数据转换用map,筛选用filter;</li>
+            <li>✅ <strong>查找元素优先用find(条件)/includes(值)</strong>,替代indexOf;</li>
+            <li>✅ <strong>聚合计算用reduce</strong>(求和、求最大值、数组转对象等);</li>
+            <li>❌ <strong>修改原数组前先复制</strong>(如 [...arr] 或 arr.slice()),避免污染原数据;</li>
+            <li>❌ <strong>sort排序数字必须传比较函数</strong>,避免字符串排序陷阱.</li>
+        </ul>
+    </div>
+
+    <script>
+        // 1. 基础方法(forEach/map/join)
+        function baseDemo(type) {
+            const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+            let result = '';
+            if (type === 'forEach') {
+                arr.forEach((item, index) => {
+                    result += `元素:${item},索引:${index}\n`;
+                });
+            } else if (type === 'map') {
+                const newArr = arr.map(item => item * 2);
+                result = `原数组:${JSON.stringify(arr)}\nmap转换后:${JSON.stringify(newArr)}`;
+            } else if (type === 'join') {
+                result = `无分隔符:${arr.join('')}\n横线分隔:${arr.join('-')}\n默认分隔:${arr.join()}`;
+            }
+            document.getElementById('baseResult').textContent = result;
+            console.log(result);
+        }
+
+        // 2. 筛选/查找方法
+        function filterFindDemo() {
+            const arr = [1, 2, 3, 4, 5, 6];
+            const users = [{ id: 1, name: '张三' }, { id: 2, name: '李四' }];
+            const evenArr = arr.filter(item => item % 2 === 0);
+            const user = users.find(item => item.id === 2);
+            const findIndex = arr.findIndex(item => item === 3);
+            const indexOf = arr.indexOf(2);
+            const includes = arr.includes(5);
+
+            let result = `filter筛选偶数:${JSON.stringify(evenArr)}\n`;
+            result += `find查找用户:${JSON.stringify(user)}\n`;
+            result += `findIndex查找3的索引:${findIndex}\n`;
+            result += `indexOf查找2的索引:${indexOf}\n`;
+            result += `includes判断包含5:${includes}`;
+            document.getElementById('filterFindResult').textContent = result;
+            console.log(result);
+        }
+
+        // 3. every/some方法
+        function everySomeDemo() {
+            const arr1 = [2, 4, 6, 8];
+            const arr2 = [1, 3, 5, 6];
+            const isAllEven = arr1.every(item => item % 2 === 0);
+            const hasEven = arr2.some(item => item % 2 === 0);
+
+            let result = `every判断arr1全为偶数:${isAllEven}\n`;
+            result += `some判断arr2有偶数:${hasEven}`;
+            document.getElementById('everySomeResult').textContent = result;
+            console.log(result);
+        }
+
+        // 4. 修改原数组方法
+        function modifyArrDemo() {
+            // 复制数组避免相互影响
+            const arrPush = [1, 2, 3];
+            const arrSplice = [1, 2, 3, 4, 5];
+            const arrSort = [3, 1, 2];
+
+            const pushLen = arrPush.push(4);
+            const popItem = arrPush.pop();
+            const unshiftLen = arrPush.unshift(0);
+            const shiftItem = arrPush.shift();
+
+            arrSplice.splice(2, 1);
+            const spliceAdd = [...arrSplice];
+            spliceAdd.splice(2, 0, 3);
+            const spliceReplace = [...spliceAdd];
+            spliceReplace.splice(2, 1, 9);
+
+            arrSort.sort((a, b) => a - b);
+            const arrReverse = [...arrSort].reverse();
+
+            let result = `push(4)后长度:${pushLen},数组:${arrPush}\n`;
+            result += `pop()删除的元素:${popItem},数组:${arrPush}\n`;
+            result += `unshift(0)后长度:${unshiftLen},数组:${arrPush}\n`;
+            result += `shift()删除的元素:${shiftItem},数组:${arrPush}\n`;
+            result += `splice删除索引2:${arrSplice}\n`;
+            result += `splice新增元素3:${spliceAdd}\n`;
+            result += `splice替换为9:${spliceReplace}\n`;
+            result += `sort升序:${arrSort}\n`;
+            result += `reverse反转:${arrReverse}`;
+            document.getElementById('modifyArrResult').textContent = result;
+            console.log(result);
+        }
+
+        // 5. concat/slice方法
+        function concatSliceDemo() {
+            const arr1 = [1, 2];
+            const arr2 = [3, 4];
+            const concatArr = arr1.concat(arr2, 5);
+            const arr = [1, 2, 3, 4, 5];
+            const slice1 = arr.slice(1, 3);
+            const slice2 = arr.slice(2);
+            const slice3 = arr.slice(-2);
+
+            let result = `concat拼接:${JSON.stringify(concatArr)}\n`;
+            result += `slice(1,3):${JSON.stringify(slice1)}\n`;
+            result += `slice(2):${JSON.stringify(slice2)}\n`;
+            result += `slice(-2):${JSON.stringify(slice3)}`;
+            document.getElementById('concatSliceResult').textContent = result;
+            console.log(result);
+        }
+
+        // 6. reduce方法
+        function reduceDemo() {
+            const arr = [1, 2, 3, 4];
+            const sum = arr.reduce((total, item) => total + item, 0);
+            const max = arr.reduce((prev, item) => prev > item ? prev : item, arr[0]);
+            const users = [{ id: 1, name: '张三' }, { id: 2, name: '李四' }];
+            const userObj = users.reduce((obj, item) => {
+                obj[item.id] = item.name;
+                return obj;
+            }, {});
+            const reduceRight = arr.reduceRight((total, item) => total + item, '');
+
+            let result = `reduce求和:${sum}\n`;
+            result += `reduce求最大值:${max}\n`;
+            result += `reduce数组转对象:${JSON.stringify(userObj)}\n`;
+            result += `reduceRight拼接:${reduceRight}`;
+            document.getElementById('reduceResult').textContent = result;
+            console.log(result);
+        }
+
+        // 7. 综合实战案例
+        function combatAllDemo() {
+            const users = [
+                { id: 1, name: '张三', age: 18, score: 85, status: true },
+                { id: 2, name: '李四', age: 20, score: 92, status: true },
+                { id: 3, name: '王五', age: 19, score: 78, status: false },
+                { id: 4, name: '赵六', age: 21, score: 95, status: true }
+            ];
+            const validUsers = users.filter(u => u.status && u.score >= 80);
+            const userInfo = validUsers.map(u => ({ name: u.name, score: u.score }));
+            const avgScore = userInfo.reduce((total, u) => total + u.score, 0) / userInfo.length;
+            const hasHighScore = userInfo.some(u => u.score >= 90);
+
+            let result = `1. 筛选后的有效用户:\n${JSON.stringify(validUsers, null, 2)}\n`;
+            result += `2. 提取的用户信息:\n${JSON.stringify(userInfo, null, 2)}\n`;
+            result += `3. 平均分:${avgScore.toFixed(1)}\n`;
+            result += `4. 是否有高分用户(≥90):${hasHighScore}`;
+            document.getElementById('combatAllResult').textContent = result;
+            console.log(result);
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    html {
+        height: 2000px;
+    }
+
+    .box {
+        margin: 200px auto;
+        width: 200px;
+        height: 200px;
+        background-color: pink;
+        overflow: auto;
+        display: none;
+    }
+</style>
+
+<body>
+    <div class="box">
+        <div>123456</div>
+        <div>123456</div>
+        <div>123456</div>
+        <div>123456</div>
+        <div>123456</div>
+        <div>123456</div>
+        <div>123456</div>
+        <div>123456</div>
+        <div>123456</div>
+        <div>123456</div>
+        <div>123456</div>
+    </div>
+    <script>
+        // 滚动事件
+        // scroll 滚动条滚动时触发
+        let div = document.querySelector('.box')
+        div.addEventListener('scroll', function (e) {
+            // scrollTop 滚动条滚动的上距离 
+            console.log(div.scrollTop)
+        })
+        //页面滚动事件
+        document.documentElement.scrollTop = 200//设置滚动条默认到200px的位置
+        window.addEventListener('scroll', function (e) {
+            //获取HTML-> document.documentElement 
+            let html = document.documentElement.scrollTop //返回值可以读写
+            console.log(html)
+            if (html >= 200) {
+                div.style.display = 'block'
+            }
+            else {
+                div.style.display = 'none'
+            }
+        })
+    </script>
+</body>
+
+</html>
