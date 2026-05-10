@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .box {
+        margin: 200px auto;
+        height: 40px;
+        width: 280px;
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+    }
+
+    .box div {
+        cursor: pointer;
+    }
+
+    .line {
+        height: 2px;
+        width: 100px;
+        background-color: pink;
+        position: absolute;
+        bottom: 5px;
+        left: 0px;
+        transition: all .3s;
+    }
+
+    .active {
+        color: pink;
+    }
+</style>
+
+<body>
+    <div class="box">
+        <span class="line"></span>
+        <div class="active">case1</div>
+        <div>case2</div>
+        <div>case3</div>
+        <div>case4</div>
+    </div>
+
+    <script>
+        const line = document.querySelector('.line')
+        const divs = document.querySelectorAll('.box div')
+        function setLine(index) {
+            line.style.width = divs[index].offsetWidth + 10 + 'px'
+            line.style.left = divs[index].offsetLeft - 5 + 'px'
+        }
+        let id;
+        let i = 0;
+        setLine(i);
+        function start() {
+            clearInterval(id);
+            id = setInterval(() => {
+                i++
+                if (i == divs.length) i = 0
+                document.querySelector('.active').classList.remove('active')
+                divs[i].classList.add('active')
+                setLine(i)
+            }, 1000)
+        }
+
+        start();
+        divs.forEach((item, index) => {
+            item.addEventListener('mouseenter', () => {
+                clearInterval(id); 
+                i = index; 
+                document.querySelector('.active').classList.remove('active')
+                item.classList.add('active')
+                setLine(index)
+            })
+            item.addEventListener('mouseleave', start)
+        })
+
+    </script>
+</body>
+</html>

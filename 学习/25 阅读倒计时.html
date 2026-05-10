@@ -6,22 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+<style>
+    button {
+        height: 36px;
+        width: 100px;
+        font-size: 14px;
+        cursor: not-allowed; /* 倒计时时显示禁止光标 */
+    }
+    button:enabled {
+        cursor: pointer; /* 可用时变成手型 */
+    }
+    span {
+        margin-right: 4px;
+        color: red;
+    }
+</style>
 
 <body>
-    <textarea name="" id="" cols="30" rows="10"></textarea>
-    <br>
-    <button class="btn" disabled>我已经阅读完毕(60)</button>
+    <button><span>5</span>同意</button>
+
     <script>
-        let i=1;
-        function iadd(i){
-            i++;
-        }
-        const but=document.quertSelector('btn')
-        if(!btn.disabled){
-            console.log(i)
-        setInterval(iadd(i),1000);
-        but.innerHTML=`我已经阅读完毕(${60-i})`
-        }
+        const but = document.querySelector('button')
+        const sp = document.querySelector('span')
+        let s = 10
+        sp.innerHTML = s
+        but.disabled = true
+
+        let id = setInterval(function () {
+            s--
+            sp.innerHTML = s
+
+            if (s <= 0) {
+                but.disabled = false
+                sp.innerHTML = ''
+                clearInterval(id)
+            }
+        }, 1000)
     </script>
 </body>
 

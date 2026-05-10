@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>随机背景与颜色</title>
+    <style>
+        body {
+            background: url(./images/01.jpg) no-repeat top center;
+            background-size: cover;
+            min-height: 100vh;
+            margin: 0;
+            padding-top: 50px;
+        }
+
+        div {
+            margin: 0 auto;
+            margin-top: 50px;
+            width: 80%;
+            max-width: 1200px;
+            height: 500px;
+            color: white;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div>随机颜色背景的div</div>
+
+    <script>
+        getRandom = (N, M) => Math.floor(Math.random() * (M - N + 1)) + N
+        const body = document.body;
+        const randomImgNum = getRandom(1, 10);
+        body.style.backgroundImage = `url(./images/${randomImgNum}.jpg)`;
+        function getRandomColor(flag = true) {
+            if (flag === true) {
+                const hexChars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+                let hexColor = '#';
+                for (let i = 0; i < 6; i++) {
+                    const randomIndex = Math.floor(Math.random() * hexChars.length);
+                    hexColor += hexChars[randomIndex];
+                }
+                return hexColor;
+            } else {
+                const r = Math.floor(Math.random() * 256);
+                const g = Math.floor(Math.random() * 256);
+                const b = Math.floor(Math.random() * 256);
+                return `rgb(${r}, ${g}, ${b})`;
+            }
+        }
+
+        const div = document.querySelector('div');
+        div.style.backgroundColor = getRandomColor();
+    </script>
+</body>
+
+</html>

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,132 +7,190 @@
 </head>
 <style>
     * {
-        margin: 0;
         padding: 0;
+        margin: 0;
+        box-sizing: border-box;
     }
 
-    .nav_bg {
-        position: fixed;
-        /* position: absolute; */
-        top: -80px;
-        /* top: 80px; */
+    body {
+        height: 6000px;
+    }
+
+    .head {
+        height: 50px;
         width: 100%;
-        height: 80px;
-        background-color: skyblue;
+        background-color: khaki;
+        position: fixed;
+        top: -50px;
+        left: 0;
+        transition: all .3s;
+        z-index: 9;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .topnav {
+        display: flex;
+        align-items: center;
+        gap: 40px;
+        position: relative;
+        font-size: 16px;
+    }
+
+    .topnav span {
+        cursor: pointer;
+        padding: 0 10px;
+    }
+
+    .line {
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 50px;
+        height: 2px;
+        background-color: green;
         transition: all 0.3s;
     }
 
     .nav {
-        margin: 0 auto;
-        width: 1200px;
-        height: 80px;
-    }
-
-    ul {
+        height: 320px;
+        width: 65px;
+        background-color: rgb(111, 203, 184);
+        position: fixed;
+        top: 100px;
+        right: 10px;
+        opacity: 0;
+        transition: all .3s;
         display: flex;
-        height: 80px;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .nav span {
+        width: 100%;
+        height: 100%;
+        display: flex;
         justify-content: center;
-        position: relative;
-        left: 0;
+        align-items: center;
+        cursor: pointer;
     }
 
-    li {
-        list-style: none;
+    .nav span:hover {
+        background-color: yellowgreen;
+        color: aliceblue;
     }
 
-    a {
-        text-decoration: none;
-        color: white;
-        font-size: 18px;
-        display: block;
-        height: 80px;
-        line-height: 80px;
-        padding: 0 20px;
+    .fbox {
+        width: 800px;
+        height: 500px;
+        margin: 0 auto;
+        background-color: #ccc;
     }
 
-    a:hover {
-        color: rgb(218, 87, 64);
+    .flag {
+        height: 20px;
+        width: 800px;
+        position: absolute;
+        top: 200px;
+        background-color: pink;
+    }
+
+    .box {
+        width: 800px;
+        height: 500px;
+        margin: 50px auto;
+        background-color: #ccc;
+        text-align: center;
+        line-height: 500px;
+        font-size: 24px;
     }
 
     .active {
-        color: rgb(218, 87, 64);
-    }
-
-    .line {
-        width: 35px;
-        height: 2px;
-        border-radius: 2px;
-        background-color: rgb(218, 87, 64);
-        margin-top: -18px;
-        box-sizing: border-box;
-        transition: all 0.3s;
-        position: absolute;
-        bottom: 18px;
-        left: 0;
-    }
-
-    .banner {
-        width: 1200px;
-        height: 3000px;
-        margin: 0 auto;
-        background-color: pink;
-        box-sizing: border-box;
-        padding-top: 500px;
-    }
-
-    .item {
-        width: 200px;
-        height: 200px;
-        background-color: purple;
+        background-color: yellowgreen !important;
+        color: aliceblue !important;
     }
 </style>
-
 <body>
-    <div class="nav_bg">
-        <div class="nav">
-            <ul>
-                <li><a href="#" class="active">首页</a></li>
-                <li><a href="#">关于</a></li>
-                <li><a href="#">产品</a></li>
-                <li><a href="#">联系</a></li>
-                <li><a href="#">服务</a></li>
-                <div class="line"></div>
-            </ul>
-        </div>
-    </div>
-    <div class="banner">
-        <div class="item"></div>
-    </div>
-    <script>
-        // 导航栏滚动效果
-        const navBg = document.querySelector('.nav_bg')
-        const html = document.documentElement
-        const item = document.querySelector('.item')
-        window.addEventListener('scroll', function () {
-            let scrollTop = html.scrollTop
-            let itemTop = item.offsetTop
-            if (scrollTop >= itemTop) {
-                navBg.style.marginTop = '80px'
-                // navBg.style.position = 'fixed'
-            } else {
-                navBg.style.marginTop = '0px'
-                // navBg.style.position = 'absolute'
-            }
-        })
-        // 导航栏点击切换效果
-        const as = document.querySelectorAll('li a')
-        const line = document.querySelector('.line')
-        line.style.left = as[0].offsetLeft + as[0].offsetWidth / 4 + 'px'
-        for (let i = 0; i < as.length; i++) {
-            as[i].addEventListener('mouseenter', function (e) {
-                //先移除所有 a 标签的 active 类名
-                document.querySelector('.active').classList.remove('active')
-                this.classList.add('active')
-                // 导航栏滑动效果
-                line.style.left = as[i].offsetLeft + as[i].offsetWidth / 4 + 'px'
-            })
-        }
-    </script>
-</body>
 
+<div class="head">
+    <div class="topnav">
+        <span>case1</span>
+        <span>case2</span>
+        <span>case3</span>
+        <span>case4</span>
+        <div class="line"></div>
+    </div>
+</div>
+
+<div class="nav">
+    <span class="backtop active">👆</span>
+    <span>case1</span>
+    <span>case2</span>
+    <span>case3</span>
+    <span>case4</span>
+</div>
+
+<div class="fbox">
+    <span class="flag"></span>
+</div>
+<div class="box box1">case1</div>
+<div class="box box2">case2</div>
+<div class="box box3">case3</div>
+<div class="box box4">case4</div>
+
+<script>
+    const head = document.querySelector('.head')
+    const nav = document.querySelector('.nav')
+    const flag = document.querySelector('.flag')
+    const line = document.querySelector('.line')
+    const topSpan = document.querySelectorAll('.topnav span')
+    const cs = document.querySelectorAll('.nav span')
+    const bs = document.querySelectorAll('.fbox, .box')
+
+    line.style.width = topSpan[0].offsetWidth + 'px'
+    line.style.left = topSpan[0].offsetLeft + 'px'
+
+    window.addEventListener('scroll', () => {
+        const st = document.documentElement.scrollTop
+        const hf = flag.offsetTop
+        head.style.top = st >= hf ? '0px' : '-50px'
+        nav.style.opacity = st >= hf ? '1' : '0'
+
+        for (let i = 0; i < bs.length; i++) {
+            if (st >= bs[i].offsetTop - 100) {
+                document.querySelector('.nav .active').classList.remove('active')
+                cs[i].classList.add('active')
+                if (i > 0) {
+                    line.style.left = topSpan[i - 1].offsetLeft + 'px'
+                    line.style.width = topSpan[i - 1].offsetWidth + 'px'
+                }
+            }
+        }
+    })
+
+    // 右侧点击
+    for (let i = 0; i < cs.length; i++) {
+        cs[i].addEventListener('click', () => {
+            window.scrollTo({
+                top: bs[i].offsetTop - 50,
+                behavior: 'smooth'
+            })
+            document.querySelector('.active').classList.remove('active')
+            cs[i].classList.add('active')
+        })
+    }
+    for (let i = 0; i < topSpan.length; i++) {
+        topSpan[i].addEventListener('click', () => {
+            window.scrollTo({
+                top: bs[i + 1].offsetTop - 50,
+                behavior: 'smooth'
+            })
+            line.style.left = topSpan[i].offsetLeft + 'px'
+            line.style.width = topSpan[i].offsetWidth + 'px'
+        })
+    }
+</script>
+</body>
 </html>
