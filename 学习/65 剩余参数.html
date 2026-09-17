@@ -9,10 +9,10 @@
   <body></body>
   <script>
     // 动态参数
-    //  arguments 是一个类数组对象 只存在于函数中
+    // arguments 是一个类数组对象 只存在于函数中 箭头函数没有
     // 可以使用数组的方法
     function fn() {
-      // arguments 是一个类数组对象
+      // arguments 是一个伪数组
       console.log(arguments)
       let sum = 0
       for (let i = 0; i < arguments.length; i++) {
@@ -26,7 +26,7 @@
     // 剩余参数 是一个数组
     // 剩余参数只能写在最后面
     function fn2(a, b, ...args) {
-      // args 是一个数组
+      // args 是一个真数组
       console.log(a, b, args)
       let sum = 0
       for (let i = 0; i < args.length; i++) {
