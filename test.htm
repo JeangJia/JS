@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 <body>
-    
-</body>
 <script>
     // function f(){
     //     const a=1;
@@ -19,14 +17,17 @@
     // const h=f();
     // h();
     const f=()=>{
-        const a=1;
+        let a=0;
         const g=()=>{
-            console.log(a);
+            a++;
+            console.log(`函数调用了${a}次`);
         }
         return g;
     }
-    const h=f();
+    const h = f();
     h();
-
+    h();
+    
 </script>
+</body>
 </html>
