@@ -1,45 +1,42 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<style>
+  </head>
+  <style>
     h2 {
-        text-align: center;
+      text-align: center;
     }
 
     table,
     th,
     td {
-        border: 1px solid black;
-        border-collapse: collapse;
-        text-align: center;
+      border: 1px solid black;
+      border-collapse: collapse;
+      text-align: center;
     }
 
     table {
-        margin: 0 auto;
+      margin: 0 auto;
     }
 
     th,
     td {
-        padding: 8px 30px;
+      padding: 8px 30px;
     }
-</style>
+  </style>
 
-<body>
-
-</body>
-<script>
-    let price = +prompt('请输入商品价格:');
-    let num = +prompt('请输入商品数量:');
-    let address = prompt('请输入商品收货地址:');
+  <body></body>
+  <script>
+    let price = +prompt('请输入商品价格:')
+    let num = +prompt('请输入商品数量:')
+    let address = prompt('请输入商品收货地址:')
     // price = Number(price);
     // num = Number(num);
-    let total = price * num;
-    console.log('商品总价为:' + total);
+    let total = price * num
+    console.log('商品总价为:' + total)
     document.write(`
      <table>
         <h2>订单确认</h2>
@@ -58,7 +55,6 @@
             <td>${address}</td>
         </tr>
     </table>
-    `);
-</script>
-
+    `)
+  </script>
 </html>
