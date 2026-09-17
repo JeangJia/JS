@@ -1,23 +1,18 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
-  <body>
-    <script>
-      const f = () => {
-        let a = 0
-        const g = () => {
-          a++
-          console.log(`函数调用了${a}次`)
-        }
-        return g
-      }
-      const h = f()
-      h()
-      h()
-    </script>
-  </body>
+  <body></body>
+  <script>
+    const a = [12, 34, 23, 4, 8]
+    a.forEach((item, ind) => {
+      console.log(ind, item)
+    })
+    const newa = a.map((item) => item * 2)
+    console.log(newa)
+    console.log(a.join('/'))
+  </script>
 </html>
