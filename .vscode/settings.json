@@ -1,10 +1,26 @@
 {
+    // C/C++ 错误波浪线：关闭
     "C_Cpp.errorSquiggles": "disabled",
+    // 全局默认格式化器置空，避免未指定语言时乱用
     "editor.defaultFormatter": null,
+    // 保存时自动格式化
+    "editor.formatOnSave": true,
+    // 关闭 VS Code 内置 CSS/Less/SCSS 格式化，统一交给 Prettier
     "css.format.enable": false,
     "less.format.enable": false,
     "scss.format.enable": false,
-    "editor.formatOnSave": true,
+    // ===== Prettier 自定义（VS Code 扩展级） =====
+    "prettier.printWidth": 100, // 每行最大字符数
+    "prettier.tabWidth": 2, // 缩进空格数
+    "prettier.useTabs": false, // 不使用 Tab
+    "prettier.singleQuote": true, // 使用单引号
+    "prettier.semi": false, // JS 语句末尾不加分号
+    "prettier.trailingComma": "es5", // 尾随逗号
+    "prettier.bracketSpacing": true, // 对象括号内加空格
+    "prettier.arrowParens": "always", // 箭头函数参数总是加括号
+    "prettier.endOfLine": "lf", // 换行符
+    "prettier.vueIndentScriptAndStyle": true, // Vue 中缩进 script/style
+    // ===== 各语言指定默认格式化器 =====
     "[css]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
@@ -14,13 +30,19 @@
     "[less]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "[jsonc]": {
-        "editor.defaultFormatter": "vscode.json-language-features"
-    },
     "[html]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "[javascript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[vue]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
     }
 }

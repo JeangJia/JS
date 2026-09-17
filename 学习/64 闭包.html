@@ -9,7 +9,7 @@
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family: "Microsoft Yahei", sans-serif;
+        font-family: 'Microsoft Yahei', sans-serif;
       }
 
       body {
@@ -54,7 +54,7 @@
         background: #f8f8f8;
         padding: 2px 6px;
         border-radius: 4px;
-        font-family: "Consolas", monospace;
+        font-family: 'Consolas', monospace;
         color: #e74c3c;
       }
 
@@ -94,7 +94,7 @@
         padding: 10px;
         border-radius: 4px;
         margin: 5px 0;
-        font-family: "Consolas", monospace;
+        font-family: 'Consolas', monospace;
       }
 
       button {
@@ -118,9 +118,7 @@
 
     <div class="section">
       <h2>一、闭包的基本概念</h2>
-      <p>
-        闭包(Closure)是指<strong>有权访问另一个函数作用域中变量的函数</strong>,简单来说:
-      </p>
+      <p>闭包(Closure)是指<strong>有权访问另一个函数作用域中变量的函数</strong>,简单来说:</p>
       <ul>
         <li>一个函数内部定义了另一个函数</li>
         <li>内部函数引用了外部函数的变量/参数</li>
@@ -289,9 +287,7 @@ function safeAttachEvent() {
 
       <div class="warning">
         <strong>⚠️ 闭包中的this指向问题</strong>
-        <p>
-          闭包内部的this默认指向window(非严格模式),而非外部函数的this,需要特别注意.
-        </p>
+        <p>闭包内部的this默认指向window(非严格模式),而非外部函数的this,需要特别注意.</p>
       </div>
 
       <h3>2. this指向问题案例</h3>
@@ -325,9 +321,7 @@ const obj2 = {
 
       <div class="note">
         <strong>💡 注意:</strong>
-        <p>
-          ES6箭头函数没有自己的this,会继承外部作用域的this,可简化this指向问题:
-        </p>
+        <p>ES6箭头函数没有自己的this,会继承外部作用域的this,可简化this指向问题:</p>
         <pre><code>const obj3 = {
     name: "测试对象3",
     outer: function() {
@@ -339,9 +333,7 @@ const obj2 = {
       </div>
 
       <h3>3. 闭包与变量提升/块级作用域</h3>
-      <p>
-        在ES5中,var声明的变量没有块级作用域,闭包可能会引用到最后一次赋值的变量:
-      </p>
+      <p>在ES5中,var声明的变量没有块级作用域,闭包可能会引用到最后一次赋值的变量:</p>
       <pre><code>// ES5问题案例
 function createFunctions() {
     var result = [];
@@ -388,20 +380,10 @@ function createFunctions3() {
     <div class="section">
       <h2>四、闭包的性能优化</h2>
       <ul>
-        <li>
-          <strong>及时释放闭包引用</strong
-          >:不再使用的闭包函数,赋值为null,让垃圾回收器回收
-        </li>
-        <li>
-          <strong>减少闭包层级</strong>:避免多层嵌套闭包,增加作用域链查找成本
-        </li>
-        <li>
-          <strong>复用闭包逻辑</strong
-          >:将通用的闭包逻辑封装为工具函数,避免重复创建
-        </li>
-        <li>
-          <strong>避免闭包引用大对象</strong>:只引用需要的属性,而非整个大对象
-        </li>
+        <li><strong>及时释放闭包引用</strong>:不再使用的闭包函数,赋值为null,让垃圾回收器回收</li>
+        <li><strong>减少闭包层级</strong>:避免多层嵌套闭包,增加作用域链查找成本</li>
+        <li><strong>复用闭包逻辑</strong>:将通用的闭包逻辑封装为工具函数,避免重复创建</li>
+        <li><strong>避免闭包引用大对象</strong>:只引用需要的属性,而非整个大对象</li>
       </ul>
 
       <h3>优化案例</h3>
@@ -439,9 +421,7 @@ closure = null; // 释放闭包引用</code></pre>
     <div class="section">
       <h2>五、总结</h2>
       <ul>
-        <li>
-          闭包是<strong>内部函数引用外部函数变量</strong>形成的特殊作用域链
-        </li>
+        <li>闭包是<strong>内部函数引用外部函数变量</strong>形成的特殊作用域链</li>
         <li>核心价值:<strong>私有化变量、保存执行上下文、参数复用</strong></li>
         <li>注意事项:<strong>内存泄漏、this指向、作用域问题</strong></li>
         <li>使用原则:<strong>按需使用、及时释放、避免滥用</strong></li>
@@ -455,46 +435,45 @@ closure = null; // 释放闭包引用</code></pre>
       // 基础闭包案例
       function basicClosureDemo() {
         function outer() {
-          let message = "Hello Closure";
+          let message = 'Hello Closure'
           function inner() {
-            return message;
+            return message
           }
-          return inner;
+          return inner
         }
-        const closureFunc = outer();
-        const result = closureFunc();
-        document.getElementById("basicResult").textContent =
-          `运行结果: ${result}`;
-        console.log(result);
+        const closureFunc = outer()
+        const result = closureFunc()
+        document.getElementById('basicResult').textContent = `运行结果: ${result}`
+        console.log(result)
       }
 
       // 私有化变量案例
       function privateVarDemo() {
         function createCounter() {
-          let count = 0;
+          let count = 0
           return {
             increment: function () {
-              count++;
-              return count;
+              count++
+              return count
             },
             decrement: function () {
-              count--;
-              return count;
+              count--
+              return count
             },
             getCount: function () {
-              return count;
+              return count
             },
-          };
+          }
         }
 
-        const counter1 = createCounter();
-        const counter2 = createCounter();
+        const counter1 = createCounter()
+        const counter2 = createCounter()
 
-        const res1 = counter1.increment(); // 1
-        const res2 = counter1.increment(); // 2
-        const res3 = counter2.increment(); // 1
-        const res4 = counter1.getCount(); // 2
-        const res5 = counter1.count; // undefined
+        const res1 = counter1.increment() // 1
+        const res2 = counter1.increment() // 2
+        const res3 = counter2.increment() // 1
+        const res4 = counter1.getCount() // 2
+        const res5 = counter1.count // undefined
 
         const resultText = `
 counter1.increment() = ${res1}
@@ -502,149 +481,148 @@ counter1.increment() = ${res2}
 counter2.increment() = ${res3}
 counter1.getCount() = ${res4}
 counter1.count = ${res5}
-            `;
-        document.getElementById("privateResult").textContent =
-          resultText.trim();
-        console.log(resultText);
+            `
+        document.getElementById('privateResult').textContent = resultText.trim()
+        console.log(resultText)
       }
 
       // 柯里化案例
       function curryDemo() {
         function calculatePrice(price) {
           return function (quantity) {
-            return price * quantity;
-          };
+            return price * quantity
+          }
         }
 
-        const price100 = calculatePrice(100);
-        const res1 = price100(5); // 500
-        const res2 = price100(10); // 1000
-        const price200 = calculatePrice(200);
-        const res3 = price200(3); // 600
+        const price100 = calculatePrice(100)
+        const res1 = price100(5) // 500
+        const res2 = price100(10) // 1000
+        const price200 = calculatePrice(200)
+        const res3 = price200(3) // 600
 
         const resultText = `
 price100(5) = ${res1}
 price100(10) = ${res2}
 price200(3) = ${res3}
-            `;
-        document.getElementById("curryResult").textContent = resultText.trim();
-        console.log(resultText);
+            `
+        document.getElementById('curryResult').textContent = resultText.trim()
+        console.log(resultText)
       }
 
       // this指向案例
       function thisPointDemo() {
         const obj = {
-          name: "测试对象",
+          name: '测试对象',
           outer: function () {
-            console.log("外部函数this:", this.name);
+            console.log('外部函数this:', this.name)
             return function () {
-              console.log("闭包函数this:", this.name);
-              return this.name;
-            };
+              console.log('闭包函数this:', this.name)
+              return this.name
+            }
           },
-        };
+        }
 
         const obj2 = {
-          name: "测试对象2",
+          name: '测试对象2',
           outer: function () {
-            const self = this;
+            const self = this
             return function () {
-              console.log("修复后this:", self.name);
-              return self.name;
-            };
+              console.log('修复后this:', self.name)
+              return self.name
+            }
           },
-        };
+        }
 
         const obj3 = {
-          name: "测试对象3",
+          name: '测试对象3',
           outer: function () {
             return () => {
-              console.log("箭头函数this:", this.name);
-              return this.name;
-            };
+              console.log('箭头函数this:', this.name)
+              return this.name
+            }
           },
-        };
+        }
 
-        const innerFunc = obj.outer();
-        const res1 = innerFunc();
-        const innerFunc2 = obj2.outer();
-        const res2 = innerFunc2();
-        const innerFunc3 = obj3.outer();
-        const res3 = innerFunc3();
+        const innerFunc = obj.outer()
+        const res1 = innerFunc()
+        const innerFunc2 = obj2.outer()
+        const res2 = innerFunc2()
+        const innerFunc3 = obj3.outer()
+        const res3 = innerFunc3()
 
         const resultText = `
-闭包函数this: ${res1 || "undefined"}
+闭包函数this: ${res1 || 'undefined'}
 修复后this: ${res2}
 箭头函数this: ${res3}
-            `;
-        document.getElementById("thisResult").textContent = resultText.trim();
+            `
+        document.getElementById('thisResult').textContent = resultText.trim()
       }
 
       // 作用域案例
       function scopeDemo() {
         function createFunctions() {
-          var result = [];
+          var result = []
           for (var i = 0; i < 3; i++) {
             result[i] = function () {
-              return i;
-            };
+              return i
+            }
           }
-          return result;
+          return result
         }
 
         function createFunctions2() {
-          var result = [];
+          var result = []
           for (var i = 0; i < 3; i++) {
             result[i] = (function (index) {
               return function () {
-                return index;
-              };
-            })(i);
+                return index
+              }
+            })(i)
           }
-          return result;
+          return result
         }
 
         function createFunctions3() {
-          const result = [];
+          const result = []
           for (let i = 0; i < 3; i++) {
             result[i] = function () {
-              return i;
-            };
+              return i
+            }
           }
-          return result;
+          return result
         }
 
-        const funcs = createFunctions();
-        const funcs2 = createFunctions2();
-        const funcs3 = createFunctions3();
+        const funcs = createFunctions()
+        const funcs2 = createFunctions2()
+        const funcs3 = createFunctions3()
 
-        const res1 = `ES5问题案例: funcs[0]()=${funcs[0]()}, funcs[1]()=${funcs[1]()}, funcs[2]()=${funcs[2]()}`;
-        const res2 = `立即执行函数修复: funcs2[0]()=${funcs2[0]()}, funcs2[1]()=${funcs2[1]()}, funcs2[2]()=${funcs2[2]()}`;
-        const res3 = `ES6 let修复: funcs3[0]()=${funcs3[0]()}, funcs3[1]()=${funcs3[1]()}, funcs3[2]()=${funcs3[2]()}`;
+        const res1 = `ES5问题案例: funcs[0]()=${funcs[0]()}, funcs[1]()=${funcs[1]()}, funcs[2]()=${funcs[2]()}`
+        const res2 = `立即执行函数修复: funcs2[0]()=${funcs2[0]()}, funcs2[1]()=${funcs2[1]()}, funcs2[2]()=${funcs2[2]()}`
+        const res3 = `ES6 let修复: funcs3[0]()=${funcs3[0]()}, funcs3[1]()=${funcs3[1]()}, funcs3[2]()=${funcs3[2]()}`
 
-        const resultText = `${res1}\n${res2}\n${res3}`;
-        document.getElementById("scopeResult").textContent = resultText;
-        console.log(resultText);
+        const resultText = `${res1}\n${res2}\n${res3}`
+        document.getElementById('scopeResult').textContent = resultText
+        console.log(resultText)
       }
 
       // 绑定循环案例的按钮事件
       function badLoopExample() {
-        const buttons = document.querySelectorAll(".bad-btn");
+        const buttons = document.querySelectorAll('.bad-btn')
         for (var i = 0; i < buttons.length; i++) {
           buttons[i].onclick = function () {
-            alert(`你点击了按钮 ${i}`);
-          };
+            alert(`你点击了按钮 ${i}`)
+          }
         }
       }
 
       function goodLoopExample() {
-        const buttons = document.querySelectorAll(".good-btn");
+        const buttons = document.querySelectorAll('.good-btn')
         for (var i = 0; i < buttons.length; i++) {
-          (function (index) {
+          ;(function (index) {
             buttons[index].onclick = function () {
-              alert(`你点击了按钮 ${index}`);
-            };
-          })(i);
+              alert(`你点击了按钮 ${index}`)
+            }
+          })(i)
         }
       }
     </script>
