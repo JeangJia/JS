@@ -1,134 +1,137 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>JavaScript 数组解构完全解析</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Microsoft Yahei', sans-serif;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Microsoft Yahei', sans-serif;
+      }
 
-        body {
-            max-width: 1000px;
-            margin: 20px auto;
-            padding: 0 20px;
-            line-height: 1.8;
-            color: #333;
-        }
+      body {
+        max-width: 1000px;
+        margin: 20px auto;
+        padding: 0 20px;
+        line-height: 1.8;
+        color: #333;
+      }
 
-        h1 {
-            color: #2c3e50;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
+      h1 {
+        color: #2c3e50;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+      }
 
-        h2 {
-            color: #3498db;
-            margin: 25px 0 15px;
-            padding-left: 10px;
-            border-left: 4px solid #3498db;
-        }
+      h2 {
+        color: #3498db;
+        margin: 25px 0 15px;
+        padding-left: 10px;
+        border-left: 4px solid #3498db;
+      }
 
-        h3 {
-            color: #2980b9;
-            margin: 20px 0 10px;
-        }
+      h3 {
+        color: #2980b9;
+        margin: 20px 0 10px;
+      }
 
-        .section {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
+      .section {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+      }
 
-        code {
-            background: #e9ecef;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: 'Consolas', monospace;
-            color: #e74c3c;
-        }
+      code {
+        background: #e9ecef;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Consolas', monospace;
+        color: #e74c3c;
+      }
 
-        pre {
-            background: #f1f3f5;
-            padding: 10px 15px;
-            border-radius: 6px;
-            overflow-x: auto;
-            margin: 10px 0;
-            border-left: 4px solid #3498db;
-        }
+      pre {
+        background: #f1f3f5;
+        padding: 10px 15px;
+        border-radius: 6px;
+        overflow-x: auto;
+        margin: 10px 0;
+        border-left: 4px solid #3498db;
+      }
 
-        pre code {
-            color: #333;
-            padding: 0;
-            background: none;
-        }
+      pre code {
+        color: #333;
+        padding: 0;
+        background: none;
+      }
 
-        .note {
-            background: #fff8e1;
-            padding: 10px;
-            border-radius: 4px;
-            margin: 10px 0;
-            border-left: 4px solid #ffc107;
-        }
+      .note {
+        background: #fff8e1;
+        padding: 10px;
+        border-radius: 4px;
+        margin: 10px 0;
+        border-left: 4px solid #ffc107;
+      }
 
-        .warning {
-            background: #ffebee;
-            padding: 10px;
-            border-radius: 4px;
-            margin: 10px 0;
-            border-left: 4px solid #f44336;
-        }
+      .warning {
+        background: #ffebee;
+        padding: 10px;
+        border-radius: 4px;
+        margin: 10px 0;
+        border-left: 4px solid #f44336;
+      }
 
-        .example-result {
-            background: #e8f5e9;
-            padding: 8px;
-            border-radius: 4px;
-            margin: 5px 0;
-            font-family: 'Consolas', monospace;
-        }
+      .example-result {
+        background: #e8f5e9;
+        padding: 8px;
+        border-radius: 4px;
+        margin: 5px 0;
+        font-family: 'Consolas', monospace;
+      }
 
-        button {
-            padding: 6px 12px;
-            background: #3498db;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin: 5px 0;
-        }
+      button {
+        padding: 6px 12px;
+        background: #3498db;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 5px 0;
+      }
 
-        button:hover {
-            background: #2980b9;
-        }
+      button:hover {
+        background: #2980b9;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <h1>JavaScript 数组解构(Array Destructuring)</h1>
 
     <div class="section">
-        <h2>一、数组解构的核心概念</h2>
-        <p>数组解构是 ES6 新增的语法糖,用于<strong>将数组的元素批量赋值给变量</strong>,本质是「模式匹配」_ 按照数组的结构,将对应位置的元素赋值给对应位置的变量,简化数组元素的提取操作.</p>
-        <pre><code>// 基础语法
+      <h2>一、数组解构的核心概念</h2>
+      <p>
+        数组解构是 ES6
+        新增的语法糖,用于<strong>将数组的元素批量赋值给变量</strong>,本质是「模式匹配」_
+        按照数组的结构,将对应位置的元素赋值给对应位置的变量,简化数组元素的提取操作.
+      </p>
+      <pre><code>// 基础语法
 let 数组 = [值1, 值2, 值3];
 let [变量1, 变量2, 变量3] = 数组; // 按位置匹配赋值</code></pre>
-        <button onclick="basicDemo()">运行基础案例</button>
-        <div class="example-result" id="basicResult"></div>
+      <button onclick="basicDemo()">运行基础案例</button>
+      <div class="example-result" id="basicResult"></div>
     </div>
 
     <div class="section">
-        <h2>二、数组解构的核心用法(含细节)</h2>
+      <h2>二、数组解构的核心用法(含细节)</h2>
 
-        <h3>1. 基础解构:按位置匹配赋值</h3>
-        <p>最核心的用法,变量的顺序对应数组元素的顺序,数量可不一致.</p>
-        <pre><code>// 完整匹配
+      <h3>1. 基础解构:按位置匹配赋值</h3>
+      <p>最核心的用法,变量的顺序对应数组元素的顺序,数量可不一致.</p>
+      <pre><code>// 完整匹配
 let arr = [1, 2, 3];
 let [a, b, c] = arr; // a=1, b=2, c=3
 
@@ -138,18 +141,18 @@ let [d, e] = arr; // d=1, e=2
 // 变量数 > 数组元素数:多余变量赋值为 undefined
 let [f, g, h, i] = arr; // f=1, g=2, h=3, i=undefined</code></pre>
 
-        <h3>2. 忽略指定元素</h3>
-        <p>用「空逗号」跳过不需要的元素,逗号数量对应跳过的位置.</p>
-        <pre><code>let arr = [1, 2, 3];
+      <h3>2. 忽略指定元素</h3>
+      <p>用「空逗号」跳过不需要的元素,逗号数量对应跳过的位置.</p>
+      <pre><code>let arr = [1, 2, 3];
 let [d, , e] = arr; // 跳过第二个元素,d=1, e=3
 let [, , k] = arr;  // 跳过前两个元素,k=3</code></pre>
-        <div class="note">
-            <strong>细节</strong>:空逗号的位置必须和跳过的元素位置严格对应,不能多/少逗号.
-        </div>
+      <div class="note">
+        <strong>细节</strong>:空逗号的位置必须和跳过的元素位置严格对应,不能多/少逗号.
+      </div>
 
-        <h3>3. 设置默认值</h3>
-        <p>当数组对应位置的元素为 <code>undefined</code>(或无该元素)时,使用默认值.</p>
-        <pre><code>// 场景1:数组元素存在,优先使用数组值
+      <h3>3. 设置默认值</h3>
+      <p>当数组对应位置的元素为 <code>undefined</code>(或无该元素)时,使用默认值.</p>
+      <pre><code>// 场景1:数组元素存在,优先使用数组值
 let arr = [1, 2, 3];
 let [f = 4, g = 5, h = 6] = arr; // f=1, g=2, h=3
 
@@ -159,17 +162,18 @@ let [m = 10, n = 20, p = 30] = arr2; // m=1, n=20, p=3
 
 // 场景3:数组长度不足,多余变量用默认值
 let [q = 5, r = 6, s = 7, t = 8] = arr; // q=1, r=2, s=3, t=8</code></pre>
-        <div class="note">
-            <strong>细节</strong>:只有元素为 <code>undefined</code> 时才会触发默认值,<code>null</code>/<code>0</code>/<code>''</code>
-            等「假值」不会触发.<br>
-            示例:<code>let [x = 10] = [null];</code> → <code>x = null</code>(而非 10).
-        </div>
-        <button onclick="defaultValueDemo()">运行默认值案例</button>
-        <div class="example-result" id="defaultResult"></div>
+      <div class="note">
+        <strong>细节</strong>:只有元素为
+        <code>undefined</code> 时才会触发默认值,<code>null</code>/<code>0</code>/<code>''</code>
+        等「假值」不会触发.<br />
+        示例:<code>let [x = 10] = [null];</code> → <code>x = null</code>(而非 10).
+      </div>
+      <button onclick="defaultValueDemo()">运行默认值案例</button>
+      <div class="example-result" id="defaultResult"></div>
 
-        <h3>4. 剩余参数(...)解构剩余元素</h3>
-        <p>用 <code>...变量名</code> 接收数组剩余的所有元素,会打包为一个新数组.</p>
-        <pre><code>let arr = [1, 2, 3, 4, 5];
+      <h3>4. 剩余参数(...)解构剩余元素</h3>
+      <p>用 <code>...变量名</code> 接收数组剩余的所有元素,会打包为一个新数组.</p>
+      <pre><code>let arr = [1, 2, 3, 4, 5];
 let [i, ...j] = arr; // i=1, j=[2,3,4,5]
 
 // 跳过元素后接收剩余
@@ -177,43 +181,44 @@ let [, k, ...l] = arr; // k=2, l=[3,4,5]
 
 // 剩余参数必须是最后一个变量(否则报错)
 let [...m, n] = arr; // SyntaxError: Rest element must be last element</code></pre>
-        <div class="warning">
-            <strong>注意</strong>:剩余参数 <code>...</code> 只能放在解构模式的最后一位,否则会报语法错误.
-        </div>
-        <button onclick="restParamDemo()">运行剩余参数案例</button>
-        <div class="example-result" id="restResult"></div>
+      <div class="warning">
+        <strong>注意</strong>:剩余参数 <code>...</code> 只能放在解构模式的最后一位,否则会报语法错误.
+      </div>
+      <button onclick="restParamDemo()">运行剩余参数案例</button>
+      <div class="example-result" id="restResult"></div>
 
-        <h3>5. 解构交换变量</h3>
-        <p>无需临时变量,直接交换两个/多个变量的值,是数组解构的经典实用场景.</p>
-        <pre><code>let x = 10;
+      <h3>5. 解构交换变量</h3>
+      <p>无需临时变量,直接交换两个/多个变量的值,是数组解构的经典实用场景.</p>
+      <pre><code>let x = 10;
 let y = 20;
 [x, y] = [y, x]; // x=20, y=10
 
 // 扩展:交换多个变量
 let a = 1, b = 2, c = 3;
 [a, b, c] = [c, a, b]; // a=3, b=1, c=2</code></pre>
-        <div class="note">
-            <strong>关键细节</strong>:交换语句前必须加 <code>;</code> 分号!<br>
-            原因:JavaScript 会将 <code>[x, y]</code> 解析为数组字面量,若前面无分号,可能和前一行代码拼接导致语法错误(如
-            <code>let y = 20 [x, y] = [y, x]</code>).
-        </div>
-        <button onclick="swapVarDemo()">运行变量交换案例</button>
-        <div class="example-result" id="swapResult"></div>
+      <div class="note">
+        <strong>关键细节</strong>:交换语句前必须加 <code>;</code> 分号!<br />
+        原因:JavaScript 会将
+        <code>[x, y]</code> 解析为数组字面量,若前面无分号,可能和前一行代码拼接导致语法错误(如
+        <code>let y = 20 [x, y] = [y, x]</code>).
+      </div>
+      <button onclick="swapVarDemo()">运行变量交换案例</button>
+      <div class="example-result" id="swapResult"></div>
 
-        <h3>6. 解构嵌套数组</h3>
-        <p>数组嵌套时,解构模式需和数组结构一致(多层 [] 匹配多层数组).</p>
-        <pre><code>let arr = [1, [2, 3], 4];
+      <h3>6. 解构嵌套数组</h3>
+      <p>数组嵌套时,解构模式需和数组结构一致(多层 [] 匹配多层数组).</p>
+      <pre><code>let arr = [1, [2, 3], 4];
 // 匹配嵌套结构:第一层取1,第二层取2、3,第一层取4
 let [a, [b, c], d] = arr; // a=1, b=2, c=3, d=4
 
 // 忽略嵌套中的元素
 let [e, [, f], g] = arr; // e=1, f=3, g=4</code></pre>
-        <button onclick="nestedDemo()">运行嵌套解构案例</button>
-        <div class="example-result" id="nestedResult"></div>
+      <button onclick="nestedDemo()">运行嵌套解构案例</button>
+      <div class="example-result" id="nestedResult"></div>
 
-        <h3>7. 解构类数组对象</h3>
-        <p>只要对象有 <code>length</code> 属性且可索引(如 arguments、NodeList),就能用数组解构.</p>
-        <pre><code>// 解构 arguments(函数参数类数组)
+      <h3>7. 解构类数组对象</h3>
+      <p>只要对象有 <code>length</code> 属性且可索引(如 arguments、NodeList),就能用数组解构.</p>
+      <pre><code>// 解构 arguments(函数参数类数组)
 function test() {
     let [a, b] = arguments;
     return [a, b];
@@ -226,44 +231,45 @@ test(10, 20); // [10, 20]
     </div>
 
     <div class="section">
-        <h2>三、数组解构的常见坑与注意事项</h2>
-        <ul>
-            <li>
-                <strong>解构未声明的变量时,需加括号</strong>:<br>
-                错误:<code>let arr = [1,2]; {x, y} = arr;</code>(语法错误)<br>
-                正确:<code>let arr = [1,2]; ({x, y} = arr);</code>(加括号)
-            </li>
-            <li>
-                <strong>解构 null/undefined 会报错</strong>:<br>
-                <code>let [a] = null;</code> / <code>let [b] = undefined;</code> → TypeError(无法解构 null/undefined)
-            </li>
-            <li>
-                <strong>解构非可迭代对象会报错</strong>:<br>
-                <code>let [a] = 123;</code> / <code>let [b] = {}</code> → TypeError(数字/普通对象不可迭代)
-            </li>
-            <li>
-                <strong>剩余参数不能单独使用</strong>:<br>
-                <code>let [...a] = [1,2,3];</code>(合法),<code>let [...]</code>(非法)
-            </li>
-        </ul>
+      <h2>三、数组解构的常见坑与注意事项</h2>
+      <ul>
+        <li>
+          <strong>解构未声明的变量时,需加括号</strong>:<br />
+          错误:<code>let arr = [1,2]; {x, y} = arr;</code>(语法错误)<br />
+          正确:<code>let arr = [1,2]; ({x, y} = arr);</code>(加括号)
+        </li>
+        <li>
+          <strong>解构 null/undefined 会报错</strong>:<br />
+          <code>let [a] = null;</code> / <code>let [b] = undefined;</code> → TypeError(无法解构
+          null/undefined)
+        </li>
+        <li>
+          <strong>解构非可迭代对象会报错</strong>:<br />
+          <code>let [a] = 123;</code> / <code>let [b] = {}</code> → TypeError(数字/普通对象不可迭代)
+        </li>
+        <li>
+          <strong>剩余参数不能单独使用</strong>:<br />
+          <code>let [...a] = [1,2,3];</code>(合法),<code>let [...]</code>(非法)
+        </li>
+      </ul>
     </div>
 
     <div class="section">
-        <h2>四、数组解构的实用场景</h2>
-        <h3>1. 函数返回多个值</h3>
-        <pre><code>function getUserInfo() {
+      <h2>四、数组解构的实用场景</h2>
+      <h3>1. 函数返回多个值</h3>
+      <pre><code>function getUserInfo() {
     return ['张三', 20, '男'];
 }
 let [name, age, gender] = getUserInfo(); // 一次性接收多个返回值
 </code></pre>
 
-        <h3>2. 提取数组中的特定元素</h3>
-        <pre><code>let data = ['2025-11-27', '订单1', 100, '已完成'];
+      <h3>2. 提取数组中的特定元素</h3>
+      <pre><code>let data = ['2025-11-27', '订单1', 100, '已完成'];
 let [date, , amount, status] = data; // 只提取日期、金额、状态
 </code></pre>
 
-        <h3>3. 解构赋值结合函数参数</h3>
-        <pre><code>// 直接解构函数参数(适合接收数组参数的场景)
+      <h3>3. 解构赋值结合函数参数</h3>
+      <pre><code>// 直接解构函数参数(适合接收数组参数的场景)
 function sum([a, b]) {
     return a + b;
 }
@@ -278,92 +284,93 @@ print([]); // 0 0
     </div>
 
     <div class="section">
-        <h2>五、总结</h2>
-        <p>数组解构的核心是「按位置匹配赋值」,核心价值:</p>
-        <ul>
-            <li>简化数组元素提取,替代传统的 <code>arr[0]</code>/<code>arr[1]</code> 写法;</li>
-            <li>支持默认值、剩余参数、嵌套解构,适配复杂数组结构;</li>
-            <li>经典场景:变量交换、函数多返回值接收、类数组解析;</li>
-            <li>注意避开「解构 null/undefined」「剩余参数位置错误」等坑.</li>
-        </ul>
+      <h2>五、总结</h2>
+      <p>数组解构的核心是「按位置匹配赋值」,核心价值:</p>
+      <ul>
+        <li>简化数组元素提取,替代传统的 <code>arr[0]</code>/<code>arr[1]</code> 写法;</li>
+        <li>支持默认值、剩余参数、嵌套解构,适配复杂数组结构;</li>
+        <li>经典场景:变量交换、函数多返回值接收、类数组解析;</li>
+        <li>注意避开「解构 null/undefined」「剩余参数位置错误」等坑.</li>
+      </ul>
     </div>
 
     <script>
-        // 1. 基础案例
-        function basicDemo() {
-            let arr = [1, 2, 3];
-            let [a, b, c] = arr;
-            let [d, e] = arr;
-            let [f, g, h, i] = arr;
-            const result = `
+      // 1. 基础案例
+      function basicDemo() {
+        let arr = [1, 2, 3]
+        let [a, b, c] = arr
+        let [d, e] = arr
+        let [f, g, h, i] = arr
+        const result = `
 完整匹配:a=${a}, b=${b}, c=${c}
 变量数<数组元素数:d=${d}, e=${e}
 变量数>数组元素数:f=${f}, g=${g}, h=${h}, i=${i}
-            `.trim();
-            document.getElementById('basicResult').textContent = result;
-            console.log(result);
-        }
+            `.trim()
+        document.getElementById('basicResult').textContent = result
+        console.log(result)
+      }
 
-        // 2. 默认值案例
-        function defaultValueDemo() {
-            let arr = [1, 2, 3];
-            let [f = 4, g = 5, h = 6] = arr;
-            let arr2 = [1, undefined, 3];
-            let [m = 10, n = 20, p = 30] = arr2;
-            let [q = 5, r = 6, s = 7, t = 8] = arr;
-            // 测试null不触发默认值
-            let [x = 10] = [null];
-            const result = `
+      // 2. 默认值案例
+      function defaultValueDemo() {
+        let arr = [1, 2, 3]
+        let [f = 4, g = 5, h = 6] = arr
+        let arr2 = [1, undefined, 3]
+        let [m = 10, n = 20, p = 30] = arr2
+        let [q = 5, r = 6, s = 7, t = 8] = arr
+        // 测试null不触发默认值
+        let [x = 10] = [null]
+        const result = `
 数组元素存在:f=${f}, g=${g}, h=${h}
 元素为undefined:m=${m}, n=${n}, p=${p}
 数组长度不足:q=${q}, r=${r}, s=${s}, t=${t}
 null不触发默认值:x=${x}
-            `.trim();
-            document.getElementById('defaultResult').textContent = result;
-            console.log(result);
-        }
+            `.trim()
+        document.getElementById('defaultResult').textContent = result
+        console.log(result)
+      }
 
-        // 3. 剩余参数案例
-        function restParamDemo() {
-            let arr = [1, 2, 3, 4, 5];
-            let [i, ...j] = arr;
-            let [, k, ...l] = arr;
-            const result = `
+      // 3. 剩余参数案例
+      function restParamDemo() {
+        let arr = [1, 2, 3, 4, 5]
+        let [i, ...j] = arr
+        let [, k, ...l] = arr
+        const result = `
 基础剩余参数:i=${i}, j=${JSON.stringify(j)}
 跳过元素后剩余:k=${k}, l=${JSON.stringify(l)}
-            `.trim();
-            document.getElementById('restResult').textContent = result;
-            console.log(result);
-        }
+            `.trim()
+        document.getElementById('restResult').textContent = result
+        console.log(result)
+      }
 
-        // 4. 变量交换案例
-        function swapVarDemo() {
-            let x = 10;
-            let y = 20;
-            [x, y] = [y, x];
-            let a = 1, b = 2, c = 3;
-            [a, b, c] = [c, a, b];
-            const result = `
+      // 4. 变量交换案例
+      function swapVarDemo() {
+        let x = 10
+        let y = 20
+        ;[x, y] = [y, x]
+        let a = 1,
+          b = 2,
+          c = 3
+        ;[a, b, c] = [c, a, b]
+        const result = `
 交换两个变量:x=${x}, y=${y}
 交换多个变量:a=${a}, b=${b}, c=${c}
-            `.trim();
-            document.getElementById('swapResult').textContent = result;
-            console.log(result);
-        }
+            `.trim()
+        document.getElementById('swapResult').textContent = result
+        console.log(result)
+      }
 
-        // 5. 嵌套解构案例
-        function nestedDemo() {
-            let arr = [1, [2, 3], 4];
-            let [a, [b, c], d] = arr;
-            let [e, [, f], g] = arr;
-            const result = `
+      // 5. 嵌套解构案例
+      function nestedDemo() {
+        let arr = [1, [2, 3], 4]
+        let [a, [b, c], d] = arr
+        let [e, [, f], g] = arr
+        const result = `
 完整嵌套解构:a=${a}, b=${b}, c=${c}, d=${d}
 忽略嵌套元素:e=${e}, f=${f}, g=${g}
-            `.trim();
-            document.getElementById('nestedResult').textContent = result;
-            console.log(result);
-        }
+            `.trim()
+        document.getElementById('nestedResult').textContent = result
+        console.log(result)
+      }
     </script>
-</body>
-
+  </body>
 </html>
