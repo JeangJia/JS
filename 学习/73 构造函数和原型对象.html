@@ -11,7 +11,8 @@
     // 每个对象(除了 null 和 Object.prototype 本身)都隐含一个指向其原型对象的内部链接
 
     // 构造函数
-    function Person(name, age) {
+    function Star(name, age) {
+      // 公共的属性, 直接添加到构造函数中
       this.name = name
       this.age = age
       // 直接添加到构造函数中, 会导致每个实例都有一个方法, 占用内存空间
@@ -19,36 +20,42 @@
       //     console.log(this.name)
       // }
     }
-    // 添加多个方法时,推  荐使用原型链添加,而不是直接添加到构造函数中
-    Person.prototype.sayName = function () {
+    // 公共的方法,使用原型链添加,而不是直接添加到构造函数中
+    Star.prototype.sayName = function () {
+      // 构造函数和原型里面的this都指向当前实例对象
+      // 构造函数中this.name 和 原型链中的this.name 是两个不同的变量, 一个在构造函数中, 一个在原型链中
       console.log(this.name)
     }
-    Person.prototype.sayAge = function () {
+    Star.prototype.sayAge = function () {
       console.log(this.age)
     }
-
-    // 原型对象
-    // constructor 指向构造函数
-    // 会直接覆盖原型对象, 所以要手动设置 constructor 指向构造函数
-    Person.prototype = {
-      // 恢复原型对象的 constructor 指向,让原型和构造函数保持正确的关联关系.
-      constructor: Person, // 重新指向构造函数
-      sing: function () {
-        console.log('唱歌')
-      },
-      dance: function () {
-        console.log('跳舞')
-      },
-    }
-    // 实例化对象
-    const p1 = new Person('张三', 18)
-    console.log(p1.constructor === Person) // true // 实例化对象的 constructor 指向构造函数
-    console.log(p1.__proto__ === Person.prototype) // true // 实例化对象的 __proto__ 指向原型对象
-    console.log(p1.constructor === Person.prototype.constructor) // true
+    const p1 = new Star('张三', 18)
     console.log(p1)
-    // p1.sayName()
-    // p1.sayAge() // 报错, 因为原型对象已经被覆盖, 所以原型对象上的方法也会被覆盖
-    p1.sing()
-    p1.dance()
+    p1.sayName()
+    p1.sayAge()
+
+    // 批量挂载原型方法
+    const a = new Array(1, 2, 3)
+    console.log(a)
+    // 通过assign 来实现
+    Object.assign(Array.prototype, {
+      min(a) {
+        return Math.min(...a)
+      },
+      max() {
+        return Math.max(...this)
+      },
+    })
+    // 通过clss 来实现
+    // class Array {
+    //   min(a) {
+    //     return Math.min(...a)
+    //   }
+    //   max() {
+    //     return Math.max(...this)
+    //   }
+    // }
+    console.log(a.min(a))
+    console.log(a.max())
   </script>
 </html>
