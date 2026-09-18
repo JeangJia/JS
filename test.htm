@@ -21,13 +21,7 @@
       const stu8 = new Stu('周十', 32)
       const a = [stu1, stu2, stu3, stu4, stu5, stu6, stu7, stu8]
       console.log(a)
-      const ret = a.find((item) => item.age === 18)
-      console.log(ret)
-      console.log(typeof a.filter((item) => item.age >= 30))
-      if (a.find((item) => item.name === '孙九')) console.log('yes')
-      else console.log('no')
-      console.log(a.every((item) => item.age > 17))
-      console.log(a.filter((item) => item.age > 17))
+      a.forEach((item) => console.log(Object.values(item)))
     </script>
   </body>
 </html>

@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* ========== 一、创建与拷贝 ========== */
+      const src = { a: 1, b: { c: 2 } }
+      const copy = Object.assign({}, src) // 浅拷贝：改 copy.b.c 会连带 src
+      const copy2 = { ...src } // 等价写法
+
+      Object.fromEntries([
+        ['a', 1],
+        ['b', 2],
+      ]) // { a: 1, b: 2 }
+      Object.fromEntries(new Map([['x', 9]])) // { x: 9 }
+
+      copy.b.c = 99
+      console.log(src.b.c) // 99 —— 浅拷贝只复制第一层，嵌套对象仍是同一个引用
+      console.log(copy2.b === src.b) // true
+
+      // Object.create：指定原型创建对象
+      const animal = {
+        eat() {
+          console.log('吃东西')
+        },
+      }
+      const dog = Object.create(animal) // dog 的原型指向 animal
+      dog.eat() // 吃东西（沿原型链找到）
+      console.log(Object.getPrototypeOf(dog) === animal) // true
+
+      const dict = Object.create(null) // 无原型的"纯净字典"
+      dict.name = '张三'
+      console.log(dict.toString) // undefined，不会被 Object.prototype 干扰
+
+      /* ========== 二、遍历与转换（只取自身可枚举属性） ========== */
+      const obj = { name: '张三', age: 18, [Symbol('id')]: 1 }
+      console.log(Object.keys(obj)) // ['name', 'age'] —— 不含 Symbol 键
+      console.log(Object.values(obj)) // ['张三', 18]
+      console.log(Object.entries(obj)) // [['name','张三'], ['age',18]]
+
+      // 常用套路：entries + 解构遍历
+      for (const [key, value] of Object.entries(obj)) {
+        console.log(key, value) // name 张三 → age 18
+      }
+
+      // entries 与 fromEntries 互逆
+      console.log(Object.fromEntries(Object.entries(obj))) // 还原成对象（Symbol 键会丢）
+
+      // 与 for...in 的区别：for...in 会把原型链上的属性也遍历出来
+      const child = Object.create({ inherited: 1 })
+      child.own = 2
+      for (const k in child) {
+        console.log('for...in:', k) // own → inherited
+      }
+      console.log('keys:', Object.keys(child)) // ['own']
+
+      /* ========== 三、属性描述符 / 元信息 ========== */
+      const user = {}
+      Object.defineProperty(user, 'id', {
+        value: 1001,
+        writable: false, // 不可修改
+        enumerable: false, // 不可被遍历
+        configurable: false, // 不可删除、不可重新定义
+      })
+      console.log(user.id) // 1001
+      user.id = 999 // 静默失败（严格模式会抛 TypeError）
+      console.log(user.id) // 1001
+      console.log(Object.keys(user)) // [] —— enumerable:false，遍历不到
+      console.log(Object.getOwnPropertyDescriptor(user, 'id'))
+
+      // getOwnPropertyDescriptors + defineProperties：连不可枚举属性、访问器一起"完整拷贝"
+      const clone = Object.defineProperties({}, Object.getOwnPropertyDescriptors(user))
+      console.log(clone.id) // 1001
+      console.log(Object.keys(clone)) // []
+
+      // 用访问器实现"计算属性"
+      const rect = { w: 3, h: 4 }
+      Object.defineProperty(rect, 'area', {
+        get() {
+          return this.w * this.h
+        },
+      })
+      console.log(rect.area) // 12 (3 * 4)
+
+      /* ========== 四、原型 / 继承 ========== */
+      const base = {
+        hello() {
+          console.log('hello')
+        },
+      }
+      const sub = {}
+      Object.setPrototypeOf(sub, base) // 慎用：会打乱引擎对对象结构的优化，通常用 Object.create 代替
+      sub.hello() // hello
+      console.log(Object.getPrototypeOf(sub) === base) // true
+
+      /* ========== 五、限制对象（不可变 / 封闭） ========== */
+      const cfg = Object.freeze({ a: 1 })
+      cfg.a = 2 // 静默失败
+      console.log(cfg.a) // 1
+      console.log(Object.isFrozen(cfg)) // true
+
+      const sealed = Object.seal({ x: 1 })
+      sealed.x = 2 // 可以改
+      delete sealed.x // 不能删
+      sealed.y = 3 // 不能加
+      console.log(sealed) // { x: 2 }
+      console.log(Object.isSealed(sealed)) // true
+
+      console.log(Object.isExtensible({})) // true（普通对象默认可扩展）
+
+      // freeze / seal 都是"浅"的：嵌套对象仍然能改
+      const deep = Object.freeze({ inner: { v: 1 } })
+      deep.inner.v = 100
+      console.log(deep.inner.v) // 100 —— 浅冻结拦不住
+
+      /* ========== 六、判断与比较 ========== */
+      console.log(Object.hasOwn({ a: 1 }, 'a')) // true
+      console.log(Object.hasOwn({}, 'toString')) // false —— 不查原型链
+      console.log(Object.hasOwn(Object.create(null), 'a')) // false —— 静态方法更安全
+      // 对比：无原型对象直接调用 hasOwnProperty 会报错
+      // Object.create(null).hasOwnProperty('a') // TypeError: not a function
+
+      console.log(Object.is(NaN, NaN)) // true（=== 是 false）
+      console.log(Object.is(0, -0)) // false（=== 是 true）
+
+      /* ========== 七、分组（ES2024，需 Chrome 117+ / Node 21+） ========== */
+      if (typeof Object.groupBy === 'function') {
+        console.log(Object.groupBy([1, 2, 3, 4, 5], (n) => (n % 2 ? 'odd' : 'even')))
+        // { odd: [1, 3, 5], even: [2, 4] }
+      } else {
+        console.log('当前环境不支持 Object.groupBy')
+      }
+    </script>
+  </body>
+</html>
