@@ -11,8 +11,23 @@
         this.name = name
         this.age = age
       }
-      const stu = new Stu('张三', 18)
-      console.log(stu)
+      const stu1 = new Stu('张三', 18)
+      const stu2 = new Stu('李四', 20)
+      const stu3 = new Stu('王五', 22)
+      const stu4 = new Stu('赵六', 24)
+      const stu5 = new Stu('田七', 26)
+      const stu6 = new Stu('钱八', 28)
+      const stu7 = new Stu('孙九', 30)
+      const stu8 = new Stu('周十', 32)
+      const a = [stu1, stu2, stu3, stu4, stu5, stu6, stu7, stu8]
+      console.log(a)
+      const ret = a.find((item) => item.age === 18)
+      console.log(ret)
+      console.log(typeof a.filter((item) => item.age >= 30))
+      if (a.find((item) => item.name === '孙九')) console.log('yes')
+      else console.log('no')
+      console.log(a.every((item) => item.age > 17))
+      console.log(a.filter((item) => item.age > 17))
     </script>
   </body>
 </html>
