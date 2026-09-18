@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript 常用字符串方法完全解析</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Microsoft Yahei', sans-serif;
+      }
+
+      body {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 0 20px;
+        line-height: 1.8;
+        color: #333;
+      }
+
+      h1 {
+        color: #2c3e50;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+      }
+
+      h2 {
+        color: #3498db;
+        margin: 25px 0 15px;
+        padding-left: 10px;
+        border-left: 4px solid #3498db;
+      }
+
+      h3 {
+        color: #2980b9;
+        margin: 20px 0 10px;
+      }
+
+      .section {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+      }
+
+      code {
+        background: #e9ecef;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Consolas', monospace;
+        color: #e74c3c;
+      }
+
+      pre {
+        background: #f1f3f5;
+        padding: 10px 15px;
+        border-radius: 6px;
+        overflow-x: auto;
+        margin: 10px 0;
+        border-left: 4px solid #3498db;
+      }
+
+      pre code {
+        color: #333;
+        padding: 0;
+        background: none;
+      }
+
+      .note {
+        background: #fff8e1;
+        padding: 10px;
+        border-radius: 4px;
+        margin: 10px 0;
+        border-left: 4px solid #ffc107;
+      }
+
+      .warning {
+        background: #ffebee;
+        padding: 10px;
+        border-radius: 4px;
+        margin: 10px 0;
+        border-left: 4px solid #f44336;
+      }
+
+      .example-result {
+        background: #e8f5e9;
+        padding: 8px;
+        border-radius: 4px;
+        margin: 5px 0;
+        font-family: 'Consolas', monospace;
+        white-space: pre-wrap;
+      }
+
+      button {
+        padding: 6px 12px;
+        background: #3498db;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 5px 0;
+      }
+
+      button:hover {
+        background: #2980b9;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 15px 0;
+      }
+
+      table th,
+      table td {
+        border: 1px solid #ddd;
+        padding: 8px 12px;
+        text-align: left;
+      }
+
+      table th {
+        background: #e9ecef;
+      }
+
+      .method-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 10px 0;
+      }
+
+      .method-group button {
+        flex: 1;
+        min-width: 120px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>JavaScript 常用字符串方法完全解析</h1>
+
+    <div class="section">
+      <div class="warning">
+        <strong>前提认知</strong>:字符串是<strong>不可变</strong>的 ——
+        所有字符串方法<strong>都不会修改原字符串</strong>,而是返回新的字符串或数组;下标赋值
+        <code>str[0] = 'x'</code> 无效(严格模式报错).
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>一、常用字符串方法总览(按用途分类)</h2>
+      <table>
+        <tr>
+          <th>用途分类</th>
+          <th>方法</th>
+          <th>返回值</th>
+          <th>是否修改原字符串</th>
+          <th>核心作用</th>
+        </tr>
+        <tr>
+          <td rowspan="2">长度 / 取字符</td>
+          <td>length(属性)</td>
+          <td>数字</td>
+          <td>否</td>
+          <td>字符个数(UTF-16 码元数)</td>
+        </tr>
+        <tr>
+          <td>at / charAt / charCodeAt</td>
+          <td>字符 / 编码数字</td>
+          <td>否</td>
+          <td>按下标取字符或字符编码</td>
+        </tr>
+        <tr>
+          <td rowspan="3">查找</td>
+          <td>indexOf / lastIndexOf</td>
+          <td>下标 / -1</td>
+          <td>否</td>
+          <td>子串首次 / 最后出现的位置</td>
+        </tr>
+        <tr>
+          <td>includes</td>
+          <td>布尔值</td>
+          <td>否</td>
+          <td>是否包含子串(推荐)</td>
+        </tr>
+        <tr>
+          <td>startsWith / endsWith</td>
+          <td>布尔值</td>
+          <td>否</td>
+          <td>是否以某串开头 / 结尾</td>
+        </tr>
+        <tr>
+          <td rowspan="3">截取</td>
+          <td>slice</td>
+          <td>新字符串</td>
+          <td>否</td>
+          <td>截取,支持负数索引(推荐)</td>
+        </tr>
+        <tr>
+          <td>substring</td>
+          <td>新字符串</td>
+          <td>否</td>
+          <td>截取,自动交换参数,不支持负数</td>
+        </tr>
+        <tr>
+          <td>substr(已废弃)</td>
+          <td>新字符串</td>
+          <td>否</td>
+          <td>截取,第二个参数是长度</td>
+        </tr>
+        <tr>
+          <td rowspan="4">格式化</td>
+          <td>trim / trimStart / trimEnd</td>
+          <td>新字符串</td>
+          <td>否</td>
+          <td>去除首尾 / 开头 / 结尾空格</td>
+        </tr>
+        <tr>
+          <td>padStart / padEnd</td>
+          <td>新字符串</td>
+          <td>否</td>
+          <td>补位到指定长度</td>
+        </tr>
+        <tr>
+          <td>repeat</td>
+          <td>新字符串</td>
+          <td>否</td>
+          <td>重复指定次数</td>
+        </tr>
+        <tr>
+          <td>toUpperCase / toLowerCase</td>
+          <td>新字符串</td>
+          <td>否</td>
+          <td>转大写 / 小写</td>
+        </tr>
+        <tr>
+          <td>替换</td>
+          <td>replace / replaceAll</td>
+          <td>新字符串</td>
+          <td>否</td>
+          <td>替换首个 / 全部匹配项</td>
+        </tr>
+        <tr>
+          <td>分割 / 转换</td>
+          <td>split</td>
+          <td>数组</td>
+          <td>否</td>
+          <td>字符串 → 数组(与 join 互逆)</td>
+        </tr>
+        <tr>
+          <td>正则相关</td>
+          <td>match / matchAll / search</td>
+          <td>数组 / 迭代器 / 下标</td>
+          <td>否</td>
+          <td>正则匹配、提取、定位</td>
+        </tr>
+        <tr>
+          <td>比较 / 其他</td>
+          <td>localeCompare</td>
+          <td>负数 / 0 / 正数</td>
+          <td>否</td>
+          <td>本地化比较(配合 sort 排序)</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="section">
+      <h2>二、长度与取字符(length / at / charAt / charCodeAt)</h2>
+      <pre><code>const str = 'hello world';
+
+console.log(str.length);        // 11
+console.log(str[0]);            // 'h'(只读,不能赋值)
+console.log(str.at(-1));        // 'd'(at 支持负数,推荐)
+console.log(str.charAt(0));     // 'h'(越界返回 '')
+console.log(str.charCodeAt(0)); // 104(UTF-16 编码)
+console.log(String.fromCharCode(72, 105)); // 'Hi'(编码 → 字符)
+
+// emoji 等特殊字符占 2 个码元,要用码点或展开运算符处理
+const emoji = '😀';
+console.log(emoji.length);        // 2
+console.log([...emoji].length);   // 1(按真正的字符算)</code></pre>
+      <button onclick="charDemo()">运行取字符案例</button>
+      <div class="example-result" id="charResult"></div>
+      <div class="note">
+        <strong>细节</strong>:<code>str.at(-1)</code> 等价于
+        <code>str[str.length - 1]</code>,但写法更简洁; <code>charAt</code> 越界返回空串,而
+        <code>[ ]</code> 越界返回 <code>undefined</code>.
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>三、查找与判断(indexOf / lastIndexOf / includes / startsWith / endsWith)</h2>
+      <h3>1. indexOf / lastIndexOf:返回下标,找不到返回 -1</h3>
+      <pre><code>const str = 'hello world';
+
+console.log(str.indexOf('world'));    // 6(首次出现)
+console.log(str.indexOf('o', 5));     // 7(从下标 5 开始找)
+console.log(str.lastIndexOf('o'));    // 7(最后一次出现)
+console.log(str.indexOf('abc'));      // -1(不存在)</code></pre>
+
+      <h3>2. includes / startsWith / endsWith:返回布尔值(推荐用于判断)</h3>
+      <pre><code>console.log(str.includes('llo'));       // true
+console.log(str.includes('llo', 5));    // false(从下标 5 开始找)
+console.log(str.startsWith('hello'));   // true
+console.log(str.endsWith('world'));     // true
+console.log(str.endsWith('hello', 5));  // true(只判断前 5 位)</code></pre>
+      <button onclick="findDemo()">运行查找案例</button>
+      <div class="example-result" id="findResult"></div>
+      <div class="note">
+        <strong>细节</strong>:只判断「有没有」时优先用 <code>includes</code>,不要写成
+        <code>indexOf(x) !== -1</code>;<code>indexOf</code> 只支持字符串,正则匹配要用
+        <code>search</code>.
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>四、截取三兄弟对比(slice / substring / substr)</h2>
+      <table>
+        <tr>
+          <th>方法</th>
+          <th>参数含义</th>
+          <th>负数值</th>
+          <th>start &gt; end 时</th>
+          <th>状态</th>
+        </tr>
+        <tr>
+          <td>slice(start, end)</td>
+          <td>起始下标, 结束下标(不含)</td>
+          <td>支持,从末尾倒数</td>
+          <td>返回空串</td>
+          <td>推荐使用</td>
+        </tr>
+        <tr>
+          <td>substring(start, end)</td>
+          <td>起始下标, 结束下标(不含)</td>
+          <td>不支持,按 0 处理</td>
+          <td>自动交换两个参数</td>
+          <td>可用</td>
+        </tr>
+        <tr>
+          <td>substr(start, length)</td>
+          <td>起始下标, 截取长度</td>
+          <td>start 支持负数</td>
+          <td>无此概念</td>
+          <td>已废弃,不要用</td>
+        </tr>
+      </table>
+      <pre><code>const str = 'hello world';
+
+// slice:推荐,支持负数
+console.log(str.slice(0, 5));    // 'hello'
+console.log(str.slice(6));       // 'world'(省略 end 表示到末尾)
+console.log(str.slice(-5));      // 'world'(从末尾倒数 5 个)
+console.log(str.slice(0, -6));   // 'hello'
+console.log(str.slice(6, 2));    // ''(start > end 返回空串)
+
+// substring:不支持负数,会自动交换参数(容易踩坑)
+console.log(str.substring(0, 5)); // 'hello'
+console.log(str.substring(5, 0)); // 'hello'(自动交换)
+console.log(str.substring(-3));   // 'hello world'(负数当成 0)
+
+// substr:第二个参数是长度(已废弃)
+console.log(str.substr(6, 3));    // 'wor'</code></pre>
+      <button onclick="sliceDemo()">运行截取案例</button>
+      <div class="example-result" id="sliceResult"></div>
+      <div class="warning">
+        <strong>坑点</strong>:<code>substring</code> 会把负数当 0 处理,又会在 start &gt; end
+        时自动交换参数, 结果往往和直觉相反 —— 新代码统一用 <code>slice</code> 即可.
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>五、修改与格式化(trim / pad / repeat / replace / 大小写)</h2>
+      <h3>1. 大小写与去空格</h3>
+      <pre><code>console.log('aBc'.toUpperCase());   // 'ABC'
+console.log('aBc'.toLowerCase());   // 'abc'
+console.log('  hi  '.trim());       // 'hi'
+console.log('  hi  '.trimStart());  // 'hi  '
+console.log('  hi  '.trimEnd());    // '  hi'</code></pre>
+
+      <h3>2. 补位与重复:padStart / padEnd / repeat</h3>
+      <pre><code>console.log('5'.padStart(3, '0'));   // '005'(常用于时间、编号格式化)
+console.log('5'.padEnd(3, '-'));     // '5--'
+console.log('中文'.padEnd(4, '*'));  // '中文**'
+console.log('ab'.repeat(3));         // 'ababab'</code></pre>
+
+      <h3>3. 替换:replace / replaceAll</h3>
+      <pre><code>const str = 'hello world';
+
+console.log(str.replace('world', 'js'));   // 'hello js'(只替换第一个)
+console.log('a-b-c'.replace('-', '+'));    // 'a+b-c'
+console.log('a-b-c'.replaceAll('-', '+')); // 'a+b+c'(ES2021,全部替换)
+console.log(str.replace(/l/g, '*'));       // 'he**o wor*d'(正则 + g 也能全替换)</code></pre>
+      <button onclick="formatDemo()">运行格式化案例</button>
+      <div class="example-result" id="formatResult"></div>
+      <div class="note">
+        <strong>细节</strong>:<code>padStart</code> 的第一个参数是「总长度」,不足才补;
+        补位字符默认是空格.时间格式化常写成 <code>String(h).padStart(2, '0')</code>.
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>六、分割与转换(split / Array.from / 展开运算符)</h2>
+      <pre><code>const str = 'hello world';
+
+console.log(str.split(' '));      // ['hello', 'world']
+console.log(str.split(''));       // 按单个字符拆开
+console.log([...str]);            // 同上,但能正确处理 emoji
+console.log('a,b,c'.split(',', 2)); // ['a', 'b'](第二个参数限制数组长度)
+console.log(['hello', 'world'].join('-')); // 'hello-world'(与 split 互逆)
+console.log(Array.from('abc'));   // ['a', 'b', 'c']</code></pre>
+      <button onclick="splitDemo()">运行分割案例</button>
+      <div class="example-result" id="splitResult"></div>
+      <div class="note">
+        <strong>细节</strong>:<code>split('')</code> 会按「码元」拆分,emoji 会被拆成两半出错;
+        要按真正的字符拆分请用 <code>[...str]</code> 或 <code>Array.from(str)</code>.
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>七、正则相关(match / matchAll / search)</h2>
+      <pre><code>const str = 'a1b22c333';
+
+console.log(str.search(/wor/));            // 返回下标(支持正则的 indexOf)
+console.log(str.match(/\d+/));             // 第一个匹配:'1'
+console.log(str.match(/\d+/g));            // 全部匹配:['1', '22', '333']
+console.log([...str.matchAll(/\d+/g)]);    // matchAll 返回「迭代器」,要展开
+console.log(str.matchAll(/\d+/g).next().value[0]); // '1'</code></pre>
+      <button onclick="regexDemo()">运行正则案例</button>
+      <div class="example-result" id="regexResult"></div>
+      <div class="note">
+        <strong>细节</strong>:<code>matchAll</code> 必须带 <code>g</code> 标志,且返回的是迭代器,
+        一般要 <code>[...str.matchAll(/x/g)]</code> 或配合 <code>for...of</code> 使用.
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>八、其他实用方法(localeCompare / String.raw / toFixed)</h2>
+      <pre><code>// 1. localeCompare:本地化比较,返回负数/0/正数,排序时用
+console.log('a'.localeCompare('b'));  // -1(a 排在 b 前)
+const arr = ['b', 'a', 'c'];
+console.log(arr.sort((x, y) => x.localeCompare(y))); // ['a', 'b', 'c']
+
+// 2. String.raw:原样输出,不处理转义字符
+console.log(String.raw`C:\new\test`); // C:\new\test
+
+// 3. 数字 → 字符串
+const num = 123.456;
+console.log(num.toFixed(2));   // '123.46'(保留 2 位小数)
+console.log(num.toString());   // '123.456'
+console.log(String(num));      // '123.456'</code></pre>
+      <button onclick="otherDemo()">运行其他案例</button>
+      <div class="example-result" id="otherResult"></div>
+    </div>
+
+    <div class="section">
+      <h2>九、实战综合案例</h2>
+      <pre><code>// 1. 手机号脱敏:13812345678 → 138****5678
+const phone = '13812345678';
+const hidePhone = phone.slice(0, 3) + '****' + phone.slice(-4);
+
+// 2. 判断回文:去空格、统一小写后,正着读和倒着读相同
+function isPalindrome(text) {
+    const clean = text.replace(/\s/g, '').toLowerCase();
+    return clean === [...clean].reverse().join('');
+}
+
+// 3. 统计每个字符出现的次数
+const count = {};
+for (const ch of 'hello') {
+    count[ch] = (count[ch] || 0) + 1;
+}
+
+// 4. 首字母大写(单词)
+function capitalize(text) {
+    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+}
+
+// 5. 解析 URL 查询串为对象(简单版)
+function parseQuery(url) {
+    const query = url.split('?')[1];
+    if (!query) return {};
+    return Object.fromEntries(query.split('&').map(item => item.split('=')));
+}</code></pre>
+      <button onclick="combatDemo()">运行综合实战案例</button>
+      <div class="example-result" id="combatResult"></div>
+    </div>
+
+    <div class="section">
+      <h2>十、字符串方法使用原则</h2>
+      <ul>
+        <li>✅ <strong>记住字符串不可变</strong>:所有方法返回新值,想生效必须接收返回值;</li>
+        <li>
+          ✅ <strong>截取统一用 slice</strong>,支持负数、行为可预期,避开 substring/substr 的坑;
+        </li>
+        <li>✅ <strong>判断包含用 includes</strong>,别写 <code>indexOf(x) !== -1</code>;</li>
+        <li>
+          ✅ <strong>字符串 ↔ 数组靠 split / join</strong>,要按字符拆时用 <code>[...str]</code> 处理
+          emoji;
+        </li>
+        <li>✅ <strong>补位格式化用 padStart</strong>,例如时间、编号补 0;</li>
+        <li>
+          ✅ <strong>批量替换新环境用 replaceAll</strong>,老环境用 <code>replace(/x/g, '')</code>;
+        </li>
+        <li>❌ <strong>不要用 substr</strong>,已废弃,新代码改用 slice(注意第二个参数含义不同).</li>
+      </ul>
+    </div>
+
+    <script>
+      const str = 'hello world'
+
+      // 1. 取字符
+      function charDemo() {
+        const emoji = '😀'
+        let result = `str = "${str}"\n`
+        result += `length:${str.length}\n`
+        result += `str[0]:${str[0]}\n`
+        result += `at(-1):${str.at(-1)}\n`
+        result += `charAt(0):${str.charAt(0)}\n`
+        result += `charCodeAt(0):${str.charCodeAt(0)}\n`
+        result += `fromCharCode(72,105):${String.fromCharCode(72, 105)}\n`
+        result += `emoji.length:${emoji.length},[...emoji].length:${[...emoji].length}\n`
+        result += `codePointAt(0):${emoji.codePointAt(0)},fromCodePoint:${String.fromCodePoint(
+          emoji.codePointAt(0)
+        )}`
+
+        document.getElementById('charResult').textContent = result
+        console.log(result)
+      }
+
+      // 2. 查找
+      function findDemo() {
+        let result = `indexOf('world'):${str.indexOf('world')}\n`
+        result += `indexOf('o',5):${str.indexOf('o', 5)}\n`
+        result += `lastIndexOf('o'):${str.lastIndexOf('o')}\n`
+        result += `indexOf('abc'):${str.indexOf('abc')}\n`
+        result += `includes('llo'):${str.includes('llo')}\n`
+        result += `includes('llo',5):${str.includes('llo', 5)}\n`
+        result += `startsWith('hello'):${str.startsWith('hello')}\n`
+        result += `endsWith('world'):${str.endsWith('world')}\n`
+        result += `endsWith('hello',5):${str.endsWith('hello', 5)}\n`
+        result += `search(/wor/):${str.search(/wor/)}`
+
+        document.getElementById('findResult').textContent = result
+        console.log(result)
+      }
+
+      // 3. 截取三兄弟
+      function sliceDemo() {
+        let result = `slice(0,5):"${str.slice(0, 5)}"\n`
+        result += `slice(6):"${str.slice(6)}"\n`
+        result += `slice(-5):"${str.slice(-5)}"\n`
+        result += `slice(0,-6):"${str.slice(0, -6)}"\n`
+        result += `slice(6,2):"${str.slice(6, 2)}"(start > end 返回空串)\n`
+        result += `substring(0,5):"${str.substring(0, 5)}"\n`
+        result += `substring(5,0):"${str.substring(5, 0)}"(自动交换)\n`
+        result += `substring(-3):"${str.substring(-3)}"(负数当 0)\n`
+        result += `substr(6,3):"${str.substr(6, 3)}"(已废弃)`
+
+        document.getElementById('sliceResult').textContent = result
+        console.log(result)
+      }
+
+      // 4. 格式化
+      function formatDemo() {
+        let result = `toUpperCase:"${'aBc'.toUpperCase()}"\n`
+        result += `toLowerCase:"${'aBc'.toLowerCase()}"\n`
+        result += `trim():"${'  hi  '.trim()}"\n`
+        result += `trimStart():"${'  hi  '.trimStart()}"\n`
+        result += `trimEnd():"${'  hi  '.trimEnd()}"\n`
+        result += `padStart:'${'5'.padStart(3, '0')}'\n`
+        result += `padEnd:'${'5'.padEnd(3, '-')}'\n`
+        result += `中文 padEnd(4,'*'):'${'中文'.padEnd(4, '*')}'\n`
+        result += `repeat(3):'${'ab'.repeat(3)}'\n`
+        result += `replace('world','js'):"${str.replace('world', 'js')}"\n`
+        result += `'a-b-c'.replace('-','+'):"${'a-b-c'.replace('-', '+')}"\n`
+        result += `'a-b-c'.replaceAll('-','+'):"${'a-b-c'.replaceAll('-', '+')}"\n`
+        result += `replace(/l/g,'*'):"${str.replace(/l/g, '*')}"`
+
+        document.getElementById('formatResult').textContent = result
+        console.log(result)
+      }
+
+      // 5. 分割与转换
+      function splitDemo() {
+        let result = `split(' '):${JSON.stringify(str.split(' '))}\n`
+        result += `split(''):${JSON.stringify(str.split(''))}\n`
+        result += `[...str]:${JSON.stringify([...str])}\n`
+        result += `'a,b,c'.split(',',2):${JSON.stringify('a,b,c'.split(',', 2))}\n`
+        result += `['hello','world'].join('-'):"${['hello', 'world'].join('-')}"\n`
+        result += `Array.from('abc'):${JSON.stringify(Array.from('abc'))}\n`
+        result += `[...'😀']:${JSON.stringify([...'😀'])}(emoji 按 1 个字符拆)`
+
+        document.getElementById('splitResult').textContent = result
+        console.log(result)
+      }
+
+      // 6. 正则相关
+      function regexDemo() {
+        const text = 'a1b22c333'
+        let result = `text = "${text}"\n`
+        result += `match(/\\d+/):${JSON.stringify(text.match(/\d+/))}\n`
+        result += `match(/\\d+/g):${JSON.stringify(text.match(/\d+/g))}\n`
+        result += `[...matchAll(/\\d+/g)].map(m => m[0]):${JSON.stringify(
+          [...text.matchAll(/\d+/g)].map((m) => m[0])
+        )}\n`
+        result += `matchAll(...).next().value[0]:"${text.matchAll(/\d+/g).next().value[0]}"\n`
+        result += `search(/\\d+/):${text.search(/\d+/)}`
+
+        document.getElementById('regexResult').textContent = result
+        console.log(result)
+      }
+
+      // 7. 其他
+      function otherDemo() {
+        const num = 123.456
+        const rawStr = String.raw`C:\new\test` // 原样输出,不处理 \n \t
+        let result = `'a'.localeCompare('b'):${'a'.localeCompare('b')}\n`
+        result += `['b','a','c'].sort(localeCompare):${JSON.stringify(
+          ['b', 'a', 'c'].sort((x, y) => x.localeCompare(y))
+        )}\n`
+        result += `String.raw 结果:${rawStr}\n`
+        result += `num.toFixed(2):"${num.toFixed(2)}"\n`
+        result += `num.toString():"${num.toString()}"\n`
+        result += `String(num):"${String(num)}"`
+
+        document.getElementById('otherResult').textContent = result
+        console.log(result)
+      }
+
+      // 8. 综合实战
+      function combatDemo() {
+        // 1. 手机号脱敏
+        const phone = '13812345678'
+        const hidePhone = phone.slice(0, 3) + '****' + phone.slice(-4)
+
+        // 2. 回文判断
+        const isPalindrome = (text) => {
+          const clean = text.replace(/\s/g, '').toLowerCase()
+          return clean === [...clean].reverse().join('')
+        }
+
+        // 3. 字符统计
+        const count = {}
+        for (const ch of 'hello') {
+          count[ch] = (count[ch] || 0) + 1
+        }
+
+        // 4. 首字母大写
+        const capitalize = (text) => text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()
+
+        // 5. 解析 URL 查询串
+        const parseQuery = (url) => {
+          const query = url.split('?')[1]
+          if (!query) return {}
+          return Object.fromEntries(query.split('&').map((item) => item.split('=')))
+        }
+
+        let result = `1. 手机号脱敏:${phone} → ${hidePhone}\n`
+        result += `2. 回文判断:"上海自来水来自海上" → ${isPalindrome('上海自来水来自海上')},"hello" → ${isPalindrome('hello')}\n`
+        result += `3. 字符统计:'hello' → ${JSON.stringify(count)}\n`
+        result += `4. 首字母大写:'hELLO' → ${capitalize('hELLO')}\n`
+        result += `5. 解析查询串:${JSON.stringify(parseQuery('https://a.com/p?name=张三&age=18'))}`
+
+        document.getElementById('combatResult').textContent = result
+        console.log(result)
+      }
+    </script>
+  </body>
+</html>
