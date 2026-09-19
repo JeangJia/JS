@@ -15,29 +15,24 @@
     </style>
   </head>
   <body>
-    <div class="box">
-      <div class="item">赠送:礼品</div>
-    </div>
     <script>
-      const gift = '香蕉,苹果,橘子,橙子'
-      document.querySelector('.box').innerHTML += gift
-        .split(',')
-        .map((item) => `<div class="item">赠送:${item}</div>`)
-        .join('')
-
       const Star = function (name, age) {
         this.name = name
         this.age = age
       }
-      Star.prototype.sing = () => {
-        console.log('唱歌')
+      console.log(Star.prototype.constructor === Star)
+      Star.prototype = {
+        // constructor: Star,
+        sing: function () {
+          console.log('唱歌')
+        },
+        dance: function () {
+          console.log('跳舞')
+        },
       }
-      const s1 = new Star('张三', 18)
-      const s2 = new Star('李四', 28)
-      console.log(Star.prototype)
-      console.log(s1.sing === s2.sing)
-      const a = [1, 2, 3, 4, 5]
-      console.log(...a)
+      const a = new Star('张三', 18)
+      console.log(a.name)
+      console.log(Star.prototype.constructor === Star)
     </script>
   </body>
 </html>

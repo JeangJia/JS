@@ -35,27 +35,19 @@
     p1.sayAge()
 
     // 批量挂载原型方法
-    const a = new Array(1, 2, 3)
-    console.log(a)
-    // 通过assign 来实现
-    Object.assign(Array.prototype, {
-      min(a) {
-        return Math.min(...a)
+    // 通过 prototype 添加的属性和方法, 会覆盖构造函数中的属性和方法
+    Star.prototype = {
+      constructor: Star, // 恢复原型对象的 constructor 指向,让原型和构造函数保持正确的关联关系.
+      sing: function () {
+        console.log('唱歌')
       },
-      max() {
-        return Math.max(...this)
+      dance: function () {
+        console.log('跳舞')
       },
-    })
-    // 通过clss 来实现
-    // class Array {
-    //   min(a) {
-    //     return Math.min(...a)
-    //   }
-    //   max() {
-    //     return Math.max(...this)
-    //   }
-    // }
-    console.log(a.min(a))
-    console.log(a.max())
+    }
+    console.log(Star.prototype)
+    const b = new Star('李四', 20)
+    b.sing()
+    b.dance()
   </script>
 </html>
